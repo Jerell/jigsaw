@@ -1,0 +1,48 @@
+version: '3.9'
+services:
+  traefik:
+    container_name: traefik
+    image: "traefik:v2.6"
+    volumes:
+      - "./traefik:/etc/traefik"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - 8080:8080
+      - 443:443
+      - 80:80
+  frontend:
+    container_name: frontend
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      target: deps
+    command: npm run dev
+    volumes:
+      - ../frontend:/app
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`localhost`)
+      - traefik.http.routers.frontend.entrypoints=web,webSecure
+    expose:
+      - 3000
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--spider",
+          "--tries=1",
+          "--no-verbose",
+          "http://localhost:3000/api/health"
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+  engine:
+    container_name: engine
+    build:
+      context: ../engine
+      dockerfile: Dockerfile
+    expose:
+      - 3000

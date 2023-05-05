@@ -1,0 +1,17 @@
+api:
+  insecure: true
+providers:
+  docker:
+    exposedByDefault: false
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: webSecure
+          scheme: https
+  webSecure:
+    address: ":443"
+    http:
+      tls: {}

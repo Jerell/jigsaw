@@ -1,4 +1,4 @@
-import CylinderScene from '@/components/plot/three/Scene';
+import CylinderScene from '@/components/plot/three/cylinder/CylinderScene';
 
 export default function Home() {
   return (

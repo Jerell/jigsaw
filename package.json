@@ -8,5 +8,8 @@
     "singleQuote": true,
     "jsxSingleQuote": true,
     "endOfLine": "lf"
+  },
+  "scripts": {
+    "prepare": "husky install"
   }
 }

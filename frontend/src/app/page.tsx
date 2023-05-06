@@ -3,7 +3,7 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <main className='flex min-h-screen flex-col items-center justify-around p-24'>
-      <h1 className='text-xl'>jigsaw</h1>
+      <h1 className='text-xl font-bold'>jigsaw</h1>
       <div className='mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left'>
         <a
           href='https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'

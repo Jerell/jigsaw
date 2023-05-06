@@ -9,7 +9,7 @@ context('Cypress.Commands', () => {
 
   it('.add() - create a custom command', () => {
     Cypress.Commands.add(
-      'console',
+      'console' as any,
       {
         prevSubject: true,
       },
@@ -21,7 +21,7 @@ context('Cypress.Commands', () => {
         method = method || 'log';
 
         // log the subject to the console
-        console[method]('The subject is', subject);
+        console[method as 'log']('The subject is', subject);
 
         // whatever we return becomes the new subject
         // we don't want to change the subject so
@@ -31,7 +31,7 @@ context('Cypress.Commands', () => {
     );
 
     cy.get('button')
-      .console('info')
+      .log('info')
       .then(($button) => {
         // subject is still $button
       });

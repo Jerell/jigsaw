@@ -1,14 +1,14 @@
-import "./globals.css";
-import { Inter, Roboto } from "next/font/google";
+import './globals.css';
+import { Inter, Roboto } from 'next/font/google';
 
 const roboto = Roboto({
-  weight: ["100", "300", "400", "500", "700", "900"],
-  subsets: ["latin"],
+  weight: ['100', '300', '400', '500', '700', '900'],
+  subsets: ['latin'],
 });
 
 export const metadata = {
-  title: "jigsaw",
-  description: "practice",
+  title: 'jigsaw',
+  description: 'practice',
 };
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={roboto.className}>{children}</body>
     </html>
   );

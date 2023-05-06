@@ -1,7 +1,7 @@
 # Install dependencies only when needed
 FROM node:hydrogen-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat make gcc g++ py3-pip zeromq zeromq-dev curl cmake
 WORKDIR /app
 COPY package.json package-lock.json ./
 ENV NODE_ENV development

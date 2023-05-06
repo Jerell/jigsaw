@@ -26,10 +26,13 @@ module.exports = {
           800: 'rgb(var(--tw-color-primary-800) / <alpha-value>)',
           900: 'rgb(var(--tw-color-primary-900) / <alpha-value>)',
         },
-        dark: '#222222',
+        dark: '#0e1c36',
         brand: {
-          green: '#84BD25',
-          grey: '#9b9b9b',
+          buff: '#d4a373',
+          papaya: '#faedcd',
+          cornsilk: '#fefae0',
+          beige: '#e9edc9',
+          tea: '#ccd5ae',
         },
       },
       keyframes: {

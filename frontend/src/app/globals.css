@@ -86,4 +86,8 @@ main section {
   h2 {
     @apply mb-4;
   }
+
+  h2 + svg {
+    @apply -mt-4;
+  }
 }

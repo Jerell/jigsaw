@@ -7,10 +7,10 @@ export default function Home() {
         <CylinderScene />
       </div>
 
-      <div className='2xl:max-w-2xl w-full p-2 flex flex-col gap-4'>
+      <div className='2xl:max-w-2xl w-full flex flex-col gap-4'>
         <section>
           <h2>Abstract</h2>
-          <p className='sm:columns-2  gap-4'>
+          <p className='sm:columns-2 gap-4'>
             The red line moved across the page. With each millimeter it advanced
             forward, something changed in the room. The actual change taking
             place was difficult to perceive, but the change was real. The red

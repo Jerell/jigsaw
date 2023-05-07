@@ -33,7 +33,7 @@ export default function RootLayout({
         ])}
       >
         <Header />
-        <main className='flex flex-col items-center h-full grow w-full'>
+        <main className='flex flex-col items-center h-full grow w-full p-2'>
           {children}
         </main>
         <a href='#header'>Back to top</a>

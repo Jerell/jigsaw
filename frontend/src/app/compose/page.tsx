@@ -67,10 +67,12 @@ export default function Compose() {
         <CylinderScene />
 
         <h3>Bathymetry</h3>
-        <ExtensibleTable
-          data={tableData}
-          caption={'pipeline bathymetry - extensible table'}
-        />
+        <div className='flex flex-row justify-center'>
+          <ExtensibleTable
+            data={tableData}
+            caption={'pipeline bathymetry - extensible table'}
+          />
+        </div>
       </section>
 
       <section className='row-span-2 h-full'>

@@ -1,33 +1,118 @@
-import { ReactNode } from 'react';
+import { ArrayElement } from '@/lib/arrayElement';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
 
 export class RowManager {
   public keys: string[];
 
-  constructor(keys: string[], public readonly rowHeaderKey?: string) {
+  private modifiable = false;
+
+  constructor(
+    keys: string[],
+    public readonly rowHeaderKey?: string,
+    private readonly setter?: Dispatch<
+      SetStateAction<
+        {
+          x: number;
+          y: number;
+        }[]
+      >
+    >
+  ) {
     if (rowHeaderKey) {
       keys.unshift(rowHeaderKey);
     }
     this.keys = [...keys.filter((k) => k !== rowHeaderKey)];
   }
 
-  private action(name: string, icon?: ReactNode) {
+  public header() {
     return (
-      <span className='flex flex-row gap-1 justify-center hover:text-brand-tea active:text-dark cursor-pointer'>
+      <thead>
+        <tr>
+          {this.keys.map((k) => (
+            <th scope='col' key={k}>
+              {k}
+            </th>
+          ))}
+          {this.modifiable && <th scope='col'>modify</th>}
+        </tr>
+      </thead>
+    );
+  }
+
+  public body(data: Record<string, any>[], rowHeaderKey?: string) {
+    const keys = [...this.keys];
+    if (this.modifiable) {
+      keys.push('');
+    }
+    return (
+      <tbody>
+        {data.map((o, i) => (
+          <tr key={`row-${i}`}>
+            {keys.map((key) =>
+              key === rowHeaderKey ? (
+                <th scope='row' key={key}>
+                  {o[key]}
+                </th>
+              ) : (
+                <td key={key}>{o[key]}</td>
+              )
+            )}
+          </tr>
+        ))}
+      </tbody>
+    );
+  }
+
+  private action(
+    name: string,
+    icon?: ReactNode,
+    onClick?: () => void,
+    index?: number
+  ) {
+    this.modifiable = true;
+    return (
+      <span
+        className='flex flex-row gap-1 justify-center hover:text-brand-tea active:text-dark cursor-pointer'
+        onClick={onClick}
+        key={`${name}-${index}`}
+      >
         {name}
         {icon}
       </span>
     );
   }
 
-  remover() {
+  remover(i: number) {
+    const onClick = () => {
+      if (!this.setter) return;
+      this.setter((prev) => {
+        const list = prev;
+        return list.splice(i, 1);
+      });
+    };
+
     return this.action(
       'Remove',
-      <MdPlaylistRemove className='inline text-lg' />
+      <MdPlaylistRemove className='inline text-lg' />,
+      onClick,
+      i
     );
   }
 
-  adder() {
-    return this.action('Add', <MdPlaylistAdd className='inline text-lg' />);
+  adder(getNext: () => Record<string, any>) {
+    const onClick = () => {
+      if (!this.setter) return;
+      this.setter((prev) => {
+        const list = prev;
+        list.push(getNext() as ArrayElement<typeof list>);
+        return list;
+      });
+    };
+    return this.action(
+      'Add',
+      <MdPlaylistAdd className='inline text-lg' />,
+      onClick
+    );
   }
 }

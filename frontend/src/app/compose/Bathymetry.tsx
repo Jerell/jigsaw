@@ -6,7 +6,7 @@ import { useState } from 'react';
 export default function Bathymetry() {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
 
-  const rm = new RowManager(['x', 'y']);
+  const rm = new RowManager(['x', 'y'], undefined, setCoords);
 
   return (
     <div className='flex flex-col'>

@@ -91,3 +91,36 @@ main section {
     @apply -mt-4;
   }
 }
+
+table {
+  @apply border border-brand-buff text-xs;
+
+  * {
+    @apply border-brand-buff;
+  }
+
+  thead {
+    @apply border-y;
+  }
+
+  th,
+  td {
+    @apply border-r p-1;
+  }
+
+  th[scope='row'] {
+    @apply text-left;
+  }
+
+  td {
+    @apply text-right;
+  }
+
+  tfoot {
+    @apply border-t;
+  }
+
+  caption {
+    @apply italic text-brand-buff py-0.5;
+  }
+}

@@ -1,4 +1,5 @@
 import CylinderScene from '@/components/plot/three/cylinder/CylinderScene';
+import { exampleTable } from './compose/page';
 
 export default function Home() {
   return (
@@ -49,7 +50,7 @@ export default function Home() {
 
           <section>
             <h2>Personal info</h2>
-            <p>ayy</p>
+            {exampleTable}
           </section>
         </div>
 
@@ -94,7 +95,7 @@ export default function Home() {
 
           <section>
             <h2>Personal info</h2>
-            <p>ayy</p>
+            {exampleTable}
           </section>
         </div>
 
@@ -139,7 +140,7 @@ export default function Home() {
 
           <section>
             <h2>Personal info</h2>
-            <p>ayy</p>
+            {exampleTable}
           </section>
         </div>
       </div>

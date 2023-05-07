@@ -1,11 +1,16 @@
 import Header from '@/components/Header';
 import './globals.css';
-import { Inter, Roboto } from 'next/font/google';
-import Footer from '@/components/Footer';
+import { Roboto, Charis_SIL } from 'next/font/google';
 import clsxm from '@/lib/clsxm';
+import UnderlineLink from '@/components/links/UnderlineLink';
 
 const roboto = Roboto({
   weight: ['100', '300', '400', '500', '700', '900'],
+  subsets: ['latin'],
+});
+
+const charis = Charis_SIL({
+  weight: ['400', '700'],
   subsets: ['latin'],
 });
 
@@ -22,11 +27,16 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={clsxm([roboto.className, 'flex flex-col justify-between'])}
+        className={clsxm([
+          charis.className,
+          'flex flex-col justify-between items-center pb-1',
+        ])}
       >
         <Header />
-        {children}
-        <Footer />
+        <main className='flex flex-col items-center h-full grow w-full'>
+          {children}
+        </main>
+        <a href='#header'>Back to top</a>
       </body>
     </html>
   );

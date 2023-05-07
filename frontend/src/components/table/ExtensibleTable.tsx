@@ -1,73 +1,40 @@
-import { ReactNode } from 'react';
 import AutoTable from './AutoTable';
-import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
+import { RowManager } from './RowManager';
 
 export function ExtensibleTable<T extends Record<string, string | number>>({
   data,
   caption,
   rowHeaderKey,
+  rowManager,
 }: {
   data: T[];
   caption: string;
   rowHeaderKey?: string;
+  rowManager: RowManager;
 }) {
-  const keys = [...Object.keys(data[0]).filter((k) => k !== rowHeaderKey)];
-  if (rowHeaderKey) {
-    keys.unshift(rowHeaderKey);
-  }
-
-  const rm = new RowManager();
-
   const removableData = data.map((d) => ({
     ...d,
-    '': rm.remover(),
+    '': rowManager.remover(),
   }));
 
-  const addRow = Object.keys(data[0]).reduce((acc, key) => {
-    acc[key] = <input name={key} key={key} />;
-    return acc;
-  }, {} as { [key: string]: ReactNode });
-
   return (
-    <AutoTable {...{ data: removableData, caption, rowHeaderKey }}>
+    <AutoTable {...{ data: removableData, caption, rowHeaderKey, rowManager }}>
       <tfoot>
         <tr>
-          {keys.map((key) =>
+          {rowManager.keys.map((key) =>
             key === rowHeaderKey ? (
-              <th scope='row'>
-                <input name={key} key={key} />
+              <th scope='row' key={key}>
+                <input name={key} />
               </th>
             ) : (
-              <td>
-                <input name={key} key={key} />
+              <td key={key}>
+                <input name={key} />
               </td>
             )
           )}
-          <td>{rm.adder()}</td>
+          <td>{rowManager.adder()}</td>
         </tr>
       </tfoot>
     </AutoTable>
   );
-}
-
-class RowManager {
-  private action(name: string, icon?: ReactNode) {
-    return (
-      <span className='flex flex-row gap-1 justify-center'>
-        {name}
-        {icon}
-      </span>
-    );
-  }
-
-  remover() {
-    return this.action(
-      'Remove',
-      <MdPlaylistRemove className='inline text-lg' />
-    );
-  }
-
-  adder() {
-    return this.action('Add', <MdPlaylistAdd className='inline text-lg' />);
-  }
 }

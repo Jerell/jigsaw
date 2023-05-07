@@ -1,27 +1,25 @@
 import { ReactNode } from 'react';
 import Table from '.';
+import { RowManager } from './RowManager';
 
 export default function AutoTable<T extends Record<string, ReactNode>>({
   data,
   caption,
   rowHeaderKey,
   children,
+  rowManager = new RowManager(data[0] ? Object.keys(data[0]) : []),
 }: {
   data: T[];
   caption: string;
   rowHeaderKey?: string;
   children?: ReactNode;
+  rowManager?: RowManager;
 }) {
-  const keys = [...Object.keys(data[0]).filter((k) => k !== rowHeaderKey)];
-  if (rowHeaderKey) {
-    keys.unshift(rowHeaderKey);
-  }
-
   const header = (
     <thead>
       <tr>
-        {keys.map((k, i) => (
-          <th scope='col' key={i}>
+        {rowManager.keys.map((k) => (
+          <th scope='col' key={k}>
             {k}
           </th>
         ))}
@@ -32,8 +30,8 @@ export default function AutoTable<T extends Record<string, ReactNode>>({
   const body = (
     <tbody>
       {data.map((o, i) => (
-        <tr key={i}>
-          {keys.map((key) =>
+        <tr key={`row-${i}`}>
+          {rowManager.keys.map((key) =>
             key === rowHeaderKey ? (
               <th scope='row'>{o[key]}</th>
             ) : (

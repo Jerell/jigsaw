@@ -3,6 +3,7 @@ import Stage from './Stage';
 import Table from '@/components/table';
 import AutoTable from '@/components/table/AutoTable';
 import { ExtensibleTable } from '@/components/table/ExtensibleTable';
+import Bathymetry from './Bathymetry';
 
 export const exampleTable = (
   <Table caption="A summary of the UK's most famous punk bands">
@@ -66,12 +67,8 @@ export default function Compose() {
         <h2>Component</h2>
         <CylinderScene />
 
-        <h3>Bathymetry</h3>
         <div className='flex flex-row justify-center'>
-          <ExtensibleTable
-            data={tableData}
-            caption={'pipeline bathymetry - extensible table'}
-          />
+          <Bathymetry />
         </div>
       </section>
 

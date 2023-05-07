@@ -1,4 +1,4 @@
-import zmq from 'zeromq';
+import * as zmq from 'zeromq';
 
 export default async function zmqRequest(
   message: zmq.MessageLike,

@@ -35,6 +35,7 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
             key === rowHeaderKey ? (
               <th scope='row' key={key}>
                 <input
+                  autoComplete='off'
                   name={key}
                   onChange={(e: FormEvent<HTMLInputElement>) => {
                     updateNext(key)(e.currentTarget.value);
@@ -44,6 +45,7 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
             ) : (
               <td key={key}>
                 <input
+                  autoComplete='off'
                   name={key}
                   onChange={(e: FormEvent<HTMLInputElement>) => {
                     updateNext(key)(e.currentTarget.value);

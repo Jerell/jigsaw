@@ -124,3 +124,7 @@ table {
     @apply italic text-brand-buff py-0.5;
   }
 }
+
+input {
+  @apply bg-transparent border-b text-right border-brand-tea focus:outline-none focus:ring-0 focus:bg-brand-papaya;
+}

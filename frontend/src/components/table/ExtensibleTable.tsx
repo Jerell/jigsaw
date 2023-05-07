@@ -23,8 +23,8 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
     '': rm.remover(),
   }));
 
-  const addRow = Object.keys(data[0]).reduce((acc, k) => {
-    acc[k] = <input></input>;
+  const addRow = Object.keys(data[0]).reduce((acc, key) => {
+    acc[key] = <input name={key} key={key} />;
     return acc;
   }, {} as { [key: string]: ReactNode });
 
@@ -35,11 +35,11 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
           {keys.map((key) =>
             key === rowHeaderKey ? (
               <th scope='row'>
-                <input></input>
+                <input name={key} key={key} />
               </th>
             ) : (
               <td>
-                <input></input>
+                <input name={key} key={key} />
               </td>
             )
           )}

@@ -87,7 +87,7 @@ export class RowManager {
     const onClick = () => {
       if (!this.setter) return;
       this.setter((prev) => {
-        const list = prev;
+        const list = [...prev];
         return list.splice(i, 1);
       });
     };
@@ -104,7 +104,7 @@ export class RowManager {
     const onClick = () => {
       if (!this.setter) return;
       this.setter((prev) => {
-        const list = prev;
+        const list = [...prev];
         list.push(getNext() as ArrayElement<typeof list>);
         return list;
       });

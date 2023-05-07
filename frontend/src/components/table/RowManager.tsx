@@ -88,7 +88,8 @@ export class RowManager {
       if (!this.setter) return;
       this.setter((prev) => {
         const list = [...prev];
-        return list.splice(i, 1);
+        list.splice(i, 1);
+        return list;
       });
     };
 
@@ -103,9 +104,13 @@ export class RowManager {
   adder(getNext: () => Record<string, any>) {
     const onClick = () => {
       if (!this.setter) return;
+      const next = getNext();
+      if (!this.keys.every((k) => Object.keys(next).includes(k))) {
+        return;
+      }
       this.setter((prev) => {
         const list = [...prev];
-        list.push(getNext() as ArrayElement<typeof list>);
+        list.push(next as ArrayElement<typeof list>);
         return list;
       });
     };

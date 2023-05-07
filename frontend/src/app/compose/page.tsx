@@ -48,9 +48,9 @@ export const exampleTable = (
 );
 
 const tableData = [
-  { x: 1, y: 2, name: 'n1' },
-  { x: 4, y: 6, name: 'n2' },
-  { x: 11, y: 4, name: 'n3' },
+  { x: 1, y: 2 },
+  { x: 4, y: 6 },
+  { x: 11, y: 4 },
 ];
 
 export default function Compose() {
@@ -59,20 +59,18 @@ export default function Compose() {
       <section>
         <h2>Parameters</h2>
         {exampleTable}
-        <AutoTable data={tableData} rowHeaderKey='name' caption={'generated'} />
-        <ExtensibleTable
-          data={tableData}
-          rowHeaderKey='name'
-          caption={'extensible'}
-        />
+        <AutoTable data={tableData} caption={'generated'} />
       </section>
 
       <section>
         <h2>Component</h2>
         <CylinderScene />
-        <p>some kind of graphic in the space above</p>
-        <p>input fields</p>
-        <p>tabular data</p>
+
+        <h3>Bathymetry</h3>
+        <ExtensibleTable
+          data={tableData}
+          caption={'pipeline bathymetry - extensible table'}
+        />
       </section>
 
       <section className='row-span-2 h-full'>

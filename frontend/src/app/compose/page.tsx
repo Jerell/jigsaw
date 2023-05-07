@@ -47,19 +47,21 @@ export const exampleTable = (
   </Table>
 );
 
+const tableData = [
+  { x: 1, y: 2, name: 'n1' },
+  { x: 4, y: 6, name: 'n2' },
+  { x: 11, y: 4, name: 'n3' },
+];
+
 export default function Compose() {
   return (
     <div className='grid grid-cols-1 sm:grid-rows-2 sm:grid-cols-2 sm:grid-flow-col gap-2 w-full h-full grow'>
       <section>
         <h2>Parameters</h2>
         {exampleTable}
-        <AutoTable
-          data={[{ x: 1, y: 2, name: 'n1' }]}
-          rowHeaderKey='name'
-          caption={'generated'}
-        />
+        <AutoTable data={tableData} rowHeaderKey='name' caption={'generated'} />
         <ExtensibleTable
-          data={[{ x: 1, y: 2, name: 'n2' }]}
+          data={tableData}
           rowHeaderKey='name'
           caption={'extensible'}
         />

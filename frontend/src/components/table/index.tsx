@@ -14,7 +14,7 @@ export default function Table({
 
   return (
     <table ref={tableRef}>
-      <caption>
+      <caption className='pb-1'>
         {caption} <CopyTable {...{ tableRef, caption }} />
       </caption>
       {children}

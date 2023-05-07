@@ -1,6 +1,8 @@
 import CylinderScene from '@/components/plot/three/cylinder/CylinderScene';
 import Stage from './Stage';
-import Table from '@/components/Table';
+import Table from '@/components/table';
+import AutoTable from '@/components/table/AutoTable';
+import { ExtensibleTable } from '@/components/table/ExtensibleTable';
 
 export const exampleTable = (
   <Table caption="A summary of the UK's most famous punk bands">
@@ -51,6 +53,16 @@ export default function Compose() {
       <section>
         <h2>Parameters</h2>
         {exampleTable}
+        <AutoTable
+          data={[{ x: 1, y: 2, name: 'n1' }]}
+          rowHeaderKey='name'
+          caption={'generated'}
+        />
+        <ExtensibleTable
+          data={[{ x: 1, y: 2, name: 'n2' }]}
+          rowHeaderKey='name'
+          caption={'extensible'}
+        />
       </section>
 
       <section>

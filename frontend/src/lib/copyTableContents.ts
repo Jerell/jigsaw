@@ -31,6 +31,4 @@ export default function copyTableContents(
   }
 
   sel?.removeAllRanges();
-
-  console.log('Element Copied! Paste it in a file');
 }

@@ -46,3 +46,8 @@ services:
       dockerfile: Dockerfile
     expose:
       - 3000
+  api:
+    container_name: api
+    build: ../api
+    expose:
+      - 80

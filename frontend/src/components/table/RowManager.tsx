@@ -34,7 +34,7 @@ export class RowManager {
               {k}
             </th>
           ))}
-          {this.modifiable && <th scope='col'>modify</th>}
+          {this.modifiable && <th scope='col'></th>}
         </tr>
       </thead>
     );

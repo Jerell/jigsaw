@@ -27,6 +27,17 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
     });
   };
 
+  const field = (key: string) => (
+    <input
+      className='w-full'
+      autoComplete='off'
+      name={key}
+      onChange={(e: FormEvent<HTMLInputElement>) => {
+        updateNext(key)(e.currentTarget.value);
+      }}
+    />
+  );
+
   return (
     <AutoTable {...{ data: removableData, caption, rowHeaderKey, rowManager }}>
       <tfoot>
@@ -34,24 +45,10 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
           {rowManager.keys.map((key) =>
             key === rowHeaderKey ? (
               <th scope='row' key={key}>
-                <input
-                  autoComplete='off'
-                  name={key}
-                  onChange={(e: FormEvent<HTMLInputElement>) => {
-                    updateNext(key)(e.currentTarget.value);
-                  }}
-                />
+                {field(key)}
               </th>
             ) : (
-              <td key={key}>
-                <input
-                  autoComplete='off'
-                  name={key}
-                  onChange={(e: FormEvent<HTMLInputElement>) => {
-                    updateNext(key)(e.currentTarget.value);
-                  }}
-                />
-              </td>
+              <td key={key}>{field(key)}</td>
             )
           )}
           <td>{rowManager.adder(() => next)}</td>

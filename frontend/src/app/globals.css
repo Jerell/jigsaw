@@ -99,8 +99,11 @@ table {
     @apply border-brand-buff;
   }
 
-  thead {
-    @apply border-y;
+  thead,
+  tfoot {
+    @apply border-double;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
   }
 
   th,
@@ -114,10 +117,6 @@ table {
 
   td {
     @apply text-right;
-  }
-
-  tfoot {
-    @apply border-t;
   }
 
   caption {

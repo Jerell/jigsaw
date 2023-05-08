@@ -77,7 +77,7 @@ export default function Compose() {
       </div>
 
       <div className='flex flex-col grow'>
-        <section className='flex flex-col gap-2 h-screen sm:h-full'>
+        <section className='flex flex-col h-screen sm:h-full'>
           <h2>Network</h2>
           <div className='grow h-full'>
             <Stage />

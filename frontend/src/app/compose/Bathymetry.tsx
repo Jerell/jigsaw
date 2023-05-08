@@ -19,9 +19,3 @@ export default function Bathymetry() {
     </div>
   );
 }
-
-const tableData = [
-  { x: 1, y: 2 },
-  { x: 4, y: 6 },
-  { x: 11, y: 4 },
-];

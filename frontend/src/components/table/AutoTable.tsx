@@ -17,7 +17,7 @@ export default function AutoTable<T extends Record<string, ReactNode>>({
 }) {
   return (
     <Table caption={caption}>
-      {rowManager.header()}
+      {rowManager.head()}
       {rowManager.body(data, rowHeaderKey)}
       {children}
     </Table>

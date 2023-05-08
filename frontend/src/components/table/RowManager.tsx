@@ -25,7 +25,7 @@ export class RowManager {
     this.keys = [...keys.filter((k) => k !== rowHeaderKey)];
   }
 
-  public header() {
+  public head() {
     return (
       <thead>
         <tr>

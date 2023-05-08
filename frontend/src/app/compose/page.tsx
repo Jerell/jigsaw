@@ -55,7 +55,6 @@ const tableData = [
 
 export default function Compose() {
   return (
-    // <div className='grid grid-cols-1 sm:grid-rows-2 sm:grid-cols-2 sm:grid-flow-col gap-2 w-full h-full grow'>
     <div className='flex flex-col sm:flex-row gap-2 w-full h-full grow'>
       <div className='flex flex-col w-full sm:w-1/2'>
         <section>

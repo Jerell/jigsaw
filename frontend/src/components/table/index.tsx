@@ -1,7 +1,8 @@
 'use client';
 import copyTableContents from '@/lib/copyTableContents';
-import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
+import { ReactNode, RefObject, useRef } from 'react';
 import { FaCopy } from 'react-icons/fa';
+import Button from '../buttons/Button';
 
 export default function Table({
   children,
@@ -30,10 +31,14 @@ function CopyTable({
   caption?: string;
 }) {
   return (
-    <FaCopy
-      className='inline hover:text-brand-tea cursor-pointer active:text-dark'
+    <Button
+      className='w-fit p-0.5 relative top-0.5'
+      variant='ghost'
+      size='sm'
       onClick={async () => await copyTableContents(tableRef)}
       title={['copy', caption].filter((e) => !!e).join(': ')}
-    />
+    >
+      <FaCopy />
+    </Button>
   );
 }

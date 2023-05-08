@@ -32,7 +32,7 @@ function CopyTable({
   return (
     <FaCopy
       className='inline hover:text-brand-tea cursor-pointer active:text-dark'
-      onClick={() => copyTableContents(tableRef)}
+      onClick={async () => await copyTableContents(tableRef)}
       title={['copy', caption].filter((e) => !!e).join(': ')}
     />
   );

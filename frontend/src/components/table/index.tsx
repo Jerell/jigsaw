@@ -1,6 +1,6 @@
 'use client';
 import copyTableContents from '@/lib/copyTableContents';
-import { ReactNode, RefObject, useRef } from 'react';
+import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
 import { FaCopy } from 'react-icons/fa';
 
 export default function Table({

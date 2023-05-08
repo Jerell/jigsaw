@@ -80,7 +80,7 @@ h3 {
   @apply uppercase text-center my-2;
 }
 
-main section {
+section {
   @apply w-full self-start pb-2;
 
   h2 {

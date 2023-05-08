@@ -55,26 +55,35 @@ const tableData = [
 
 export default function Compose() {
   return (
-    <div className='grid grid-cols-1 sm:grid-rows-2 sm:grid-cols-2 sm:grid-flow-col gap-2 w-full h-full grow'>
-      <section>
-        <h2>Parameters</h2>
-        {exampleTable}
-        <AutoTable data={tableData} caption={'generated'} />
-      </section>
+    // <div className='grid grid-cols-1 sm:grid-rows-2 sm:grid-cols-2 sm:grid-flow-col gap-2 w-full h-full grow'>
+    <div className='flex flex-col sm:flex-row gap-2 w-full h-full grow'>
+      <div className='flex flex-col w-full sm:w-1/2'>
+        <section>
+          <h2 className='a'>Parameters</h2>
+          {exampleTable}
+          <AutoTable data={tableData} caption={'generated'} />
+        </section>
 
-      <section>
-        <h2>Component</h2>
-        <CylinderScene />
+        <section>
+          <h2>Component</h2>
+          <div className='h-32'>
+            <CylinderScene />
+          </div>
 
-        <div className='flex flex-row justify-center'>
-          <Bathymetry />
-        </div>
-      </section>
+          <div className='flex flex-row justify-center'>
+            <Bathymetry />
+          </div>
+        </section>
+      </div>
 
-      <section className='row-span-2 h-full flex flex-col gap-2'>
-        <h2>Network</h2>
-        <Stage />
-      </section>
+      <div className='flex flex-col grow'>
+        <section className='flex flex-col gap-2 h-screen sm:h-full'>
+          <h2>Network</h2>
+          <div className='grow h-full'>
+            <Stage />
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

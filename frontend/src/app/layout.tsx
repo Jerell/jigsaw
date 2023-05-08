@@ -1,13 +1,7 @@
 import Header from '@/components/Header';
 import './globals.css';
-import { Roboto, Charis_SIL } from 'next/font/google';
+import { Charis_SIL } from 'next/font/google';
 import clsxm from '@/lib/clsxm';
-import UnderlineLink from '@/components/links/UnderlineLink';
-
-const roboto = Roboto({
-  weight: ['100', '300', '400', '500', '700', '900'],
-  subsets: ['latin'],
-});
 
 const charis = Charis_SIL({
   weight: ['400', '700'],

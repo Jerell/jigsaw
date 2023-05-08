@@ -3,30 +3,45 @@ import { RefObject } from 'react';
 export default async function copyTableContents(
   tableRef: RefObject<HTMLTableElement>
 ) {
-  if (!tableRef.current) {
-    console.log('table is null');
-    return;
+  async function copyTable() {
+    if (!tableRef.current) {
+      console.log('table is null');
+      return;
+    }
+    let a;
+    try {
+      a = ClipboardItem || undefined;
+    } catch {
+      console.log('ClipboardItem is not defined');
+    }
+    if (!a) {
+      return copyDeprecated(tableRef);
+    }
+
+    const noModify = tableRef.current.cloneNode(true) as HTMLTableElement;
+    for (const body of noModify.tBodies) {
+      const svgs = [...body.getElementsByTagName('svg')];
+      for (const svg of svgs) {
+        const span = svg.parentElement;
+        const td = span?.parentElement;
+        td?.parentElement?.removeChild(td);
+      }
+    }
+
+    const html = [noModify.tHead, ...noModify.tBodies]
+      .map((t) => t?.outerHTML)
+      .join('')
+      .toString();
+
+    const blob = new Blob([html], { type: 'text/html' });
+
+    await navigator.clipboard.writeText(html);
+
+    // await navigator.clipboard.write([
+    //   new ClipboardItem({ [blob.type]: Promise.resolve(blob) }),
+    // ]);
   }
-
-  let a;
-  try {
-    a = ClipboardItem || undefined;
-  } catch {
-    console.log('ClipboardItem is not defined');
-  }
-  if (!a) {
-    return copyDeprecated(tableRef);
-  }
-
-  const html = [tableRef.current.tHead, ...tableRef.current.tBodies]
-    .map((t) => t?.innerHTML)
-    .join();
-
-  const blob = new Blob([html], { type: 'text/html' });
-
-  console.log(blob, html);
-
-  await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+  return await copyTable();
 }
 
 function copyDeprecated(tableRef: RefObject<HTMLTableElement>) {

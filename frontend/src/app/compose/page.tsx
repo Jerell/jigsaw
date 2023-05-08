@@ -2,7 +2,6 @@ import CylinderScene from '@/components/plot/three/cylinder/CylinderScene';
 import Stage from './Stage';
 import Table from '@/components/table';
 import AutoTable from '@/components/table/AutoTable';
-import { ExtensibleTable } from '@/components/table/ExtensibleTable';
 import Bathymetry from './Bathymetry';
 
 export const exampleTable = (

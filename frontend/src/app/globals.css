@@ -127,3 +127,7 @@ table {
 input {
   @apply bg-transparent border-b text-right border-brand-tea focus:outline-none focus:ring-0 focus:bg-brand-papaya;
 }
+
+.grid-line {
+  stroke: #faedcd;
+}

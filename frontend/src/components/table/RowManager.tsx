@@ -1,6 +1,7 @@
 import { ArrayElement } from '@/lib/arrayElement';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
+import Button from '../buttons/Button';
 
 export class RowManager<T extends Record<string, any>> {
   public keys: string[];
@@ -65,14 +66,16 @@ export class RowManager<T extends Record<string, any>> {
   ) {
     this.modifiable = true;
     return (
-      <span
-        className='flex flex-row gap-1 justify-center hover:text-brand-tea active:text-dark cursor-pointer'
+      <Button
+        variant='ghost'
+        size='sm'
+        className='w-full flex flex-row justify-center p-0.5'
         onClick={onClick}
         key={`${name}-${index}`}
       >
         {name}
         {icon}
-      </span>
+      </Button>
     );
   }
 

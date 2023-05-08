@@ -12,7 +12,7 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
   data: T[];
   caption: string;
   rowHeaderKey?: string;
-  rowManager: RowManager;
+  rowManager: RowManager<T>;
 }) {
   const removableData = data.map((d, i) => ({
     ...d,
@@ -51,7 +51,7 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
               <td key={key}>{field(key)}</td>
             )
           )}
-          <td>{rowManager.adder(() => next)}</td>
+          <td>{rowManager.adder(() => next as T)}</td>
         </tr>
       </tfoot>
     </AutoTable>

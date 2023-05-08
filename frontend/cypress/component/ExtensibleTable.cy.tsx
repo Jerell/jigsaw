@@ -1,25 +1,21 @@
-'use client';
 import { ExtensibleTable } from '@/components/table/ExtensibleTable';
 import { RowManager } from '@/components/table/RowManager';
 import { useState } from 'react';
 
-export default function Bathymetry() {
+describe('ExtensibleTable.cy.tsx', () => {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
 
-  const rm = new RowManager<{ x: number; y: number }>(
-    ['x', 'y'],
-    undefined,
-    setCoords
-  );
-
-  return (
-    <div className='flex flex-col'>
-      <h3>Bathymetry</h3>
+  beforeEach(() => {
+    setCoords([]);
+    const rm = new RowManager(['x', 'y'], undefined, setCoords);
+    cy.mount(
       <ExtensibleTable
         data={coords}
-        caption={'pipeline bathymetry - extensible table'}
+        caption={'extensible table'}
         rowManager={rm}
       />
-    </div>
-  );
-}
+    );
+
+    it('adds rows', () => {});
+  });
+});

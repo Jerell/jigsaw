@@ -2,7 +2,7 @@ import { ArrayElement } from '@/lib/arrayElement';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
 
-export class RowManager {
+export class RowManager<T extends Record<string, any>> {
   public keys: string[];
 
   private modifiable = false;
@@ -10,14 +10,7 @@ export class RowManager {
   constructor(
     keys: string[],
     public readonly rowHeaderKey?: string,
-    private readonly setter?: Dispatch<
-      SetStateAction<
-        {
-          x: number;
-          y: number;
-        }[]
-      >
-    >
+    private readonly setter?: (arr: T[] | ((prev: T[]) => T[])) => void
   ) {
     if (rowHeaderKey) {
       keys.unshift(rowHeaderKey);
@@ -40,7 +33,7 @@ export class RowManager {
     );
   }
 
-  public body(data: Record<string, any>[], rowHeaderKey?: string) {
+  public body(data: T[], rowHeaderKey?: string) {
     const keys = [...this.keys];
     if (this.modifiable) {
       keys.push('');
@@ -101,16 +94,16 @@ export class RowManager {
     );
   }
 
-  adder(getNext: () => Record<string, any>) {
+  adder(getNext: () => T) {
     const onClick = () => {
       if (!this.setter) return;
       const next = getNext();
       if (!this.keys.every((k) => Object.keys(next).includes(k))) {
         return;
       }
-      this.setter((prev) => {
+      this.setter((prev: T[]) => {
         const list = [...prev];
-        list.push(next as ArrayElement<typeof list>);
+        list.push(next);
         return list;
       });
     };

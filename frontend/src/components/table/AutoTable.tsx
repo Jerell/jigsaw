@@ -13,7 +13,7 @@ export default function AutoTable<T extends Record<string, ReactNode>>({
   caption: string;
   rowHeaderKey?: string;
   children?: ReactNode;
-  rowManager?: RowManager;
+  rowManager?: RowManager<T>;
 }) {
   return (
     <Table caption={caption}>

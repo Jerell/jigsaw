@@ -7,10 +7,17 @@ import { useState } from 'react';
 export default function Bathymetry() {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
 
+  const [reorderState, setReorderState] = useState(false);
+  const getReorderState = () => reorderState;
+  const switchReorderState = () => setReorderState(!reorderState);
+
   const rm = new RowManager<{ x: number; y: number }>(
     ['x', 'y'],
     undefined,
-    setCoords
+    setCoords,
+    true,
+    getReorderState,
+    switchReorderState
   );
 
   return (
@@ -22,6 +29,7 @@ export default function Bathymetry() {
         data={coords}
         caption={'pipeline bathymetry'}
         rowManager={rm}
+        editable
       />
     </div>
   );

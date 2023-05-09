@@ -13,10 +13,13 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
   caption: string;
   rowHeaderKey?: string;
   rowManager: RowManager<T>;
+  editable?: boolean;
 }) {
   const removableData = data.map((d, i) => ({
     ...d,
-    '': rowManager.remover(i),
+    '': rowManager.getReorderState()
+      ? rowManager.drag(i)
+      : rowManager.remover(i),
   }));
 
   const [next, setNext] = useState<Partial<T>>({});

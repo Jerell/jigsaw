@@ -1,16 +1,19 @@
 import { ReactNode } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
+import { BsArrowDownUp } from 'react-icons/bs';
+import { HiArrowsUpDown } from 'react-icons/hi2';
 import Button from '../buttons/Button';
 
 export class RowManager<T extends Record<string, any>> {
   public keys: string[];
 
-  private modifiable = false;
-
   constructor(
     keys: string[],
     public readonly rowHeaderKey?: string,
-    private readonly setter?: (arr: T[] | ((prev: T[]) => T[])) => void
+    private readonly setter?: (arr: T[] | ((prev: T[]) => T[])) => void,
+    private modifiable = false,
+    public getReorderState = () => false,
+    private switchReorderState = () => {}
   ) {
     if (rowHeaderKey) {
       keys.unshift(rowHeaderKey);
@@ -64,7 +67,11 @@ export class RowManager<T extends Record<string, any>> {
               {k}
             </th>
           ))}
-          {this.modifiable && <th scope='col'></th>}
+          {this.modifiable && (
+            <th scope='col'>
+              {this.action('Reorder', undefined, this.switchReorderState)}
+            </th>
+          )}
         </tr>
       </thead>
     );
@@ -94,18 +101,13 @@ export class RowManager<T extends Record<string, any>> {
     );
   }
 
-  private action(
-    name: string,
-    icon?: ReactNode,
-    onClick?: () => void,
-    index?: number
-  ) {
+  action(name: string, icon?: ReactNode, onClick?: () => void, index?: number) {
     this.modifiable = true;
     return (
       <Button
         variant='ghost'
         size='sm'
-        className='w-full flex flex-row justify-center p-0.5'
+        className='flex flex-row justify-center p-0.5 w-20'
         onClick={onClick}
         key={`${name}-${index}`}
       >
@@ -130,5 +132,9 @@ export class RowManager<T extends Record<string, any>> {
       <MdPlaylistAdd className='inline text-lg' />,
       () => this.addData(getNext)
     );
+  }
+
+  drag(i: number) {
+    return this.action('Drag', <HiArrowsUpDown className='inline ml-0.5' />);
   }
 }

@@ -4,6 +4,8 @@ import { DataPlotter } from '@/components/plot/d3/DataPlotter';
 import getSvgWidthHeight from '@/components/plot/d3/getSvgWidthHeight';
 import { ComponentPropsWithRef } from 'react';
 import { Grid } from './axis/Grid';
+import ScaleGenerator2D from './scale';
+import ScatterPointPlotter from './points/ScatterPointPlotter';
 
 export default function LinePlot({
   className,
@@ -18,6 +20,9 @@ export default function LinePlot({
       dimensions || {};
     const { width, height } = getSvgWidthHeight(svg);
 
+    const scaleGenerator = new ScaleGenerator2D({ width, height, margin });
+    const { x, y } = scaleGenerator.scale(data);
+
     svg.select('g.base').remove();
     const base = svg.append('g').attr('class', 'base');
 
@@ -30,6 +35,10 @@ export default function LinePlot({
 
     grid.vertical(gridlines.vertical);
     grid.horizontal(gridlines.horizontal);
+
+    const pointPlotter = new ScatterPointPlotter(() => '#d4a373');
+    svg.selectAll('g.data.points').remove();
+    pointPlotter.plot(svg, data, { x, y });
   }
 
   const plotter = new DataPlotter<[]>(draw);

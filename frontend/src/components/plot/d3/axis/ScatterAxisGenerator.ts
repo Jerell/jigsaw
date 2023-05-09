@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import { d3scale, d3selection, d3svg, IMargin } from '..';
 import { ScatterData } from '../datatypes';
 import { AxisGenerator } from './index';
+import { ArrayElement } from '@/lib/arrayElement';
 
 export default class ScatterAxisGenerator extends AxisGenerator<ScatterData> {
   constructor(dimensions: { width: number; height: number; margin: IMargin }) {
@@ -14,17 +15,7 @@ export default class ScatterAxisGenerator extends AxisGenerator<ScatterData> {
     x: d3.ScaleLinear<number, number, never>;
     y: d3.ScaleLinear<number, number, never>;
   } {
-    const { width, height, margin } = this.dimensions;
-    const x = d3
-      .scaleLinear()
-      .domain(d3.extent(data, (d) => d.x) as [number, number])
-      .range([margin.left, width - margin.right]);
-    const y = d3
-      .scaleLinear()
-      .domain(d3.extent(data, (d) => d.value) as [number, number])
-      .range([height - margin.bottom, margin.top])
-      .nice();
-    return { x, y };
+    return this.scaleGenerator.scale(data, undefined, (d) => d.value);
   }
 
   xAxis(g: d3selection, x: d3scale, height: number): d3selection {

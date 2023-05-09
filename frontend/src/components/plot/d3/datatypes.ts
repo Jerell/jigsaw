@@ -1,4 +1,4 @@
 export type ScatterData = {
   x: number;
-  value: number;
+  y: number;
 }[];

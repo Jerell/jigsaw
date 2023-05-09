@@ -29,7 +29,7 @@ export default class ScatterPointPlotter extends PointPlotter<ScatterData> {
       .data(data)
       .join('circle')
       .attr('cx', (d) => x(d.x))
-      .attr('cy', (d) => y(d.value))
+      .attr('cy', (d) => y(d.y))
       .attr('r', 2.5)
       .attr('fill', 'none')
       .attr('stroke-width', 1.5)

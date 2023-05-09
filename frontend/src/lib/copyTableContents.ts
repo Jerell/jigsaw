@@ -9,12 +9,12 @@ export default async function copyTableContents(
   }
 
   const noModify = tableRef.current.cloneNode(true) as HTMLTableElement;
-  for (const body of [...noModify.tBodies, noModify.tFoot]) {
+
+  for (const body of [noModify.tHead, ...noModify.tBodies, noModify.tFoot]) {
     if (!body) continue;
-    const svgs = [...body.getElementsByTagName('svg')];
-    for (const svg of svgs) {
-      const span = svg.parentElement;
-      const td = span?.parentElement;
+    const buttons = [...body.getElementsByTagName('button')];
+    for (const button of buttons) {
+      const td = button.parentElement;
       td?.parentElement?.removeChild(td);
     }
   }

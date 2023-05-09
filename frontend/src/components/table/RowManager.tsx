@@ -1,5 +1,4 @@
-import { ArrayElement } from '@/lib/arrayElement';
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
 import Button from '../buttons/Button';
 
@@ -24,6 +23,34 @@ export class RowManager<T extends Record<string, any>> {
     this.setter((prev) => {
       const list = [...prev];
       list.splice(i, 1);
+      return list;
+    });
+  }
+
+  private addData(getNext: () => T) {
+    if (!this.setter) return;
+    const next = getNext();
+    if (!this.keys.every((k) => Object.keys(next).includes(k))) {
+      return;
+    }
+    this.setter((prev: T[]) => {
+      const list = [...prev];
+      list.push(next);
+      return list;
+    });
+  }
+
+  private swapDataPosition(i: number, j: number) {
+    if (!this.setter) return;
+    this.setter((prev) => {
+      if (i >= prev.length || j > prev.length) {
+        return prev;
+      }
+      const list = [...prev];
+      const a = prev[i];
+      const b = prev[j];
+      list[i] = b;
+      list[j] = a;
       return list;
     });
   }
@@ -98,22 +125,10 @@ export class RowManager<T extends Record<string, any>> {
   }
 
   adder(getNext: () => T) {
-    const onClick = () => {
-      if (!this.setter) return;
-      const next = getNext();
-      if (!this.keys.every((k) => Object.keys(next).includes(k))) {
-        return;
-      }
-      this.setter((prev: T[]) => {
-        const list = [...prev];
-        list.push(next);
-        return list;
-      });
-    };
     return this.action(
       'Add',
       <MdPlaylistAdd className='inline text-lg' />,
-      onClick
+      () => this.addData(getNext)
     );
   }
 }

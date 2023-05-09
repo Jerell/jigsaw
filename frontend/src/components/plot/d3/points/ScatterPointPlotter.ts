@@ -22,6 +22,7 @@ export default class ScatterPointPlotter extends PointPlotter<ScatterData> {
     }
   ): void {
     const { x, y } = scales;
+    svg.selectAll('g.data.points').remove();
     svg
       .append('g')
       .attr('class', 'data points')

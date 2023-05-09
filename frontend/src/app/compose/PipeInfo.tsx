@@ -15,7 +15,7 @@ export default function PipeInfo() {
     from,
     to,
   } = useControls({
-    name: 'Pipe',
+    name: 'Pipe-1',
 
     'diameter (m)': {
       value: 1,
@@ -36,11 +36,11 @@ export default function PipeInfo() {
     connections: folder({
       from: {
         value: 'Source1',
-        options: ['Source1', 'pipeB'],
+        options: ['Source1', 'pipe-2'],
       },
       to: {
-        value: 'pipeB',
-        options: ['pipeB'],
+        value: 'pipe-2',
+        options: ['pipe-2'],
       },
     }),
   });
@@ -49,13 +49,26 @@ export default function PipeInfo() {
     <div className='flex flex-row gap-2 justify-evenly'>
       <Leva theme={theme} flat />
       <div className='flex flex-col'>
-        <Button variant='ghost' size='sm' leftIcon={AiOutlineDoubleLeft}>
+        <Button
+          variant='ghost'
+          size='sm'
+          className='whitespace-nowrap'
+          leftIcon={AiOutlineDoubleLeft}
+        >
           {from}
         </Button>
       </div>
-      <Bathymetry />
       <div className='flex flex-col'>
-        <Button variant='ghost' size='sm' rightIcon={AiOutlineDoubleRight}>
+        <h3 className='m-0'>{name}</h3>
+        <Bathymetry />
+      </div>
+      <div className='flex flex-col'>
+        <Button
+          variant='ghost'
+          size='sm'
+          className='whitespace-nowrap'
+          rightIcon={AiOutlineDoubleRight}
+        >
           {to}
         </Button>
       </div>

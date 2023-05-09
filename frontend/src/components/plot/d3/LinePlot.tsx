@@ -6,6 +6,7 @@ import { ComponentPropsWithRef } from 'react';
 import { Grid } from './axis/Grid';
 import ScaleGenerator2D from './scale';
 import ScatterPointPlotter from './points/ScatterPointPlotter';
+import LinePlotter from './points/LinePlotter';
 
 export default function LinePlot({
   className,
@@ -36,8 +37,7 @@ export default function LinePlot({
     grid.vertical(gridlines.vertical);
     grid.horizontal(gridlines.horizontal);
 
-    const pointPlotter = new ScatterPointPlotter(() => '#d4a373');
-    svg.selectAll('g.data.points').remove();
+    const pointPlotter = new LinePlotter(() => '#d4a373');
     pointPlotter.plot(svg, data, { x, y });
   }
 

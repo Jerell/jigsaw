@@ -18,14 +18,11 @@ export default function Bathymetry() {
       <div className='h-32'>
         <LinePlot data={coords} />
       </div>
-      <div className='flex flex-col'>
-        <h3>Bathymetry</h3>
-        <ExtensibleTable
-          data={coords}
-          caption={'pipeline bathymetry - extensible table'}
-          rowManager={rm}
-        />
-      </div>
+      <ExtensibleTable
+        data={coords}
+        caption={'pipeline bathymetry'}
+        rowManager={rm}
+      />
     </div>
   );
 }

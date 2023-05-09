@@ -18,7 +18,7 @@ export function ExtensibleTable<T extends Record<string, string | number>>({
   const removableData = data.map((d, i) => ({
     ...d,
     '': rowManager.getReorderState()
-      ? rowManager.drag(i)
+      ? rowManager.reshuffler(i, i == 0, i == data.length - 1)
       : rowManager.remover(i),
   }));
 

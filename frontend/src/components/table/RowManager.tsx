@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
-import { BsArrowDownUp } from 'react-icons/bs';
-import { HiArrowsUpDown } from 'react-icons/hi2';
 import Button from '../buttons/Button';
+import IconButton from '../buttons/IconButton';
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 
 export class RowManager<T extends Record<string, any>> {
   public keys: string[];
@@ -134,7 +134,32 @@ export class RowManager<T extends Record<string, any>> {
     );
   }
 
-  drag(i: number) {
-    return this.action('Drag', <HiArrowsUpDown className='inline ml-0.5' />);
+  reshuffler(i: number, first: boolean, last: boolean) {
+    return (
+      <div className='grid grid-cols-2 w-full'>
+        {!last && (
+          <Button
+            className='h-6 p-0.5 flex justify-center'
+            variant='ghost'
+            size='sm'
+            onClick={() => this.swapDataPosition(i, i + 1)}
+            title={`move row ${i + 1} down`}
+          >
+            <FaCaretDown />
+          </Button>
+        )}
+        {!first && (
+          <Button
+            className='h-6 p-0.5 flex justify-center col-start-2'
+            variant='ghost'
+            size='sm'
+            onClick={() => this.swapDataPosition(i, i - 1)}
+            title={`move row ${i + 1} up`}
+          >
+            <FaCaretUp />
+          </Button>
+        )}
+      </div>
+    );
   }
 }

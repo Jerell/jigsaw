@@ -19,6 +19,15 @@ export class RowManager<T extends Record<string, any>> {
     this.keys = [...keys.filter((k) => k !== rowHeaderKey)];
   }
 
+  private removeData(i: number) {
+    if (!this.setter) return;
+    this.setter((prev) => {
+      const list = [...prev];
+      list.splice(i, 1);
+      return list;
+    });
+  }
+
   public head() {
     return (
       <thead>
@@ -80,19 +89,10 @@ export class RowManager<T extends Record<string, any>> {
   }
 
   remover(i: number) {
-    const onClick = () => {
-      if (!this.setter) return;
-      this.setter((prev) => {
-        const list = [...prev];
-        list.splice(i, 1);
-        return list;
-      });
-    };
-
     return this.action(
       'Remove',
       <MdPlaylistRemove className='inline text-lg' />,
-      onClick,
+      () => this.removeData(i),
       i
     );
   }

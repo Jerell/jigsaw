@@ -3,6 +3,7 @@ import Stage from './Stage';
 import Table from '@/components/table';
 import AutoTable from '@/components/table/AutoTable';
 import Bathymetry from './Bathymetry';
+import PipeInfo from './PipeInfo';
 
 export const exampleTable = (
   <Table caption="A summary of the UK's most famous punk bands">
@@ -65,13 +66,7 @@ export default function Compose() {
 
         <section>
           <h2>Component</h2>
-          <div className='h-32'>
-            <CylinderScene />
-          </div>
-
-          <div className='flex flex-row justify-center'>
-            <Bathymetry />
-          </div>
+          <PipeInfo />
         </section>
       </div>
 

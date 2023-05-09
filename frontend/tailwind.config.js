@@ -29,6 +29,7 @@ module.exports = {
         dark: '#0e1c36',
         brand: {
           buff: '#d4a373',
+          sunset: '#e7c8a0',
           papaya: '#faedcd',
           cornsilk: '#fefae0',
           beige: '#e9edc9',

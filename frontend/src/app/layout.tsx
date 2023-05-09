@@ -6,6 +6,7 @@ import clsxm from '@/lib/clsxm';
 const charis = Charis_SIL({
   weight: ['400', '700'],
   subsets: ['latin'],
+  variable: '--font-charis',
 });
 
 export const metadata = {

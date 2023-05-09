@@ -8,10 +8,16 @@ import { Leva } from 'leva';
 import { theme } from './leva.theme';
 
 export default function PipeInfo() {
-  const { name, diameter, uValue, from, to } = useControls({
+  const {
+    name,
+    'diameter (m)': diameter,
+    uValue,
+    from,
+    to,
+  } = useControls({
     name: 'Pipe',
 
-    diameter: {
+    'diameter (m)': {
       value: 1,
       min: 0.1,
       max: 3,

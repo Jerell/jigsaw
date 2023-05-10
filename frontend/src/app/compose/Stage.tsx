@@ -6,8 +6,6 @@ import { ComponentPropsWithRef } from 'react';
 import { Grid } from '../../components/plot/d3/axis/Grid';
 
 export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
-  const lineSpacing = 50;
-
   async function draw(svg: d3svg) {
     const { width, height } = getSvgWidthHeight(svg);
 
@@ -19,7 +17,7 @@ export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
       vertical: base.append('g').attr('class', 'vertical'),
     };
 
-    const grid = new Grid({ width, height }, lineSpacing);
+    const grid = new Grid({ width, height }, 50);
 
     grid.vertical(gridlines.vertical);
     grid.horizontal(gridlines.horizontal);

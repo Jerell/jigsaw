@@ -3,16 +3,20 @@ import { IDimensions, d3selection } from '@/components/plot/d3';
 import * as d3 from 'd3';
 
 export class Grid {
+  public readonly spacing: { x: number; y: number };
   constructor(
     public readonly dimensions: IDimensions,
-    public readonly spacing: number
-  ) {}
+    spacing: number | { x: number; y: number }
+  ) {
+    this.spacing =
+      typeof spacing === 'number' ? { x: spacing, y: spacing } : spacing;
+  }
 
   vertical(g: d3selection) {
     const xLines = d3.range(
-      this.spacing,
+      this.spacing.x,
       Number(this.dimensions.width),
-      this.spacing
+      this.spacing.x
     );
 
     return g
@@ -29,9 +33,9 @@ export class Grid {
 
   horizontal(g: d3selection) {
     const yLines = d3.range(
-      this.spacing,
+      this.spacing.y,
       Number(this.dimensions.height),
-      this.spacing
+      this.spacing.y
     );
 
     return g

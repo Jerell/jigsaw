@@ -58,7 +58,7 @@ export default function Compose() {
       <div className='flex flex-col w-full sm:w-1/2'>
         <section>
           <h2 className='a'>Parameters</h2>
-          <Table caption={`static table`}>
+          <Table caption={`Static table`}>
             <thead>
               <tr>
                 <th scope='col'>Property</th>
@@ -76,7 +76,7 @@ export default function Compose() {
               </tr>
             </tbody>
           </Table>
-          <AutoTable data={tableData} caption={'generated'} />
+          <AutoTable data={tableData} caption={'Generated'} />
         </section>
 
         <ComponentPanel />

@@ -1,11 +1,10 @@
 'use client';
-import Table from '@/components/table';
 import Bathymetry from './Bathymetry';
 import { folder, useControls } from 'leva';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import Button from '@/components/buttons/Button';
 import { Leva } from 'leva';
-import { theme } from './leva.theme';
+import { theme } from '../../constant/leva.theme';
 
 export default function PipeInfo() {
   const {
@@ -47,7 +46,6 @@ export default function PipeInfo() {
 
   return (
     <div className='flex flex-row gap-2 justify-evenly'>
-      <Leva theme={theme} flat />
       <div className='flex flex-col'>
         <Button
           variant='ghost'

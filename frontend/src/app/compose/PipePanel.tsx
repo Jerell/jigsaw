@@ -101,7 +101,7 @@ export function PipePanel({
           </tr>
           <tr>
             <th scope='row'>Greatest change in gradient</th>
-            <td>__°, ___ - ___ m</td>
+            <td>__°</td>
           </tr>
           <tr>
             <th scope='row'>Steepest ascent</th>

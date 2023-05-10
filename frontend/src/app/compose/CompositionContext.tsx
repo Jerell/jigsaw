@@ -39,8 +39,8 @@ export default function CompositionProvider({
 
   const [components, setComponents] = useState<ModelComponent[]>([
     new Source('source'),
-    new Pipe('pipe-0'),
-    new Pipe('pipe-1'),
+    new Pipe('section-0'),
+    new Pipe('section-1'),
     new Sink('sink'),
   ]);
   const [selection, setSelection] = useState<number>(0);

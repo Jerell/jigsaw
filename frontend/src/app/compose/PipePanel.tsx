@@ -88,7 +88,11 @@ export function PipePanel({
             <td>_____ m</td>
           </tr>
           <tr>
-            <th scope='row'>Elevation change</th>
+            <th scope='row'>Overall elevation change</th>
+            <td>_____ m</td>
+          </tr>
+          <tr>
+            <th scope='row'>Cumulative absolute elevation change</th>
             <td>_____ m</td>
           </tr>
           <tr>

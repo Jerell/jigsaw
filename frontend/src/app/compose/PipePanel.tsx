@@ -61,49 +61,10 @@ export function PipePanel({
   //   console.log(store);
   // }, [name, store]);
   return (
-    <div className='grid lg:grid-cols-2 gap-2'>
+    <div className='flex flex-col gap-2'>
       <Bathymetry />
-      <div className='flex flex-col w-full'>
-        <Table caption={`${pipe.name} shape`}>
-          <thead>
-            <tr>
-              <th scope='col'>Property</th>
-              <th scope='col'>Value(s)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope='row'>Length</th>
-              <td>_____ m</td>
-            </tr>
-            <tr>
-              <th scope='row'>Elevation change</th>
-              <td>_____ m</td>
-            </tr>
-            <tr>
-              <th scope='row'>Steepest descent</th>
-              <td>__°, ___ - ___ m</td>
-            </tr>
-            <tr>
-              <th scope='row'>Greatest change in gradient</th>
-              <td>__°, ___ - ___ m</td>
-            </tr>
-            <tr>
-              <th scope='row'>Steepest ascent</th>
-              <td>__°, ___ - ___ m</td>
-            </tr>
-            <tr>
-              <th scope='row'>Peaks</th>
-              <td>_</td>
-            </tr>
-            <tr>
-              <th scope='row'>Troughs</th>
-              <td>_</td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
       <div className='col-span-2 text-center'>
+        <h4>Angle distribution</h4>
         <div className='h-32'>
           <LinePlot
             data={[
@@ -113,8 +74,45 @@ export function PipePanel({
             ]}
           />
         </div>
-        <h4>Angle distribution</h4>
       </div>
+      <Table caption={`${pipe.name} shape`}>
+        <thead>
+          <tr>
+            <th scope='col'>Property</th>
+            <th scope='col'>Value(s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope='row'>Length</th>
+            <td>_____ m</td>
+          </tr>
+          <tr>
+            <th scope='row'>Elevation change</th>
+            <td>_____ m</td>
+          </tr>
+          <tr>
+            <th scope='row'>Steepest descent</th>
+            <td>__°, ___ - ___ m</td>
+          </tr>
+          <tr>
+            <th scope='row'>Greatest change in gradient</th>
+            <td>__°, ___ - ___ m</td>
+          </tr>
+          <tr>
+            <th scope='row'>Steepest ascent</th>
+            <td>__°, ___ - ___ m</td>
+          </tr>
+          <tr>
+            <th scope='row'>Peaks</th>
+            <td>_</td>
+          </tr>
+          <tr>
+            <th scope='row'>Troughs</th>
+            <td>_</td>
+          </tr>
+        </tbody>
+      </Table>
     </div>
   );
 }

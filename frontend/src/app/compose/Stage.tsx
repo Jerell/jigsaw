@@ -35,7 +35,35 @@ export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
     grid.vertical(gridlines.vertical);
     grid.horizontal(gridlines.horizontal);
 
-    const calcN = (i: number) => (100 / (components.length + 1)) * (i + 1);
+    const calcN = (i: number) => {
+      const n = (100 / (components.length + 1)) * (i + 1);
+      console.log(i, n);
+      return n;
+    };
+
+    svg.select('g.links').remove();
+    const links = base.append('g');
+    links
+      .selectAll('line')
+      .data([
+        [
+          { x: calcN(0), y: calcN(0) },
+          { x: calcN(1), y: calcN(1) },
+        ],
+        [
+          { x: calcN(2), y: calcN(2) },
+          { x: calcN(3), y: calcN(3) },
+        ],
+      ])
+      .enter()
+      .append('line')
+      .attr('class', 'link fake')
+      .attr('x1', (d) => x(d[0].x))
+      .attr('y1', (d) => height - y(d[0].y))
+      .attr('x2', (d) => x(d[1].x))
+      .attr('y2', (d) => height - y(d[1].y))
+      .attr('stroke', '#ccd5ae')
+      .attr('stroke-width', 2);
 
     svg.select('g.nodes').remove();
     const nodes = base.append('g').attr('class', 'nodes');
@@ -47,7 +75,7 @@ export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
       .attr('class', clsxm(['node', styles.node]))
       .attr('r', 22)
       .attr('cx', (d, i) => x(calcN(i)))
-      .attr('cy', (d, i) => x(calcN(i)))
+      .attr('cy', (d, i) => height - y(calcN(i)))
       .on('click', (e, d) => {
         select.byIndex(components.findIndex((c) => c === d));
       });

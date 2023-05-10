@@ -1,5 +1,8 @@
 export default class ModelComponent {
-  constructor(type: ModelComponentType) {}
+  constructor(
+    public readonly type: ModelComponentType,
+    public readonly name: string
+  ) {}
 }
 
 export enum ModelComponentType {
@@ -9,19 +12,19 @@ export enum ModelComponentType {
 }
 
 export class Pipe extends ModelComponent {
-  constructor(public readonly name) {
-    super(ModelComponentType.Pipe);
+  constructor(name: string) {
+    super(ModelComponentType.Pipe, name);
   }
 }
 
 export class Source extends ModelComponent {
-  constructor(public readonly name) {
-    super(ModelComponentType.Source);
+  constructor(name: string) {
+    super(ModelComponentType.Source, name);
   }
 }
 
 export class Sink extends ModelComponent {
-  constructor(public readonly name) {
-    super(ModelComponentType.Sink);
+  constructor(name: string) {
+    super(ModelComponentType.Sink, name);
   }
 }

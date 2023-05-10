@@ -1,0 +1,9 @@
+.node {
+  stroke-width: 2;
+  cursor: pointer;
+  fill: #fefae0;
+  stroke: #ccd5ae;
+}
+.node:hover {
+  fill: #e9edc9;
+}

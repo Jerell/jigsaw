@@ -17,7 +17,7 @@ export default function LinePlot({
   dimensions?: IDimensions;
 } & ComponentPropsWithRef<'svg'>) {
   async function draw(svg: d3svg) {
-    const { margin = { top: 20, right: 20, bottom: 30, left: 40 } } =
+    const { margin = { top: 20, right: 20, bottom: 20, left: 20 } } =
       dimensions || {};
     const { width, height } = getSvgWidthHeight(svg);
 

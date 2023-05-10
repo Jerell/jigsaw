@@ -1,12 +1,25 @@
 'use client';
-import Bathymetry from './Bathymetry';
-import { folder, useControls } from 'leva';
-import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
-import Button from '@/components/buttons/Button';
-import { Leva } from 'leva';
-import { theme } from '../../constant/leva.theme';
 
-export default function PipeInfo() {
+import Button from '@/components/buttons/Button';
+import { useControls, folder } from 'leva';
+import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
+import Bathymetry from './Bathymetry';
+import { useContext } from 'react';
+import { CompositionContext } from './CompositionContext';
+
+export default function ComponentPanel() {
+  const { components } = useContext(CompositionContext);
+  console.log(components);
+
+  return (
+    <section>
+      <h2>Component</h2>
+      <PipePanel />
+    </section>
+  );
+}
+
+function PipePanel() {
   const {
     name,
     'diameter (m)': diameter,
@@ -43,7 +56,6 @@ export default function PipeInfo() {
       },
     }),
   });
-
   return (
     <div className='flex flex-row gap-2 justify-evenly'>
       <div className='flex flex-col'>

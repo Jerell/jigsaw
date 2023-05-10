@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
 import Button from '../buttons/Button';
-import IconButton from '../buttons/IconButton';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 
 export class RowManager<T extends Record<string, any>> {

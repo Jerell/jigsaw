@@ -1,7 +1,7 @@
 import Stage from './Stage';
 import Table from '@/components/table';
 import AutoTable from '@/components/table/AutoTable';
-import PipeInfo from './PipeInfo';
+import ComponentPanel from './ComponentPanel';
 
 export const exampleTable = (
   <Table caption="A summary of the UK's most famous punk bands">
@@ -62,10 +62,7 @@ export default function Compose() {
           <AutoTable data={tableData} caption={'generated'} />
         </section>
 
-        <section>
-          <h2>Component</h2>
-          <PipeInfo />
-        </section>
+        <ComponentPanel />
       </div>
 
       <div className='flex flex-col grow'>

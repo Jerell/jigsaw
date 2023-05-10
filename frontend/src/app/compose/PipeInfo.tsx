@@ -15,7 +15,7 @@ export default function PipeInfo() {
     from,
     to,
   } = useControls({
-    name: 'Pipe-1',
+    name: 'pipe-1',
 
     'diameter (m)': {
       value: 1,

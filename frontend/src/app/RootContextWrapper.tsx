@@ -1,6 +1,6 @@
 'use client';
 import { theme } from '@/constant/leva.theme';
-import { Leva } from 'leva';
+import { Leva, LevaStoreProvider, useCreateStore } from 'leva';
 import { ReactNode } from 'react';
 import CompositionProvider from './compose/CompositionContext';
 
@@ -9,10 +9,13 @@ export default function RootContextWrapper({
 }: {
   children: ReactNode;
 }) {
+  const store = useCreateStore();
   return (
     <>
       <Leva theme={theme} flat />
-      <CompositionProvider>{children}</CompositionProvider>
+      <LevaStoreProvider store={store}>
+        <CompositionProvider>{children}</CompositionProvider>
+      </LevaStoreProvider>
     </>
   );
 }

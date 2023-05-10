@@ -106,7 +106,7 @@ export class RowManager<T extends Record<string, any>> {
       <Button
         variant='ghost'
         size='sm'
-        className='flex flex-row justify-center p-0.5 w-20'
+        className='flex flex-row justify-center p-0.5 w-full'
         onClick={onClick}
         key={`${name}-${index}`}
       >

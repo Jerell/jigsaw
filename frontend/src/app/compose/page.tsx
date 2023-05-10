@@ -58,7 +58,24 @@ export default function Compose() {
       <div className='flex flex-col w-full sm:w-1/2'>
         <section>
           <h2 className='a'>Parameters</h2>
-          {exampleTable}
+          <Table caption={`static table`}>
+            <thead>
+              <tr>
+                <th scope='col'>Property</th>
+                <th scope='col'>Value(s)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope='row'>Ambient medium</th>
+                <td>water</td>
+              </tr>
+              <tr>
+                <th scope='row'>Ambient temperature</th>
+                <td>__°C</td>
+              </tr>
+            </tbody>
+          </Table>
           <AutoTable data={tableData} caption={'generated'} />
         </section>
 

@@ -5,9 +5,13 @@ import getSvgWidthHeight from '@/components/plot/d3/getSvgWidthHeight';
 import { ComponentPropsWithRef } from 'react';
 import { Grid } from './axis/Grid';
 import ScaleGenerator2D from './scale';
+import ScatterPointPlotter from './points/ScatterPointPlotter';
 import LinePlotter from './points/LinePlotter';
+import ContourDensityPlotter from './points/ContourDensityPlotter';
+import { ScatterData } from './datatypes';
+import { ArrayElement } from '@/lib/arrayElement';
 
-export default function LinePlot({
+export default function ContourPlot({
   className,
   data,
   dimensions,
@@ -15,7 +19,7 @@ export default function LinePlot({
 }: {
   data: { x: number; y: number }[];
   dimensions?: IDimensions;
-  dots?: boolean;
+  dots: boolean;
 } & ComponentPropsWithRef<'svg'>) {
   async function draw(svg: d3svg) {
     const { margin = { top: 20, right: 20, bottom: 20, left: 20 } } =
@@ -38,7 +42,12 @@ export default function LinePlot({
     grid.vertical(gridlines.vertical);
     grid.horizontal(gridlines.horizontal);
 
-    const pointPlotter = new LinePlotter(() => '#d4a373', dots);
+    const pointPlotter = new ContourDensityPlotter(
+      width,
+      height,
+      (d: ArrayElement<ScatterData>) => d.x,
+      (d: ArrayElement<ScatterData>) => d.y
+    );
     pointPlotter.plot(svg, data, { x, y });
   }
 

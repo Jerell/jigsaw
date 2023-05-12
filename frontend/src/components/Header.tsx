@@ -4,6 +4,7 @@ import UnstyledLink from './links/UnstyledLink';
 const links = [
   { href: '/compose/', label: 'compose' },
   { href: '/broken/', label: 'broken' },
+  { href: '/results/', label: 'results' },
 ];
 
 export default function Header() {

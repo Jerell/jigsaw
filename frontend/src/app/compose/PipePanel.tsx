@@ -72,6 +72,7 @@ export function PipePanel({
               { x: 2, y: 2 },
               { x: 3, y: 1 },
             ]}
+            dots={false}
           />
         </div>
       </div>

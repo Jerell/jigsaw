@@ -8,7 +8,8 @@ import { d3svg } from '..';
 
 export default class LinePlotter extends PointPlotter<ScatterData> {
   constructor(
-    private readonly color: (d?: ArrayElement<ScatterData>) => string
+    private readonly color: (d?: ArrayElement<ScatterData>) => string,
+    public readonly dots: boolean = true
   ) {
     super();
   }
@@ -22,6 +23,7 @@ export default class LinePlotter extends PointPlotter<ScatterData> {
     }
   ): void {
     svg.selectAll('g.data.points').remove();
+    svg.selectAll('g.data.line').remove();
     const line = d3
       .line<{ x: number; y: number }>()
       .x((d) => scales.x(d.x))
@@ -30,12 +32,27 @@ export default class LinePlotter extends PointPlotter<ScatterData> {
 
     svg
       .append('g')
-      .attr('class', 'data points')
+      .attr('class', 'data line')
       .datum(data)
       .append('path')
       .attr('stroke', this.color())
       .attr('stroke-width', 1.5)
       .attr('fill', 'none')
       .attr('d', line);
+
+    if (this.dots) {
+      svg
+        .append('g')
+        .attr('class', 'data points')
+        .selectAll('circle')
+        .data(data)
+        .join('circle')
+        .attr('cx', (d) => scales.x(d.x))
+        .attr('cy', (d) => scales.y(d.y))
+        .attr('r', 2.5)
+        .attr('fill', this.color())
+        .attr('stroke-width', 1.5)
+        .attr('stroke', this.color());
+    }
   }
 }

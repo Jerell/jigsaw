@@ -46,6 +46,7 @@ export default class ContourDensityPlotter extends PointPlotter<ScatterData> {
       .data(contours)
       .join('path')
       .attr('stroke-width', (d, i) => (i % 6 ? 0.5 : 2))
+      .attr('fill', '#fefae010')
       .attr('d', d3.geoPath());
   }
 }

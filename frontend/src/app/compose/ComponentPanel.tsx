@@ -4,7 +4,7 @@ import Button from '@/components/buttons/Button';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import { useContext } from 'react';
 import { CompositionContext } from './CompositionContext';
-import ModelComponent, { ModelComponentType } from '@/lib/ModelComponent';
+import ModelComponent, { ModelComponentType, Pipe } from '@/lib/ModelComponent';
 import { PipePanel } from './PipePanel';
 import NodePanel from './NodePanel';
 
@@ -65,7 +65,11 @@ function SpecificInfo({
   switch (component.type) {
     case ModelComponentType.Pipe:
       return (
-        <PipePanel pipe={component} {...{ replace }} key={component.name} />
+        <PipePanel
+          pipe={component as Pipe}
+          {...{ replace }}
+          key={component.name}
+        />
       );
     default:
       return <NodePanel />;

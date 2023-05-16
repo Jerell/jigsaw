@@ -12,7 +12,9 @@ export function PipePanel({
   pipe: Pipe;
   replace: (mc: ModelComponent) => void;
 }) {
-  const rename = (name: string) => replace(new Pipe(name));
+  const rename = (name: string) => replace(pipe.rename(name));
+  const changeDiameter = (d: number) => replace(pipe.setDiameter(d));
+  const changeRoughness = (d: number) => replace(pipe.setRoughness(d));
 
   const controls = useControls(pipe.name, {
     name: {
@@ -24,11 +26,12 @@ export function PipePanel({
     },
 
     'diameter (m)': {
-      value: 1,
+      value: pipe.diameter,
       min: 0.1,
       max: 3,
       onEditEnd: (c) => {
         console.log(c);
+        changeDiameter(c);
       },
     },
     uValue: {
@@ -40,10 +43,11 @@ export function PipePanel({
       },
     },
     roughness: {
-      value: 1.0,
+      value: pipe.roughness,
       min: 0.1,
       max: 10,
       onEditEnd: (c) => {
+        changeRoughness(c);
         console.log(c);
       },
     },

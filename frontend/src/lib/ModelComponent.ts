@@ -9,8 +9,24 @@ export enum ModelComponentType {
 }
 
 export class Pipe extends ModelComponent {
-  constructor(name: string) {
+  constructor(
+    name: string,
+    public readonly diameter: number,
+    public readonly roughness: number
+  ) {
     super(ModelComponentType.Pipe, name);
+  }
+
+  rename(name: string): Pipe {
+    return new Pipe(name, this.diameter, this.roughness);
+  }
+
+  setDiameter(d: number): Pipe {
+    return new Pipe(this.name, d, this.roughness);
+  }
+
+  setRoughness(r: number): Pipe {
+    return new Pipe(this.name, this.diameter, r);
   }
 }
 

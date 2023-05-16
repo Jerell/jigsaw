@@ -31,7 +31,11 @@ export default function ComponentPanel() {
 
         <div className='flex flex-col grow'>
           <h3 className='m-0'>{components[selection].name}</h3>
-          <SpecificInfo component={components[selection]} {...{ replace }} />
+          <SpecificInfo
+            component={components[selection]}
+            {...{ replace }}
+            key={selection}
+          />
         </div>
 
         <div className='flex flex-col'>
@@ -60,7 +64,9 @@ function SpecificInfo({
 }) {
   switch (component.type) {
     case ModelComponentType.Pipe:
-      return <PipePanel pipe={component} {...{ replace }} />;
+      return (
+        <PipePanel pipe={component} {...{ replace }} key={component.name} />
+      );
     default:
       return <NodePanel />;
   }

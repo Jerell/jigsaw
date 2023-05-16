@@ -1,8 +1,5 @@
 export default class ModelComponent {
-  constructor(
-    public readonly type: ModelComponentType,
-    public readonly name: string
-  ) {}
+  constructor(public type: ModelComponentType, public name: string) {}
 }
 
 export enum ModelComponentType {

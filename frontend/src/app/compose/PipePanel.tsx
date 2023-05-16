@@ -14,17 +14,20 @@ export function PipePanel({
 }) {
   const rename = (name: string) => replace(new Pipe(name));
 
-  const controls = useControls({
+  const controls = useControls(pipe.name, {
     name: {
       value: pipe.name,
-      onChange: rename,
+      onEditEnd: (c) => {
+        console.log(c);
+        rename(c);
+      },
     },
 
     'diameter (m)': {
       value: 1,
       min: 0.1,
       max: 3,
-      onChange: (c) => {
+      onEditEnd: (c) => {
         console.log(c);
       },
     },
@@ -32,21 +35,33 @@ export function PipePanel({
       value: 1.0,
       min: 0.1,
       max: 10,
+      onEditEnd: (c) => {
+        console.log(c);
+      },
     },
     roughness: {
       value: 1.0,
       min: 0.1,
       max: 10,
+      onEditEnd: (c) => {
+        console.log(c);
+      },
     },
 
     connections: folder({
       from: {
         value: 'Source1',
         options: ['Source1', 'pipe-2'],
+        onChange: (c) => {
+          console.log(c);
+        },
       },
       to: {
         value: 'pipe-2',
         options: ['pipe-2'],
+        onChange: (c) => {
+          console.log(c);
+        },
       },
     }),
   });

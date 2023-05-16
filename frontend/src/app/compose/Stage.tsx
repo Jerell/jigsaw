@@ -10,7 +10,7 @@ import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 
 export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
-  const { components, select, selection, replace, store } =
+  const { components, select, selection, replace } =
     useContext(CompositionContext);
 
   async function draw(svg: d3svg) {

@@ -1,7 +1,5 @@
 'use client';
 import ModelComponent, { Pipe, Sink, Source } from '@/lib/ModelComponent';
-import { useStoreContext } from 'leva';
-import { StoreType } from 'leva/dist/declarations/src/types';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
 type ICompositionContext = {
@@ -13,7 +11,6 @@ type ICompositionContext = {
     byIndex: (i: number) => void;
   };
   replace: (mc: ModelComponent) => void;
-  store: StoreType | null;
 };
 
 const defaultContextObject: ICompositionContext = {
@@ -25,7 +22,6 @@ const defaultContextObject: ICompositionContext = {
     byIndex: (i: number) => {},
   },
   replace: (mc: ModelComponent) => {},
-  store: null,
 };
 
 export const CompositionContext = createContext(defaultContextObject);
@@ -35,8 +31,6 @@ export default function CompositionProvider({
 }: {
   children: ReactNode;
 }) {
-  const store = useStoreContext();
-
   const [components, setComponents] = useState<ModelComponent[]>([
     new Source('source'),
     new Pipe('section-0'),
@@ -70,9 +64,8 @@ export default function CompositionProvider({
       selection,
       select,
       replace: replaceAt(selection),
-      store,
     };
-  }, [components, selection, store]);
+  }, [components, selection]);
 
   return (
     <CompositionContext.Provider value={value}>

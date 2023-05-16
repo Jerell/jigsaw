@@ -2,33 +2,31 @@
 import { useControls, folder } from 'leva';
 import Bathymetry from './Bathymetry';
 import ModelComponent, { Pipe } from '@/lib/ModelComponent';
-import { StoreType } from 'leva/dist/declarations/src/types';
 import Table from '@/components/table';
 import LinePlot from '@/components/plot/d3/LinePlot';
-import { useEffect } from 'react';
 
 export function PipePanel({
   pipe,
   replace,
-  store,
 }: {
   pipe: Pipe;
   replace: (mc: ModelComponent) => void;
-  store: StoreType | null;
 }) {
+  const rename = (name: string) => replace(new Pipe(name));
+
   const controls = useControls({
     name: {
       value: pipe.name,
-      onChange: (c) => {
-        console.log(controls, c);
-      },
+      onChange: rename,
     },
 
     'diameter (m)': {
       value: 1,
       min: 0.1,
       max: 3,
-      onChange: () => {},
+      onChange: (c) => {
+        console.log(c);
+      },
     },
     uValue: {
       value: 1.0,

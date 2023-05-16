@@ -2,15 +2,14 @@
 
 import Button from '@/components/buttons/Button';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { CompositionContext } from './CompositionContext';
 import ModelComponent, { ModelComponentType } from '@/lib/ModelComponent';
-import { DataItem, StoreType } from 'leva/dist/declarations/src/types';
 import { PipePanel } from './PipePanel';
 import NodePanel from './NodePanel';
 
 export default function ComponentPanel() {
-  const { components, select, selection, replace, store } =
+  const { components, select, selection, replace } =
     useContext(CompositionContext);
 
   return (
@@ -32,10 +31,7 @@ export default function ComponentPanel() {
 
         <div className='flex flex-col grow'>
           <h3 className='m-0'>{components[selection].name}</h3>
-          <SpecificInfo
-            component={components[selection]}
-            {...{ replace, store }}
-          />
+          <SpecificInfo component={components[selection]} {...{ replace }} />
         </div>
 
         <div className='flex flex-col'>
@@ -58,15 +54,13 @@ export default function ComponentPanel() {
 function SpecificInfo({
   component,
   replace,
-  store,
 }: {
   component: ModelComponent;
   replace: (mc: ModelComponent) => void;
-  store: StoreType | null;
 }) {
   switch (component.type) {
     case ModelComponentType.Pipe:
-      return <PipePanel pipe={component} {...{ replace, store }} />;
+      return <PipePanel pipe={component} {...{ replace }} />;
     default:
       return <NodePanel />;
   }

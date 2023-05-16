@@ -9,13 +9,10 @@ export default function RootContextWrapper({
 }: {
   children: ReactNode;
 }) {
-  const store = useCreateStore();
   return (
     <>
       <Leva theme={theme} flat />
-      <LevaStoreProvider store={store}>
-        <CompositionProvider>{children}</CompositionProvider>
-      </LevaStoreProvider>
+      <CompositionProvider>{children}</CompositionProvider>
     </>
   );
 }

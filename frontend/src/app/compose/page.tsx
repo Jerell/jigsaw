@@ -54,7 +54,7 @@ const tableData = [
 
 export default function Compose() {
   return (
-    <div className='flex flex-col sm:flex-row gap-2 w-full'>
+    <div className='flex flex-col sm:flex-row gap-2 w-full min-h-screen'>
       <div className='flex flex-col w-full sm:w-1/2'>
         <section>
           <h2 className='a'>Parameters</h2>
@@ -82,12 +82,10 @@ export default function Compose() {
         <ComponentPanel />
       </div>
 
-      <section className='flex flex-col h-screen sm:w-1/2'>
+      <div className='flex flex-col sm:w-1/2'>
         <h2>Network</h2>
-        <div className='grow h-full'>
-          <Stage />
-        </div>
-      </section>
+        <Stage />
+      </div>
     </div>
   );
 }

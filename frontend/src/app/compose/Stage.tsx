@@ -36,9 +36,7 @@ export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
     grid.horizontal(gridlines.horizontal);
 
     const calcN = (i: number) => {
-      const n = (100 / (components.length + 1)) * (i + 1);
-      console.log(i, n);
-      return n;
+      return (100 / (components.length + 1)) * (i + 1);
     };
 
     svg.select('g.links').remove();

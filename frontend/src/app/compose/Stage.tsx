@@ -1,5 +1,5 @@
 'use client';
-import { Plot, d3svg } from '@/components/plot/d3';
+import Plot, { d3svg } from '@/components/plot/d3';
 import getSvgWidthHeight from '@/components/plot/d3/getSvgWidthHeight';
 import { ComponentPropsWithRef, useContext } from 'react';
 import { Grid } from '../../components/plot/d3/axis/Grid';

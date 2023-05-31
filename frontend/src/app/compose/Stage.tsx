@@ -1,6 +1,5 @@
 'use client';
-import Plot, { d3svg } from '@/components/plot/d3';
-import { DataPlotter } from '@/components/plot/d3/DataPlotter';
+import { Plot, d3svg } from '@/components/plot/d3';
 import getSvgWidthHeight from '@/components/plot/d3/getSvgWidthHeight';
 import { ComponentPropsWithRef, useContext } from 'react';
 import { Grid } from '../../components/plot/d3/axis/Grid';
@@ -79,6 +78,11 @@ export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
       });
   }
 
-  const plotter = new DataPlotter<[]>(draw);
-  return <Plot data={[]} dataPlotter={plotter} className={className} />;
+  return (
+    <Plot
+      data={[]}
+      draw={draw}
+      dimensions={{ width: '100%', height: '100%' }}
+    />
+  );
 }

@@ -1,12 +1,9 @@
 'use client';
-import Plot, { IDimensions, d3svg } from '@/components/plot/d3';
-import { DataPlotter } from '@/components/plot/d3/DataPlotter';
+import { Plot, IDimensions, d3svg } from '@/components/plot/d3';
 import getSvgWidthHeight from '@/components/plot/d3/getSvgWidthHeight';
 import { ComponentPropsWithRef } from 'react';
 import { Grid } from './axis/Grid';
 import ScaleGenerator2D from './scale';
-import ScatterPointPlotter from './points/ScatterPointPlotter';
-import LinePlotter from './points/LinePlotter';
 import ContourDensityPlotter from './points/ContourDensityPlotter';
 import { ScatterData } from './datatypes';
 import { ArrayElement } from '@/lib/arrayElement';
@@ -51,6 +48,11 @@ export default function ContourPlot({
     pointPlotter.plot(svg, data, { x, y });
   }
 
-  const plotter = new DataPlotter<[]>(draw);
-  return <Plot data={[]} dataPlotter={plotter} className={className} />;
+  return (
+    <Plot
+      data={[]}
+      draw={draw}
+      dimensions={{ width: '100%', height: '100%' }}
+    />
+  );
 }

@@ -17,44 +17,41 @@ export interface IDimensions {
   margin?: IMargin;
 }
 
-export default function Plot<T>({
-  data,
-  dimensions,
-  dataPlotter,
-  className,
-}: {
-  data: T;
-  dimensions?: IDimensions;
-  dataPlotter: DataPlotter<T>;
-} & ComponentPropsWithRef<'svg'>) {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const { width = '100%', height = '100%' } = dimensions || {};
-
-  const plot = () => {
-    if (!svgRef.current || !dataPlotter) {
-      return;
-    }
-
-    const svg = d3.select(svgRef.current);
-    dataPlotter.update(svg, data);
-  };
-
-  const render = () => {
-    plot();
-  };
-
-  useEffect(render, [data]);
-
-  useEffect(() => {
-    window.addEventListener('resize', render, false);
-  }, []);
-
-  return (
-    <svg ref={svgRef} width={width} height={height} className={className} />
-  );
-}
-
 export type d3svg = d3.Selection<SVGSVGElement, unknown, null, undefined>;
 export type plotFn<TData> = (svg: d3svg, data: TData) => void;
 export type d3scale = d3.ScaleLinear<number, number, never>;
 export type d3selection = d3.Selection<SVGGElement, unknown, null, undefined>;
+
+export function Plot<T>({
+  data,
+  draw,
+  dimensions,
+  ...rest
+}: {
+  data: T;
+  draw: plotFn<T>;
+  dimensions: IDimensions;
+} & React.ComponentPropsWithRef<'svg'>) {
+  const plotter = new DataPlotter<T>(draw);
+  const { width = '100%', height = '100%' } = dimensions;
+
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const plot = () => {
+    if (!svgRef.current) {
+      return;
+    }
+    const svg = d3.select(svgRef.current);
+    plotter.update(svg, data);
+  };
+
+  useEffect(() => {
+    plot();
+  }, [data]);
+
+  useEffect(() => {
+    window.addEventListener('resize', plot, false);
+  }, []);
+
+  return <svg ref={svgRef} width={width} height={height} {...rest} />;
+}

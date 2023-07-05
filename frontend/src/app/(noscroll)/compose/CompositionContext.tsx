@@ -1,5 +1,6 @@
 'use client';
 import ModelComponent, { Pipe, Sink, Source } from '@/lib/ModelComponent';
+import replaceAtState from '@/lib/replaceAtState';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
 type ICompositionContext = {
@@ -39,14 +40,6 @@ export default function CompositionProvider({
   ]);
   const [selection, setSelection] = useState<number>(0);
 
-  const replaceAt = (i: number) => (mc: ModelComponent) => {
-    setComponents((prev) => {
-      const list = [...prev];
-      list[i] = mc;
-      return list;
-    });
-  };
-
   const value = useMemo(() => {
     const select = {
       prev: () => setSelection(Math.max(0, selection - 1)),
@@ -63,7 +56,7 @@ export default function CompositionProvider({
       components,
       selection,
       select,
-      replace: replaceAt(selection),
+      replace: replaceAtState(setComponents, selection),
     };
   }, [components, selection]);
 

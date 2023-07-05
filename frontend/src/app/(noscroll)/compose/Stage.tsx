@@ -2,7 +2,7 @@
 import Plot, { d3svg } from '@/components/plot/d3';
 import getSvgWidthHeight from '@/components/plot/d3/getSvgWidthHeight';
 import { ComponentPropsWithRef, useContext } from 'react';
-import { Grid } from '../../components/plot/d3/axis/Grid';
+import { Grid } from '../../../components/plot/d3/axis/Grid';
 import { CompositionContext } from './CompositionContext';
 import ScaleGenerator2D from '@/components/plot/d3/scale';
 import clsxm from '@/lib/clsxm';

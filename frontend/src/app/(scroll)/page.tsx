@@ -1,5 +1,5 @@
 import CylinderScene from '@/components/plot/three/cylinder/CylinderScene';
-import { exampleTable } from './compose/page';
+import { exampleTable } from '../(noscroll)/compose/page';
 
 export default function Home() {
   return (

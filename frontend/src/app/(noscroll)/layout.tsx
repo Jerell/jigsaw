@@ -1,8 +1,8 @@
 import Header from '@/components/Header';
-import './globals.css';
+import '../globals.css';
 import { Charis_SIL } from 'next/font/google';
 import clsxm from '@/lib/clsxm';
-import RootContextWrapper from './RootContextWrapper';
+import RootContextWrapper from '../RootContextWrapper';
 
 const charis = Charis_SIL({
   weight: ['400', '700'],
@@ -25,12 +25,12 @@ export default function RootLayout({
       <body
         className={clsxm([
           charis.className,
-          'flex flex-col justify-between items-center pb-1',
+          'flex flex-col justify-between items-center pb-1 h-screen',
         ])}
       >
         <RootContextWrapper>
           <Header />
-          <main className='flex flex-col items-center h-full grow w-full p-2'>
+          <main className='flex flex-col items-center grow w-full p-2'>
             {children}
           </main>
           <a href='#header'>Back to top</a>

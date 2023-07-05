@@ -2,7 +2,7 @@
 import { theme } from '@/constant/leva.theme';
 import { Leva, LevaStoreProvider, useCreateStore } from 'leva';
 import { ReactNode } from 'react';
-import CompositionProvider from './compose/CompositionContext';
+import CompositionProvider from './(noscroll)/compose/CompositionContext';
 
 export default function RootContextWrapper({
   children,

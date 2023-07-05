@@ -27,7 +27,7 @@ export default function ComponentPanel() {
           prev
         </Button>
 
-        <h3 className='m-0'>{components[selection].name}</h3>
+        <h3 className='m-0 grow'>{components[selection].name}</h3>
 
         <Button
           variant='ghost'

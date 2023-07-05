@@ -15,7 +15,7 @@ export default function ComponentPanel() {
   return (
     <section>
       <h2>Component</h2>
-      <div className='flex flex-row gap-2 justify-evenly'>
+      <div className='flex flex-row gap-2 justify-evenly mb-1'>
         <Button
           variant='ghost'
           size='sm'

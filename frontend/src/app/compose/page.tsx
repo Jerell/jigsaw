@@ -55,7 +55,7 @@ const tableData = [
 export default function Compose() {
   return (
     <div className='flex flex-col sm:flex-row gap-2 w-full min-h-screen'>
-      <div className='flex flex-col w-full sm:w-1/2'>
+      <div className='flex flex-col w-full sm:w-80'>
         <section>
           <h2 className='a'>Parameters</h2>
           <Table caption={`Static table`}>
@@ -82,7 +82,7 @@ export default function Compose() {
         <ComponentPanel />
       </div>
 
-      <div className='flex flex-col sm:w-1/2'>
+      <div className='flex flex-col grow'>
         <h2>Network</h2>
         <Stage />
       </div>

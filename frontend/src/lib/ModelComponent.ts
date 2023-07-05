@@ -3,9 +3,9 @@ export default class ModelComponent {
 }
 
 export enum ModelComponentType {
-  Pipe,
-  Source,
-  Sink,
+  Pipe = 'pipe',
+  Source = 'source',
+  Sink = 'sink',
 }
 
 export class Pipe extends ModelComponent {

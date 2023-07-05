@@ -1,7 +1,7 @@
 import Table from '@/components/table';
 import ComponentPanel from './ComponentPanel';
 import ComponentPicker from './ComponentPicker';
-import Stage from '@/components/composition/Stage';
+import { Stage } from '@/components/composition/Stage';
 
 export const exampleTable = (
   <Table caption="A summary of the UK's most famous punk bands">

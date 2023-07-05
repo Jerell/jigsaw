@@ -3,14 +3,16 @@ import ModelComponent, { Pipe, Sink, Source } from '@/lib/ModelComponent';
 import replaceAtState from '@/lib/replaceAtState';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
-type ICompositionContext = {
+export type ISelect = {
+  prev: () => void;
+  next: () => void;
+  byIndex: (i: number) => void;
+};
+
+export type ICompositionContext = {
   components: ModelComponent[];
   selection: number;
-  select: {
-    prev: () => void;
-    next: () => void;
-    byIndex: (i: number) => void;
-  };
+  select: ISelect;
   replace: (mc: ModelComponent) => void;
 };
 

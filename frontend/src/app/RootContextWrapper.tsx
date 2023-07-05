@@ -1,8 +1,9 @@
 'use client';
 import { theme } from '@/constant/leva.theme';
-import { Leva, LevaStoreProvider, useCreateStore } from 'leva';
+import { Leva } from 'leva';
 import { ReactNode } from 'react';
 import CompositionProvider from './(noscroll)/compose/CompositionContext';
+import StageProvider from '@/components/composition/StageContext';
 
 export default function RootContextWrapper({
   children,
@@ -12,7 +13,9 @@ export default function RootContextWrapper({
   return (
     <>
       <Leva theme={theme} flat />
-      <CompositionProvider>{children}</CompositionProvider>
+      <CompositionProvider>
+        <StageProvider>{children}</StageProvider>
+      </CompositionProvider>
     </>
   );
 }

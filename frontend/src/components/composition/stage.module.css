@@ -7,3 +7,12 @@
 .node:hover {
   fill: #e9edc9;
 }
+
+.pipe {
+  fill: #e7c8a0;
+  stroke: #d4a373;
+}
+.source,
+.sink {
+  /* fill: red; */
+}

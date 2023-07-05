@@ -7,8 +7,10 @@ import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 import { CompositionContext } from '@/app/(noscroll)/compose/CompositionContext';
 import { Grid } from '../plot/d3/axis/Grid';
+import { StageContext } from './StageContext';
+import StageItemPlotter from './StageItemPlotter';
 
-export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
+export default function FakeStage({ ...rest }: ComponentPropsWithRef<'svg'>) {
   const { components, select, selection, replace } =
     useContext(CompositionContext);
 
@@ -76,6 +78,49 @@ export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
       .on('click', (e, d) => {
         select.byIndex(components.findIndex((c) => c === d));
       });
+  }
+
+  return (
+    <Plot
+      data={[]}
+      draw={draw}
+      dimensions={{ width: '100%', height: '100%' }}
+      {...rest}
+    />
+  );
+}
+
+export function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
+  const { items, select, refreshItems } = useContext(StageContext);
+
+  async function draw(svg: d3svg) {
+    const { width, height } = getSvgWidthHeight(svg);
+    const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+    const scaleGenerator = new ScaleGenerator2D({ width, height, margin });
+    const { x, y } = scaleGenerator.scale([
+      { x: 0, y: 0 },
+      { x: 100, y: 100 },
+    ]);
+
+    svg.select('g.base').remove();
+    const base = svg.append('g').attr('class', 'base');
+
+    const gridlines = {
+      horizontal: base.append('g').attr('class', 'horizontal'),
+      vertical: base.append('g').attr('class', 'vertical'),
+    };
+
+    const grid = new Grid({ width, height }, 50);
+
+    grid.vertical(gridlines.vertical);
+    grid.horizontal(gridlines.horizontal);
+
+    const itemPlotter = new StageItemPlotter({ x, y }, refreshItems);
+    const nodes = itemPlotter.plot(svg, items);
+
+    nodes.on('click', (e, d) => {
+      select.byIndex(items.findIndex((c) => c === d));
+    });
   }
 
   return (

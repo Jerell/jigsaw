@@ -54,7 +54,7 @@ const tableData = [
 
 export default function Compose() {
   return (
-    <div className='flex flex-col sm:flex-row gap-2 w-full h-full'>
+    <div className='flex flex-col sm:flex-row gap-2 w-full'>
       <div className='flex flex-col w-full sm:w-80'>
         <ComponentPicker />
 

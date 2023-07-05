@@ -8,7 +8,7 @@ import ScaleGenerator2D from '@/components/plot/d3/scale';
 import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 
-export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
+export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
   const { components, select, selection, replace } =
     useContext(CompositionContext);
 
@@ -83,6 +83,7 @@ export default function Stage({ className }: ComponentPropsWithRef<'svg'>) {
       data={[]}
       draw={draw}
       dimensions={{ width: '100%', height: '100%' }}
+      {...rest}
     />
   );
 }

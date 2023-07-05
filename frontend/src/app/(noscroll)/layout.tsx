@@ -30,10 +30,7 @@ export default function RootLayout({
       >
         <RootContextWrapper>
           <Header />
-          <main className='flex flex-col items-center grow w-full p-2'>
-            {children}
-          </main>
-          <a href='#header'>Back to top</a>
+          <main className='flex flex-col w-full grow p-2'>{children}</main>
         </RootContextWrapper>
       </body>
     </html>

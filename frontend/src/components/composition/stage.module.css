@@ -16,3 +16,7 @@
 .sink {
   /* fill: red; */
 }
+
+.selected {
+  stroke: #0e1c36;
+}

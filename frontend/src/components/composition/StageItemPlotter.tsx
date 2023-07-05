@@ -21,7 +21,7 @@ export default class StageItemPlotter extends PointPlotter<StageItem[]> {
     super();
   }
 
-  plot(svg: d3svg, data: StageItem[]) {
+  plot(svg: d3svg, data: StageItem[], selection: number) {
     svg.selectAll('g.nodes').remove();
 
     const invert = {
@@ -36,7 +36,13 @@ export default class StageItemPlotter extends PointPlotter<StageItem[]> {
       .data(data)
       .enter()
       .append('circle')
-      .attr('class', (d) => clsxm([styles.node, styles[d.component.type]]))
+      .attr('class', (d, i) =>
+        clsxm(
+          styles.node,
+          styles[d.component.type],
+          selection === i && styles.selected
+        )
+      )
       .attr('r', 22)
       .attr('cx', (d, i) => this.scales.x(this.xAccessor(d)))
       .attr('cy', (d, i) => this.scales.y(this.yAccessor(d)))

@@ -20,14 +20,7 @@ export default class ContourDensityPlotter extends PointPlotter<ScatterData> {
     super();
   }
 
-  plot(
-    svg: d3svg,
-    data: ScatterData,
-    scales: {
-      x: ScaleLinear<number, number, never>;
-      y: ScaleLinear<number, number, never>;
-    }
-  ): void {
+  plot(svg: d3svg, data: ScatterData): void {
     svg.selectAll('g.data.contours').remove();
 
     const contours = d3

@@ -11,6 +11,7 @@ type IStageContext = {
   items: StageItem[];
   refreshItems: () => void;
   select: ISelect;
+  selection: number;
 };
 
 const defaultContextObject: IStageContext = {
@@ -21,12 +22,13 @@ const defaultContextObject: IStageContext = {
     next: () => {},
     byIndex: (i: number) => {},
   },
+  selection: 0,
 };
 
 export const StageContext = createContext(defaultContextObject);
 
 export default function StageProvider({ children }: { children: ReactNode }) {
-  const { components, select } = useContext(CompositionContext);
+  const { components, select, selection } = useContext(CompositionContext);
   const [items, setItems] = useState<StageItem[]>(
     components.map((c) => new StageItem(c))
   );
@@ -37,8 +39,9 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       items,
       refreshItems,
       select,
+      selection,
     };
-  }, [items, select]);
+  }, [items, select, selection]);
 
   return (
     <StageContext.Provider value={value}>{children}</StageContext.Provider>

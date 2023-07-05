@@ -13,7 +13,7 @@ export default function ComponentPanel() {
     useContext(CompositionContext);
 
   return (
-    <section key={selection}>
+    <section>
       <h2>Component</h2>
       <div className='flex flex-row gap-2 justify-evenly'>
         <Button

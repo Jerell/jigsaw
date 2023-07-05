@@ -38,8 +38,8 @@ export default class StageItemPlotter extends PointPlotter<StageItem[]> {
       .append('circle')
       .attr('class', (d) => clsxm([styles.node, styles[d.component.type]]))
       .attr('r', 22)
-      .attr('cx', (d, i) => this.scales.x(d.coords.x))
-      .attr('cy', (d, i) => this.scales.y(d.coords.y))
+      .attr('cx', (d, i) => this.scales.x(this.xAccessor(d)))
+      .attr('cy', (d, i) => this.scales.y(this.yAccessor(d)))
       .call(
         d3
           .drag<SVGCircleElement, StageItem>()

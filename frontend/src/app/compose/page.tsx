@@ -1,7 +1,7 @@
 import Stage from './Stage';
 import Table from '@/components/table';
-import AutoTable from '@/components/table/AutoTable';
 import ComponentPanel from './ComponentPanel';
+import ComponentPicker from './ComponentPicker';
 
 export const exampleTable = (
   <Table caption="A summary of the UK's most famous punk bands">
@@ -56,28 +56,7 @@ export default function Compose() {
   return (
     <div className='flex flex-col sm:flex-row gap-2 w-full min-h-screen'>
       <div className='flex flex-col w-full sm:w-80'>
-        <section>
-          <h2 className='a'>Parameters</h2>
-          <Table caption={`Static table`}>
-            <thead>
-              <tr>
-                <th scope='col'>Property</th>
-                <th scope='col'>Value(s)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope='row'>Ambient medium</th>
-                <td>water</td>
-              </tr>
-              <tr>
-                <th scope='row'>Ambient temperature</th>
-                <td>__°C</td>
-              </tr>
-            </tbody>
-          </Table>
-          <AutoTable data={tableData} caption={'Generated'} />
-        </section>
+        <ComponentPicker />
 
         <ComponentPanel />
       </div>

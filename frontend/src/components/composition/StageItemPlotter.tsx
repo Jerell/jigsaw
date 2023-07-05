@@ -13,7 +13,6 @@ export default class StageItemPlotter extends PointPlotter<StageItem[]> {
       x: ScaleLinear<number, number, never>;
       y: ScaleLinear<number, number, never>;
     },
-    private readonly refreshItems: () => void,
     private readonly xAccessor: (d: StageItem) => number = (d?: StageItem) =>
       d?.coords.x || 0,
     private readonly yAccessor: (d: StageItem) => number = (d?: StageItem) =>

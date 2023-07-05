@@ -91,7 +91,7 @@ export default function FakeStage({ ...rest }: ComponentPropsWithRef<'svg'>) {
 }
 
 export function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
-  const { items, select, refreshItems } = useContext(StageContext);
+  const { items, select } = useContext(StageContext);
 
   async function draw(svg: d3svg) {
     const { width, height } = getSvgWidthHeight(svg);
@@ -115,7 +115,7 @@ export function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
     grid.vertical(gridlines.vertical);
     grid.horizontal(gridlines.horizontal);
 
-    const itemPlotter = new StageItemPlotter({ x, y }, refreshItems);
+    const itemPlotter = new StageItemPlotter({ x, y });
     const nodes = itemPlotter.plot(svg, items);
 
     nodes.on('click', (e, d) => {

@@ -36,7 +36,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
 
   private coreNodeBehaviour<T extends StageItem, U extends SVGElement>(
     nodes: d3.Selection<U, T, SVGGElement, unknown>,
-    selection: number
+    selected: number
   ) {
     return nodes
       .attr('tabindex', 0)
@@ -44,26 +44,26 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
         clsxm(
           styles.node,
           styles[d.component.type],
-          selection === i && styles.selected
+          selected === i && styles.selected
         )
       );
   }
 
   private circles(
-    g: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
-    selection: number
+    d3EnterSelection: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
+    selected: number
   ) {
     return this.coreNodeBehaviour(
-      g
+      d3EnterSelection
         .append('circle')
         .attr('r', 22)
         .attr('cx', this.position.x)
         .attr('cy', this.position.y),
-      selection
+      selected
     );
   }
 
-  plot(svg: d3svg, data: T[], selection: number) {
+  plot(svg: d3svg, data: T[], selected: number) {
     svg.selectAll('g.nodes').remove();
 
     const g = svg
@@ -74,7 +74,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       .enter();
 
     const nodes = setKeybinds(
-      makeDraggable(this.circles(g, selection), dragMoveCircleSvg, this.scales)
+      makeDraggable(this.circles(g, selected), dragMoveCircleSvg, this.scales)
     );
 
     return nodes;

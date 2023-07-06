@@ -22,15 +22,8 @@ export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
     svg.select('g.base').remove();
     const base = svg.append('g').attr('class', 'base');
 
-    const gridlines = {
-      horizontal: base.append('g').attr('class', 'horizontal'),
-      vertical: base.append('g').attr('class', 'vertical'),
-    };
-
     const grid = new Grid({ width, height }, 50);
-
-    grid.vertical(gridlines.vertical);
-    grid.horizontal(gridlines.horizontal);
+    grid.drawLines(base);
 
     const itemPlotter = new StageItemPlotter({ x, y });
     const nodes = itemPlotter.plot(svg, items, selection);

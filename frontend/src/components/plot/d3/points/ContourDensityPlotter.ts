@@ -2,7 +2,6 @@
 import { ArrayElement } from '@/lib/arrayElement';
 import { PointPlotter } from '.';
 import { ScatterData } from '../datatypes';
-import { ScaleLinear } from 'd3';
 import * as d3 from 'd3';
 import { d3svg } from '..';
 

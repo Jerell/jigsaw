@@ -35,24 +35,17 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     );
   }
 
-  plot(svg: d3svg, data: T[], selection: number) {
-    svg.selectAll('g.nodes').remove();
+  private coreNodeBehaviour<T extends StageItem, U extends SVGElement>(
+    nodes: d3.Selection<U, T, SVGGElement, unknown>
+  ) {
+    return nodes.attr('tabindex', 0);
+  }
 
-    const g = svg
-      .append('g')
-      .attr('class', 'nodes')
-      .selectAll('circle')
-      .data(data)
-      .enter();
-
-    const invert = {
-      x: this.scales.x.invert,
-      y: this.scales.y.invert,
-    };
-
-    const circles = (
-      g: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>
-    ) =>
+  private circles(
+    g: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
+    selection: number
+  ) {
+    return this.coreNodeBehaviour(
       g
         .append('circle')
         .attr('class', (d, i) =>
@@ -64,22 +57,25 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
         )
         .attr('r', 22)
         .attr('cx', this.position.x)
-        .attr('cy', this.position.y);
+        .attr('cy', this.position.y)
+    );
+  }
 
-    const draggableCircles = (
-      g: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>
-    ) => {
-      return circles(g).call(
-        d3
-          .drag<SVGCircleElement, T>()
-          .on('drag', function (event: DragEvent, d: T) {
-            dragMoveCircleSvg(d3.select(this), event);
-            d.move({ x: invert.x(event.x), y: invert.y(event.y) });
-          })
-      );
-    };
+  plot(svg: d3svg, data: T[], selection: number) {
+    svg.selectAll('g.nodes').remove();
 
-    return draggableCircles(g);
+    const g = svg
+      .append('g')
+      .attr('class', 'nodes')
+      .selectAll('circle')
+      .data(data)
+      .enter();
+
+    const nodes = setKeybinds(
+      makeDraggable(this.circles(g, selection), dragMoveCircleSvg, this.scales)
+    );
+
+    return nodes;
   }
 }
 
@@ -89,4 +85,29 @@ function dragMoveCircleSvg(
 ) {
   circle.raise().attr('cx', event.x);
   circle.raise().attr('cy', event.y);
+}
+
+function makeDraggable<T extends StageItem, U extends SVGElement>(
+  nodes: d3.Selection<U, T, SVGGElement, unknown>,
+  onDrag: (
+    d3Element: d3.Selection<U, unknown, null, undefined>,
+    event: DragEvent
+  ) => void,
+  scales: {
+    x: ScaleLinear<number, number, never>;
+    y: ScaleLinear<number, number, never>;
+  }
+) {
+  return nodes.call(
+    d3.drag<U, T>().on('drag', function (event: DragEvent, d: T) {
+      onDrag(d3.select(this), event);
+      d.move({ x: scales.x.invert(event.x), y: scales.y.invert(event.y) });
+    })
+  );
+}
+
+function setKeybinds<T, U extends SVGElement>(
+  nodes: d3.Selection<U, T, SVGGElement, unknown>
+) {
+  return nodes;
 }

@@ -8,6 +8,12 @@
   fill: #e9edc9;
 }
 
+.node:focus {
+  outline: none;
+  stroke-width: 4;
+  stroke: #e57a44;
+}
+
 .pipe {
   fill: #e7c8a0;
   stroke: #d4a373;

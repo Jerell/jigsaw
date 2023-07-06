@@ -36,9 +36,18 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   }
 
   private coreNodeBehaviour<T extends StageItem, U extends SVGElement>(
-    nodes: d3.Selection<U, T, SVGGElement, unknown>
+    nodes: d3.Selection<U, T, SVGGElement, unknown>,
+    selection: number
   ) {
-    return nodes.attr('tabindex', 0);
+    return nodes
+      .attr('tabindex', 0)
+      .attr('class', (d, i) =>
+        clsxm(
+          styles.node,
+          styles[d.component.type],
+          selection === i && styles.selected
+        )
+      );
   }
 
   private circles(
@@ -48,16 +57,10 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     return this.coreNodeBehaviour(
       g
         .append('circle')
-        .attr('class', (d, i) =>
-          clsxm(
-            styles.node,
-            styles[d.component.type],
-            selection === i && styles.selected
-          )
-        )
         .attr('r', 22)
         .attr('cx', this.position.x)
-        .attr('cy', this.position.y)
+        .attr('cy', this.position.y),
+      selection
     );
   }
 

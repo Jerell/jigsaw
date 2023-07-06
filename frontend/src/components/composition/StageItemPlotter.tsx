@@ -2,7 +2,6 @@
 import { d3svg } from '@/components/plot/d3';
 import { PointPlotter } from '../plot/d3/points';
 import { StageItem } from './StageItem';
-import { ScaleLinear } from 'd3';
 import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 import * as d3 from 'd3';
@@ -14,8 +13,8 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
 
   constructor(
     private readonly scales: {
-      x: ScaleLinear<number, number, never>;
-      y: ScaleLinear<number, number, never>;
+      x: d3.ScaleContinuousNumeric<number, number, never>;
+      y: d3.ScaleContinuousNumeric<number, number, never>;
     },
     private readonly coordAccessors: Record<
       keyof typeof scales,

@@ -97,8 +97,8 @@ function makeDraggable<T extends StageItem, U extends SVGElement>(
     event: DragEvent
   ) => void,
   scales: {
-    x: ScaleLinear<number, number, never>;
-    y: ScaleLinear<number, number, never>;
+    x: d3.ScaleContinuousNumeric<number, number, never>;
+    y: d3.ScaleContinuousNumeric<number, number, never>;
   }
 ) {
   return nodes.call(

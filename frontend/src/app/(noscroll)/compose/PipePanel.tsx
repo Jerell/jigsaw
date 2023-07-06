@@ -73,7 +73,8 @@ export function PipePanel({
   return (
     <div className='flex flex-col gap-2'>
       <Bathymetry />
-      <div className='col-span-2 text-center'>
+
+      {/* <div className='col-span-2 text-center'>
         <h4>Angle distribution</h4>
         <p className='text-xs'>
           this probably makes more sense as a radar chart
@@ -88,7 +89,8 @@ export function PipePanel({
             dots={false}
           />
         </div>
-      </div>
+      </div> */}
+
       <Table caption={`${pipe.name} shape`}>
         <thead>
           <tr>

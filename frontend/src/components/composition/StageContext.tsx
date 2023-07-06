@@ -35,7 +35,7 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       (c, i) =>
         new StageItem(c, {
           x: (i + 1) * 10,
-          y: (i + 1 + Math.round(Math.random())) * 10,
+          y: (6 + Math.round(2 * Math.random())) * 10,
         })
     )
   );

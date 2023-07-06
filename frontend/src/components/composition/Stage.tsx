@@ -35,9 +35,7 @@ export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
     const itemPlotter = new StageItemPlotter({ x, y });
     const nodes = itemPlotter.plot(svg, items, selection);
 
-    nodes.on('click', (e, d) => {
-      select.byIndex(items.findIndex((c) => c === d));
-    });
+    nodes.on('click', (e, d) => select.byComponent(d));
   }
 
   return (

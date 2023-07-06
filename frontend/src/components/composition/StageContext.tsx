@@ -10,7 +10,7 @@ import { StageItem } from './StageItem';
 type IStageContext = {
   items: StageItem[];
   refreshItems: () => void;
-  select: ISelect;
+  select: { byComponent: (c: StageItem) => void } & ISelect;
   selection: number;
 };
 
@@ -21,6 +21,7 @@ const defaultContextObject: IStageContext = {
     prev: () => {},
     next: () => {},
     byIndex: (i: number) => {},
+    byComponent: (d: StageItem) => {},
   },
   selection: 0,
 };
@@ -30,7 +31,13 @@ export const StageContext = createContext(defaultContextObject);
 export default function StageProvider({ children }: { children: ReactNode }) {
   const { components, select, selection } = useContext(CompositionContext);
   const [items, setItems] = useState<StageItem[]>(
-    components.map((c) => new StageItem(c))
+    components.map(
+      (c, i) =>
+        new StageItem(c, {
+          x: (i + 1) * 10,
+          y: (i + 1 + Math.round(Math.random())) * 10,
+        })
+    )
   );
 
   const value = useMemo(() => {
@@ -38,10 +45,15 @@ export default function StageProvider({ children }: { children: ReactNode }) {
     return {
       items,
       refreshItems,
-      select,
+      select: {
+        byComponent: (d: StageItem) => {
+          select.byIndex(components.findIndex((c) => c === d.component));
+        },
+        ...select,
+      },
       selection,
     };
-  }, [items, select, selection]);
+  }, [components, items, select, selection]);
 
   return (
     <StageContext.Provider value={value}>{children}</StageContext.Provider>

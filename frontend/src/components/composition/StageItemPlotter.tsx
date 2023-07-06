@@ -38,28 +38,34 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     nodes: d3.Selection<U, T, SVGGElement, unknown>,
     selected: number
   ) {
-    return nodes
-      .attr('tabindex', 0)
-      .attr('class', (d, i) =>
-        clsxm(
-          styles.node,
-          styles[d.component.type],
-          selected === i && styles.selected
+    return setKeybinds(
+      nodes
+        .attr('tabindex', 0)
+        .attr('class', (d, i) =>
+          clsxm(
+            styles.node,
+            styles[d.component.type],
+            selected === i && styles.selected
+          )
         )
-      );
+    );
   }
 
   private circles(
     d3EnterSelection: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
     selected: number
   ) {
-    return this.coreNodeBehaviour(
-      d3EnterSelection
-        .append('circle')
-        .attr('r', 22)
-        .attr('cx', this.position.x)
-        .attr('cy', this.position.y),
-      selected
+    return makeDraggable(
+      this.coreNodeBehaviour(
+        d3EnterSelection
+          .append('circle')
+          .attr('r', 22)
+          .attr('cx', this.position.x)
+          .attr('cy', this.position.y),
+        selected
+      ),
+      dragMoveCircleSvg,
+      this.scales
     );
   }
 
@@ -73,11 +79,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       .data(data)
       .enter();
 
-    return makeDraggable(
-      setKeybinds(this.circles(g, selected)),
-      dragMoveCircleSvg,
-      this.scales
-    );
+    return this.circles(g, selected);
   }
 }
 

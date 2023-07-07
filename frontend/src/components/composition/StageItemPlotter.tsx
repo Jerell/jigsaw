@@ -85,7 +85,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
         that.nodeKeypress(e, d3.select(this))(d);
       });
 
-    return makeDraggable(setKeybinds(g), move, this.scales);
+    return makeDraggable(g, move, this.scales);
   }
 
   private circles(
@@ -142,12 +142,6 @@ function makeDraggable<U extends SVGElement, T extends StageItem>(
       d.move({ x: scales.x.invert(event.x), y: scales.y.invert(event.y) });
     })
   );
-}
-
-function setKeybinds<U extends SVGElement, T extends StageItem>(
-  nodes: d3.Selection<U, T, SVGGElement, unknown>
-) {
-  return nodes;
 }
 
 function toggleNodeActive<U extends SVGElement, T extends StageItem>(

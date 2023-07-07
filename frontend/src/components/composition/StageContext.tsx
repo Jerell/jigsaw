@@ -7,11 +7,17 @@ import {
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 import { StageItem } from './StageItem';
 
-type IStageContext = {
+export type IStageContext = {
   items: StageItem[];
   refreshItems: () => void;
   select: { byComponent: (c: StageItem) => void } & ISelect;
   selection: number;
+  activated: StageItem | null;
+  manipulate: {
+    activate: (item: StageItem) => void;
+    deactivate: (item: StageItem) => void;
+    toggleActive: (item: StageItem) => void;
+  };
 };
 
 const defaultContextObject: IStageContext = {
@@ -24,6 +30,12 @@ const defaultContextObject: IStageContext = {
     byComponent: (d: StageItem) => {},
   },
   selection: 0,
+  activated: null,
+  manipulate: {
+    activate: (d: StageItem) => {},
+    deactivate: (d: StageItem) => {},
+    toggleActive: (d: StageItem) => {},
+  },
 };
 
 export const StageContext = createContext(defaultContextObject);
@@ -39,9 +51,23 @@ export default function StageProvider({ children }: { children: ReactNode }) {
         })
     )
   );
+  const [activeItem, setActiveItem] = useState<StageItem | null>(null);
 
   const value = useMemo(() => {
+    const manipulate = {
+      activate: (item: StageItem) => {
+        setActiveItem(item);
+      },
+      deactivate: (item: StageItem) => {
+        setActiveItem(null);
+      },
+      toggleActive: (item: StageItem) => {
+        setActiveItem(item.active ? item : null);
+      },
+    };
+
     const refreshItems = () => setItems([...items]);
+
     return {
       items,
       refreshItems,
@@ -52,8 +78,10 @@ export default function StageProvider({ children }: { children: ReactNode }) {
         ...select,
       },
       selection,
+      activated: activeItem,
+      manipulate,
     };
-  }, [components, items, select, selection]);
+  }, [activeItem, components, items, select, selection]);
 
   return (
     <StageContext.Provider value={value}>{children}</StageContext.Provider>

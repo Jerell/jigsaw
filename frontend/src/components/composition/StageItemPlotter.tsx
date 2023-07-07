@@ -10,48 +10,6 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   T[]
 > {
   private position: Record<'x' | 'y', (d?: T) => number>;
-  private displayActiveState = <U extends SVGElement>(
-    d: T,
-    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
-  ) => displayState(d, (e) => e.active, styles.active, d3node);
-
-  private changeActiveState = <U extends SVGElement>(
-    changer: () => void,
-    d: T,
-    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
-  ) => {
-    changer();
-    this.displayActiveState(d, d3node);
-  };
-
-  private nodeKeypress<U extends SVGElement>(
-    event: KeyboardEvent,
-    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
-  ) {
-    const { key } = event;
-
-    const events: {
-      [k: string]: (d: T, action?: (k: string, d: T) => void) => void;
-    } = {
-      Enter: this.nodeSelect,
-      a: (d) => this.changeActiveState(() => d.activate(), d, d3node),
-      s: (d) => this.changeActiveState(() => d.toggleActive(), d, d3node),
-      d: (d) => this.changeActiveState(() => d.deactivate(), d, d3node),
-    };
-
-    return Object.keys(events).includes(key) ? events[key] : () => {};
-  }
-  private nodeClick<U extends SVGElement>(
-    event: PointerEvent,
-    d: T,
-    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
-  ) {
-    if (event.altKey) {
-      displayState(d, (e) => e.active, styles.active, d3node);
-    } else {
-      this.nodeSelect(d);
-    }
-  }
 
   constructor(
     private readonly scales: {
@@ -75,6 +33,43 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       ),
       {} as typeof this.coordAccessors
     );
+  }
+
+  private changeActiveState = <U extends SVGElement>(
+    changer: () => void,
+    d: T,
+    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+  ) => {
+    changer();
+    displayState(d, (e) => e.active, styles.active, d3node);
+  };
+
+  private nodeKeypress<U extends SVGElement>(
+    event: KeyboardEvent,
+    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+  ) {
+    const { key } = event;
+    const events: {
+      [k: string]: (d: T, action?: (k: string, d: T) => void) => void;
+    } = {
+      Enter: this.nodeSelect,
+      a: (d) => this.changeActiveState(() => d.activate(), d, d3node),
+      s: (d) => this.changeActiveState(() => d.toggleActive(), d, d3node),
+      d: (d) => this.changeActiveState(() => d.deactivate(), d, d3node),
+    };
+
+    return Object.keys(events).includes(key) ? events[key] : () => {};
+  }
+  private nodeClick<U extends SVGElement>(
+    event: PointerEvent,
+    d: T,
+    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+  ) {
+    if (event.altKey) {
+      displayState(d, (e) => e.active, styles.active, d3node);
+    } else {
+      this.nodeSelect(d);
+    }
   }
 
   private coreNodeBehaviour<U extends SVGElement>(

@@ -3,6 +3,7 @@
   cursor: pointer;
   fill: #fefae0;
   stroke: #ccd5ae;
+  opacity: 0.75;
 }
 .node:hover {
   fill: #e9edc9;
@@ -25,6 +26,7 @@
 
 .selected {
   stroke: #0e1c36;
+  opacity: 1;
 }
 
 .active,

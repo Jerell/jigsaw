@@ -120,7 +120,8 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
         clsxm(
           styles.node,
           styles[d.component.type],
-          selected === i && styles.selected
+          selected === i && styles.selected,
+          d.active && styles.active
         )
       )
       .on('click', function (e, d) {

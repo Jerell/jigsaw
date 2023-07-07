@@ -25,10 +25,8 @@ export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
     const grid = new Grid({ width, height }, 50);
     grid.drawLines(base);
 
-    const itemPlotter = new StageItemPlotter({ x, y });
-    const nodes = itemPlotter.plot(svg, items, selection);
-
-    nodes.on('click', (e, d) => select.byComponent(d));
+    const itemPlotter = new StageItemPlotter({ x, y }, select.byComponent);
+    itemPlotter.plot(svg, items, selection);
   }
 
   return (

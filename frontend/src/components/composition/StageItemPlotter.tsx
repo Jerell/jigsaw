@@ -16,6 +16,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       x: d3.ScaleContinuousNumeric<number, number, never>;
       y: d3.ScaleContinuousNumeric<number, number, never>;
     },
+    private readonly nodeSelect: (d: T) => void,
     private readonly coordAccessors: Record<
       keyof typeof scales,
       (d?: T) => number
@@ -34,7 +35,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     );
   }
 
-  private coreNodeBehaviour<U extends SVGElement, T extends StageItem>(
+  private coreNodeBehaviour<U extends SVGElement>(
     nodes: d3.Selection<U, T, SVGGElement, unknown>,
     selected: number,
     onDrag: (
@@ -52,7 +53,10 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
         )
       );
 
-    return makeDraggable(setKeybinds(g), onDrag, this.scales);
+    return makeDraggable(setKeybinds(g), onDrag, this.scales).on(
+      'click',
+      (e, d) => this.nodeSelect(d)
+    );
   }
 
   private circles(

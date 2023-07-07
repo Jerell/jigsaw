@@ -26,3 +26,9 @@
 .selected {
   stroke: #0e1c36;
 }
+
+.active,
+.active:focus {
+  fill: #faedcd;
+  stroke: #b0a1ba;
+}

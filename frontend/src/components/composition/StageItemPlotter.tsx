@@ -10,15 +10,30 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   T[]
 > {
   private position: Record<'x' | 'y', (d?: T) => number>;
-  private nodeKeypress(event: KeyboardEvent) {
+  private nodeKeypress<U extends SVGElement>(
+    event: KeyboardEvent,
+    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+  ) {
     const { key } = event;
     const events: {
       [k: string]: (d: T, action?: (k: string, d: T) => void) => void;
     } = {
       Enter: this.nodeSelect,
+      a: (d) => toggleNodeActive(d3node),
     };
 
     return Object.keys(events).includes(key) ? events[key] : () => {};
+  }
+  private nodeClick<U extends SVGElement>(
+    event: PointerEvent,
+    d: T,
+    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+  ) {
+    if (event.altKey) {
+      d3node.classed(styles.active, !d3node.classed(styles.active));
+    } else {
+      this.nodeSelect(d);
+    }
   }
 
   constructor(
@@ -53,6 +68,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       { x, y }: { x: number; y: number }
     ) => void
   ) {
+    const that = this;
     const g = nodes
       .attr('tabindex', 0)
       .attr('class', (d, i) =>
@@ -62,9 +78,11 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
           selected === i && styles.selected
         )
       )
-      .on('click', (e, d) => this.nodeSelect(d))
-      .on('keydown', (e, d) => {
-        this.nodeKeypress(e)(d);
+      .on('click', function (e, d) {
+        that.nodeClick(e, d, d3.select(this));
+      })
+      .on('keydown', function (e, d) {
+        that.nodeKeypress(e, d3.select(this))(d);
       });
 
     return makeDraggable(setKeybinds(g), move, this.scales);
@@ -130,4 +148,10 @@ function setKeybinds<U extends SVGElement, T extends StageItem>(
   nodes: d3.Selection<U, T, SVGGElement, unknown>
 ) {
   return nodes;
+}
+
+function toggleNodeActive<U extends SVGElement, T extends StageItem>(
+  d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+) {
+  d3node.classed(styles.active, !d3node.classed(styles.active));
 }

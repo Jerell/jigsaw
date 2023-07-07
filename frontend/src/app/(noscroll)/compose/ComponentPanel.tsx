@@ -59,13 +59,7 @@ function SpecificInfo({
 }) {
   switch (component.type) {
     case ModelComponentType.Pipe:
-      return (
-        <PipePanel
-          pipe={component as Pipe}
-          {...{ replace }}
-          key={component.name}
-        />
-      );
+      return <PipePanel pipe={component as Pipe} key={component.name} />;
     default:
       return <NodePanel />;
   }

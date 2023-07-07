@@ -1,4 +1,6 @@
 export default class ModelComponent {
+  public inlets: ModelComponent[] = [];
+  public outlets: ModelComponent[] = [];
   constructor(public type: ModelComponentType, public name: string) {}
 }
 

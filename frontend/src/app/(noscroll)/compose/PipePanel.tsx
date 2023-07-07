@@ -4,14 +4,13 @@ import Bathymetry from './Bathymetry';
 import ModelComponent, { Pipe } from '@/lib/ModelComponent';
 import Table from '@/components/table';
 import LinePlot from '@/components/plot/d3/LinePlot';
+import { CompositionContext } from './CompositionContext';
+import { useContext } from 'react';
 
-export function PipePanel({
-  pipe,
-  replace,
-}: {
-  pipe: Pipe;
-  replace: (mc: ModelComponent) => void;
-}) {
+export function PipePanel({ pipe }: { pipe: Pipe }) {
+  const { components, select, selection, replace } =
+    useContext(CompositionContext);
+
   const rename = (name: string) => replace(pipe.rename(name));
   const changeDiameter = (d: number) => replace(pipe.setDiameter(d));
   const changeRoughness = (d: number) => replace(pipe.setRoughness(d));
@@ -53,18 +52,18 @@ export function PipePanel({
     },
 
     connections: folder({
-      from: {
-        value: 'Source1',
-        options: ['Source1', 'pipe-2'],
-        onChange: (c) => {
-          console.log(c);
+      inlet: {
+        value: pipe.inlets[0]?.name ?? 'choose an inlet',
+        options: components.map((c) => c.name).filter((n) => n != pipe.name),
+        onChange: (...args) => {
+          pipe.inlets[0] = args[0];
         },
       },
-      to: {
-        value: 'pipe-2',
-        options: ['pipe-2'],
+      outlet: {
+        value: pipe.outlets[0]?.name ?? 'choose an outlet',
+        options: components.map((c) => c.name).filter((n) => n != pipe.name),
         onChange: (c) => {
-          console.log(c);
+          pipe.outlets[0] = c;
         },
       },
     }),

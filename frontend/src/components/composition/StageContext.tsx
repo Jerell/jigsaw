@@ -13,11 +13,6 @@ export type IStageContext = {
   select: { byComponent: (c: StageItem) => void } & ISelect;
   selection: number;
   activated: StageItem | null;
-  manipulate: {
-    activate: (item: StageItem) => void;
-    deactivate: (item: StageItem) => void;
-    toggleActive: (item: StageItem) => void;
-  };
 };
 
 const defaultContextObject: IStageContext = {
@@ -31,11 +26,6 @@ const defaultContextObject: IStageContext = {
   },
   selection: 0,
   activated: null,
-  manipulate: {
-    activate: (d: StageItem) => {},
-    deactivate: (d: StageItem) => {},
-    toggleActive: (d: StageItem) => {},
-  },
 };
 
 export const StageContext = createContext(defaultContextObject);
@@ -54,18 +44,6 @@ export default function StageProvider({ children }: { children: ReactNode }) {
   const [activeItem, setActiveItem] = useState<StageItem | null>(null);
 
   const value = useMemo(() => {
-    const manipulate = {
-      activate: (item: StageItem) => {
-        setActiveItem(item);
-      },
-      deactivate: (item: StageItem) => {
-        setActiveItem(null);
-      },
-      toggleActive: (item: StageItem) => {
-        setActiveItem(item.active ? item : null);
-      },
-    };
-
     const refreshItems = () => setItems([...items]);
 
     return {
@@ -79,7 +57,6 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       },
       selection,
       activated: activeItem,
-      manipulate,
     };
   }, [activeItem, components, items, select, selection]);
 

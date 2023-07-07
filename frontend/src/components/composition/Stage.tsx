@@ -8,7 +8,7 @@ import { StageContext } from './StageContext';
 import StageItemPlotter from './StageItemPlotter';
 
 export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
-  const { items, select, selection, manipulate } = useContext(StageContext);
+  const { items, select, selection } = useContext(StageContext);
 
   async function draw(svg: d3svg) {
     const { width, height } = getSvgWidthHeight(svg);

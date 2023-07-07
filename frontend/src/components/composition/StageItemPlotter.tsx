@@ -11,6 +11,12 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
 > {
   private position: Record<'x' | 'y', (d?: T) => number>;
 
+  private actives: {
+    item: StageItem | null;
+    node: d3.Selection<any, T, SVGGElement | null, unknown> | null;
+  }[] = [];
+  private lastActivated = () => this.actives[this.actives.length - 1];
+
   constructor(
     private readonly scales: {
       x: d3.ScaleContinuousNumeric<number, number, never>;
@@ -49,13 +55,40 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     d3node: d3.Selection<U, T, SVGGElement | null, unknown>
   ) {
     const { key } = event;
+
+    const activate = (d: T) => {
+      d.activate();
+      if (!this.actives.find((a) => a.item === d)) {
+        this.actives.push({ item: d, node: d3node });
+      }
+    };
+
+    const deactivate = (d: T) => {
+      d.deactivate();
+      const idx = this.actives.findIndex((a) => a.item === d);
+      if (idx >= 0) {
+        this.actives.splice(idx, 1);
+      }
+    };
+
+    const toggleActive = (d: T) => {
+      if (d.active) {
+        deactivate(d);
+      } else {
+        activate(d);
+      }
+    };
+
     const events: {
       [k: string]: (d: T, action?: (k: string, d: T) => void) => void;
     } = {
       Enter: this.nodeSelect,
-      a: (d) => this.changeActiveState(() => d.activate(), d, d3node),
-      s: (d) => this.changeActiveState(() => d.toggleActive(), d, d3node),
-      d: (d) => this.changeActiveState(() => d.deactivate(), d, d3node),
+      a: (d) => this.changeActiveState(() => activate(d), d, d3node),
+      s: (d) => this.changeActiveState(() => toggleActive(d), d, d3node),
+      d: (d) => this.changeActiveState(() => deactivate(d), d, d3node),
+      l: (d) => {
+        console.log(d, this.lastActivated());
+      },
     };
 
     return Object.keys(events).includes(key) ? events[key] : () => {};
@@ -66,7 +99,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     d3node: d3.Selection<U, T, SVGGElement | null, unknown>
   ) {
     if (event.altKey) {
-      displayState(d, (e) => e.active, styles.active, d3node);
+      console.log(this.lastActivated()?.item?.coords, '->', d.coords);
     } else {
       this.nodeSelect(d);
     }

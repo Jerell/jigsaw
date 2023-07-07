@@ -1,9 +1,8 @@
 'use client';
 import { useControls, folder } from 'leva';
 import Bathymetry from './Bathymetry';
-import ModelComponent, { Pipe } from '@/lib/ModelComponent';
+import { Pipe } from '@/lib/ModelComponent';
 import Table from '@/components/table';
-import LinePlot from '@/components/plot/d3/LinePlot';
 import { CompositionContext } from './CompositionContext';
 import { useContext } from 'react';
 

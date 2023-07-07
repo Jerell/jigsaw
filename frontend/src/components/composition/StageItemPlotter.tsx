@@ -10,6 +10,16 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   T[]
 > {
   private position: Record<'x' | 'y', (d?: T) => number>;
+  private nodeKeypress(event: KeyboardEvent) {
+    const { key } = event;
+    const events: {
+      [k: string]: (d: T, action?: (k: string, d: T) => void) => void;
+    } = {
+      Enter: this.nodeSelect,
+    };
+
+    return Object.keys(events).includes(key) ? events[key] : () => {};
+  }
 
   constructor(
     private readonly scales: {
@@ -38,9 +48,9 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   private coreNodeBehaviour<U extends SVGElement>(
     nodes: d3.Selection<U, T, SVGGElement, unknown>,
     selected: number,
-    onDrag: (
+    move: (
       d3Element: d3.Selection<U, unknown, null, undefined>,
-      event: DragEvent
+      { x, y }: { x: number; y: number }
     ) => void
   ) {
     const g = nodes
@@ -51,30 +61,27 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
           styles[d.component.type],
           selected === i && styles.selected
         )
-      );
+      )
+      .on('click', (e, d) => this.nodeSelect(d))
+      .on('keydown', (e, d) => {
+        this.nodeKeypress(e)(d);
+      });
 
-    return makeDraggable(setKeybinds(g), onDrag, this.scales).on(
-      'click',
-      (e, d) => this.nodeSelect(d)
-    );
+    return makeDraggable(setKeybinds(g), move, this.scales);
   }
 
   private circles(
     d3EnterSelection: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
     selected: number
   ) {
-    return makeDraggable(
-      this.coreNodeBehaviour(
-        d3EnterSelection
-          .append('circle')
-          .attr('r', 22)
-          .attr('cx', this.position.x)
-          .attr('cy', this.position.y),
-        selected,
-        dragMoveCircleSvg
-      ),
-      dragMoveCircleSvg,
-      this.scales
+    return this.coreNodeBehaviour(
+      d3EnterSelection
+        .append('circle')
+        .attr('r', 22)
+        .attr('cx', this.position.x)
+        .attr('cy', this.position.y),
+      selected,
+      dragMoveCircleSvg
     );
   }
 
@@ -94,17 +101,17 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
 
 function dragMoveCircleSvg(
   circle: d3.Selection<SVGCircleElement, unknown, null, undefined>,
-  event: DragEvent
+  { x, y }: { x: number; y: number }
 ) {
-  circle.raise().attr('cx', event.x);
-  circle.raise().attr('cy', event.y);
+  circle.raise().attr('cx', x);
+  circle.raise().attr('cy', y);
 }
 
 function makeDraggable<U extends SVGElement, T extends StageItem>(
   nodes: d3.Selection<U, T, SVGGElement, unknown>,
-  onDrag: (
+  move: (
     d3Element: d3.Selection<U, unknown, null, undefined>,
-    event: DragEvent
+    { x, y }: { x: number; y: number }
   ) => void,
   scales: {
     x: d3.ScaleContinuousNumeric<number, number, never>;
@@ -113,7 +120,7 @@ function makeDraggable<U extends SVGElement, T extends StageItem>(
 ) {
   return nodes.call(
     d3.drag<U, T>().on('drag', function (event: DragEvent, d: T) {
-      onDrag(d3.select(this), event);
+      move(d3.select(this), event);
       d.move({ x: scales.x.invert(event.x), y: scales.y.invert(event.y) });
     })
   );

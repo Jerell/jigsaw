@@ -6,7 +6,7 @@ import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 import * as d3 from 'd3';
 import { dragMoveG } from './dragMoveG';
-import { makeDraggable } from './makeDraggable';
+import { makeDraggable, onDragEnd } from './makeDraggable';
 import { displayState } from './displayState';
 
 export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
@@ -19,6 +19,8 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     node: d3.Selection<any, T, SVGGElement | null, unknown> | null;
   }[] = [];
   private lastActivated = () => this.actives[this.actives.length - 1];
+
+  private mouseOverNode: T | null = null;
 
   constructor(
     private readonly scales: {
@@ -108,6 +110,22 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     }
   }
 
+  private nodeHoverEnter<U extends SVGElement>(
+    event: PointerEvent,
+    d: T,
+    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+  ) {
+    this.mouseOverNode = d;
+  }
+
+  private nodeHoverLeave<U extends SVGElement>(
+    event: PointerEvent,
+    d: T,
+    d3node: d3.Selection<U, T, SVGGElement | null, unknown>
+  ) {
+    this.mouseOverNode = null;
+  }
+
   private createNodes(
     d3EnterSelection: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
     selected: number
@@ -128,6 +146,15 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       })
       .on('keydown', function (e, d) {
         that.nodeKeypress(e, d3.select(this))(d);
+      })
+      .on('mouseenter', function (e, d) {
+        that.nodeHoverEnter(e, d, d3.select(this));
+      })
+      .on('mouseleave', function (e, d) {
+        that.nodeHoverLeave(e, d, d3.select(this));
+      })
+      .on('mouseup', function (e, d) {
+        console.log('mouse up', e, d);
       });
   }
 
@@ -170,11 +197,20 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     const inlets = makeHandle('inlet');
     const outlets = makeHandle('outlet');
 
-    makeDraggable(inlets, (d3e, { x, y }) => {
-      console.log('inlet', d3e, x, y);
+    // draw preview line
+    makeDraggable(inlets, () => {});
+    makeDraggable(outlets, () => {});
+
+    // connect nodes
+    onDragEnd(inlets, (a) => {
+      if (this.mouseOverNode) {
+        console.log(this.mouseOverNode, '-> inlet');
+      }
     });
-    makeDraggable(outlets, (d3e, { x, y }) => {
-      console.log('outlet', d3e, x, y);
+    onDragEnd(outlets, (a) => {
+      if (this.mouseOverNode) {
+        console.log('outlet ->', this.mouseOverNode);
+      }
     });
 
     return nodes;

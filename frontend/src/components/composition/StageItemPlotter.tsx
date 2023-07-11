@@ -5,6 +5,10 @@ import { StageItem } from './StageItem';
 import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 import * as d3 from 'd3';
+import { dragMoveG } from './dragMoveG';
+import { makeDraggable } from './makeDraggable';
+import { displayState } from './displayState';
+import { ValueOf } from 'next/dist/shared/lib/constants';
 
 export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   T[]
@@ -128,6 +132,56 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       });
   }
 
+  private drawNodeBase(
+    nodes: d3.Selection<SVGGElement, T, SVGGElement, unknown>
+  ) {
+    return nodes
+      .append('circle')
+      .attr('r', 22)
+      .attr('cx', this.setPosition.x)
+      .attr('cy', this.setPosition.y);
+  }
+
+  private drawNodeHandles(
+    nodes: d3.Selection<SVGGElement, T, SVGGElement, unknown>,
+    selected: number
+  ) {
+    const configs: {
+      [type: string]: {
+        offset: number;
+      };
+    } = {
+      inlet: {
+        offset: -22,
+      },
+      outlet: {
+        offset: 22,
+      },
+    };
+
+    const makeHandle = (c: keyof typeof configs) =>
+      nodes
+        .append('circle')
+        .attr('tabindex', 0)
+        .attr('r', 5)
+        .attr('cx', (d) => this.setPosition.x(d) + configs[c].offset)
+        .attr('cy', this.setPosition.y)
+        .attr('name', c)
+        .attr('class', styles.handle);
+
+    const inlets = makeHandle('inlet');
+    const outlets = makeHandle('outlet');
+
+    makeDraggable(inlets, (d3e, { x, y }) => {
+      console.log('inlet', d3e, x, y);
+    });
+    makeDraggable(outlets, (d3e, { x, y }) => {
+      console.log('outlet', d3e, x, y);
+    });
+
+    return nodes;
+  }
+
   plot(svg: d3svg, data: T[], selected: number) {
     svg.selectAll('g.nodes').remove();
 
@@ -138,50 +192,11 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       .data(data)
       .enter();
 
-    return this.createNodes(g, selected)
-      .append('circle')
-      .attr('r', 22)
-      .attr('cx', this.setPosition.x)
-      .attr('cy', this.setPosition.y);
+    const nodes = this.createNodes(g, selected);
+
+    this.drawNodeBase(nodes);
+    this.drawNodeHandles(nodes, selected);
+
+    return nodes;
   }
-}
-
-function dragMoveG(
-  g: d3.Selection<SVGGElement, unknown, null, undefined>,
-  { x, y }: { x: number; y: number }
-) {
-  g.raise().attr('transform', `translate(${x}, ${y})`);
-}
-
-function makeDraggable<U extends SVGElement, T extends StageItem>(
-  nodes: d3.Selection<U, T, SVGGElement, unknown>,
-  move: (
-    d3Element: d3.Selection<U, unknown, null, undefined>,
-    { x, y }: { x: number; y: number }
-  ) => void
-) {
-  return nodes.call(
-    d3
-      .drag<U, T>()
-      .on(
-        'drag',
-        function (event: DragEvent & { dx: number; dy: number }, d: T) {
-          d.move({
-            x: event.dx,
-            y: event.dy,
-          });
-
-          move(d3.select(this), d.movement);
-        }
-      )
-  );
-}
-
-function displayState<U extends SVGElement, T extends StageItem>(
-  d: T,
-  getState: (e: T) => boolean,
-  className: string,
-  d3node: d3.Selection<U, T, SVGGElement | null, unknown>
-) {
-  d3node.classed(className, getState(d));
 }

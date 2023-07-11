@@ -34,3 +34,14 @@
   fill: #faedcd;
   stroke: #b0a1ba;
 }
+
+.handle:focus {
+  outline: none;
+  stroke-width: 4;
+  stroke: #14bdeb;
+}
+
+.handle:hover {
+  stroke: #14bdeb;
+  fill: #14bdeb;
+}

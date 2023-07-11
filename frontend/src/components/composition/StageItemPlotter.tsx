@@ -6,8 +6,9 @@ import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 import * as d3 from 'd3';
 import { dragMoveG } from './dragMoveG';
-import { makeDraggable, onDragEnd, onDragStart } from './makeDraggable';
+import { makeDraggable } from './makeDraggable';
 import { displayState } from './displayState';
+import ModelComponent from '@/lib/ModelComponent';
 
 export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   T[]
@@ -85,13 +86,16 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       }
     };
 
+    const change = (fn: (datapoint: T) => void) => (d) =>
+      this.changeActiveState(() => fn(d), d, d3node);
+
     const events: {
       [k: string]: (d: T, action?: (k: string, d: T) => void) => void;
     } = {
       Enter: this.nodeSelect,
-      a: (d) => this.changeActiveState(() => activate(d), d, d3node),
-      s: (d) => this.changeActiveState(() => toggleActive(d), d, d3node),
-      d: (d) => this.changeActiveState(() => deactivate(d), d, d3node),
+      a: change(activate),
+      s: change(toggleActive),
+      d: change(deactivate),
       l: (d) => {
         console.log(d, this.lastActivated());
       },
@@ -235,3 +239,9 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     return nodes;
   }
 }
+
+const getItemByComponent = (c: ModelComponent, items: StageItem[]) =>
+  items.find((i) => i.component === c);
+
+const getItemCoordsByComponent = (c: ModelComponent, items: StageItem[]) =>
+  getItemByComponent(c, items)?.coords;

@@ -6,7 +6,7 @@ import clsxm from '@/lib/clsxm';
 import styles from './stage.module.css';
 import * as d3 from 'd3';
 import { dragMoveG } from './dragMoveG';
-import { makeDraggable, onDragEnd } from './makeDraggable';
+import { makeDraggable, onDragEnd, onDragStart } from './makeDraggable';
 import { displayState } from './displayState';
 
 export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
@@ -20,6 +20,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   }[] = [];
   private lastActivated = () => this.actives[this.actives.length - 1];
 
+  private dragNode: T | null = null;
   private mouseOverNode: T | null = null;
 
   constructor(
@@ -131,7 +132,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     selected: number
   ) {
     const that = this;
-    return makeDraggable(d3EnterSelection.append('g'), dragMoveG)
+    return makeDraggable(d3EnterSelection.append('g'), { move: dragMoveG })
       .attr('tabindex', 0)
       .attr('class', (d, i) =>
         clsxm(
@@ -152,9 +153,6 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       })
       .on('mouseleave', function (e, d) {
         that.nodeHoverLeave(e, d, d3.select(this));
-      })
-      .on('mouseup', function (e, d) {
-        console.log('mouse up', e, d);
       });
   }
 
@@ -197,20 +195,22 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     const inlets = makeHandle('inlet');
     const outlets = makeHandle('outlet');
 
-    // draw preview line
-    makeDraggable(inlets, () => {});
-    makeDraggable(outlets, () => {});
-
-    // connect nodes
-    onDragEnd(inlets, (a) => {
-      if (this.mouseOverNode) {
-        console.log(this.mouseOverNode, '-> inlet');
-      }
+    makeDraggable(inlets, {
+      start: () => {
+        this.dragNode = this.mouseOverNode;
+        console.log(this.dragNode);
+      },
+      // move: draw preview line,
+      end: () => this.dragNode?.attach('inlets', this.mouseOverNode),
     });
-    onDragEnd(outlets, (a) => {
-      if (this.mouseOverNode) {
-        console.log('outlet ->', this.mouseOverNode);
-      }
+
+    makeDraggable(outlets, {
+      start: () => {
+        this.dragNode = this.mouseOverNode;
+        console.log(this.dragNode);
+      },
+      // move: draw preview line,
+      end: () => this.dragNode?.attach('outlets', this.mouseOverNode),
     });
 
     return nodes;

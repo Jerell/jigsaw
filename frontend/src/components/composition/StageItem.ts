@@ -26,4 +26,8 @@ export class StageItem {
     this.active = !this.active;
     return this;
   }
+
+  attach(side: 'inlets' | 'outlets', item: StageItem | null) {
+    console.log(this, side + ' +=', item);
+  }
 }

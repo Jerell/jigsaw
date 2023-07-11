@@ -31,7 +31,7 @@ export function makeDraggable<U extends SVGElement, T extends StageItem>(
             y: event.dy,
           });
 
-          move && move(d3.select(this), d.movement);
+          move && move(d3.select(this), d.displacement);
         }
       )
       .on('end', function (event: DragEvent, d: T) {
@@ -85,7 +85,7 @@ export function drag<U extends SVGElement, T extends StageItem>(
             y: event.dy,
           });
 
-          move(d3.select(this), d.movement);
+          move(d3.select(this), d.displacement);
         }
       )
       .on('end', function (event: DragEvent, d: T) {

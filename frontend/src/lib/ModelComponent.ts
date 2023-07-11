@@ -4,7 +4,7 @@ export default class ModelComponent {
   constructor(public type: ModelComponentType, public name: string) {}
 
   attach(side: 'inlets' | 'outlets', item: ModelComponent | null) {
-    item && this[side].push(item);
+    item && item !== this && this[side].push(item);
   }
 }
 

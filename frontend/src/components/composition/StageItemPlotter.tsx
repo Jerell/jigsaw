@@ -203,23 +203,19 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     const inlets = makeHandle('inlet');
     const outlets = makeHandle('outlet');
 
-    makeDraggable(inlets, {
-      start: () => {
-        this.dragNode = this.mouseOverNode;
-        console.log(this.dragNode);
-      },
-      // move: draw preview line,
-      end: () => this.dragNode?.attach('inlets', this.mouseOverNode),
-    });
-
-    makeDraggable(outlets, {
-      start: () => {
-        this.dragNode = this.mouseOverNode;
-        console.log(this.dragNode);
-      },
-      // move: draw preview line,
-      end: () => this.dragNode?.attach('outlets', this.mouseOverNode),
-    });
+    for (const [side, n] of [
+      ['inlets', inlets] as const,
+      ['outlets', outlets] as const,
+    ]) {
+      makeDraggable(n, {
+        start: () => {
+          this.dragNode = this.mouseOverNode;
+          console.log(this.dragNode);
+        },
+        // move: draw preview line,
+        end: () => this.dragNode?.attach(side, this.mouseOverNode),
+      });
+    }
 
     return nodes;
   }

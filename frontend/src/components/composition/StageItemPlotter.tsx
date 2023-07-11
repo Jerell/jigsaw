@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   T[]
 > {
-  private position: Record<'x' | 'y', (d?: T) => number>;
+  private setPosition: Record<'x' | 'y', (d?: T) => number>;
 
   private actives: {
     item: StageItem | null;
@@ -33,7 +33,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   ) {
     super();
 
-    this.position = Object.entries(this.scales).reduce(
+    this.setPosition = Object.entries(this.scales).reduce(
       (acc, [k, sc]) => (
         (acc[k] = (d?: T) => sc(this.coordAccessors[k](d))), acc
       ),
@@ -138,15 +138,39 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     d3EnterSelection: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
     selected: number
   ) {
+    console.log(this);
     return this.coreNodeBehaviour(
       d3EnterSelection
         .append('circle')
         .attr('r', 22)
-        .attr('cx', this.position.x)
-        .attr('cy', this.position.y),
+        .attr('cx', this.setPosition.x)
+        .attr('cy', this.setPosition.y),
       selected,
       dragMoveCircleSvg
     );
+  }
+
+  private createNodes(
+    d3EnterSelection: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
+    selected: number
+  ) {
+    const that = this;
+    return makeDraggable(d3EnterSelection.append('g'), dragMoveG, this.scales)
+      .attr('tabindex', 0)
+      .attr('class', (d, i) =>
+        clsxm(
+          styles.node,
+          styles[d.component.type],
+          selected === i && styles.selected,
+          d.active && styles.active
+        )
+      )
+      .on('click', function (e, d) {
+        that.nodeClick(e, d, d3.select(this));
+      })
+      .on('keydown', function (e, d) {
+        that.nodeKeypress(e, d3.select(this))(d);
+      });
   }
 
   plot(svg: d3svg, data: T[], selected: number) {
@@ -159,7 +183,13 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       .data(data)
       .enter();
 
-    return this.circles(g, selected);
+    // return this.circles(g, selected);
+
+    return this.createNodes(g, selected)
+      .append('circle')
+      .attr('r', 22)
+      .attr('cx', this.setPosition.x)
+      .attr('cy', this.setPosition.y);
   }
 }
 
@@ -169,6 +199,13 @@ function dragMoveCircleSvg(
 ) {
   circle.raise().attr('cx', x);
   circle.raise().attr('cy', y);
+}
+
+function dragMoveG(
+  g: d3.Selection<SVGGElement, unknown, null, undefined>,
+  { x, y }: { x: number; y: number }
+) {
+  g.raise().attr('transform', `translate(${x}, ${y})`);
 }
 
 function makeDraggable<U extends SVGElement, T extends StageItem>(
@@ -183,10 +220,19 @@ function makeDraggable<U extends SVGElement, T extends StageItem>(
   }
 ) {
   return nodes.call(
-    d3.drag<U, T>().on('drag', function (event: DragEvent, d: T) {
-      move(d3.select(this), event);
-      d.move({ x: scales.x.invert(event.x), y: scales.y.invert(event.y) });
-    })
+    d3
+      .drag<U, T>()
+      .on(
+        'drag',
+        function (event: DragEvent & { dx: number; dy: number }, d: T) {
+          d.move({
+            x: event.dx,
+            y: event.dy,
+          });
+
+          move(d3.select(this), d.movement);
+        }
+      )
   );
 }
 

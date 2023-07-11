@@ -142,6 +142,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
           d.active && styles.active
         )
       )
+      .attr('transform', (d) => `translate(${d.movement.x}, ${d.movement.y})`)
       .on('click', function (e, d) {
         that.nodeClick(e, d, d3.select(this));
       })

@@ -28,6 +28,11 @@ export class StageItem {
   }
 
   attach(side: 'inlets' | 'outlets', item: StageItem | null) {
-    console.log(this, side + ' +=', item);
+    if (!item) return;
+    if (!this.component[side].includes(item.component)) {
+      this.component[side] = []; // to be removed: the pipe model allows for splitting and joining
+      this.component.attach(side, item.component);
+    }
+    console.log(this.component, side, this.component[side]);
   }
 }

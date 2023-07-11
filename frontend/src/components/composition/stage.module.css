@@ -19,10 +19,6 @@
   fill: #e7c8a0;
   stroke: #d4a373;
 }
-.source,
-.sink {
-  /* fill: red; */
-}
 
 .selected {
   stroke: #0e1c36;

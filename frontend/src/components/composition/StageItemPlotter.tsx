@@ -204,9 +204,9 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     const outlets = makeHandle('outlet');
 
     for (const [side, n] of [
-      ['inlets', inlets] as const,
-      ['outlets', outlets] as const,
-    ]) {
+      ['inlets', inlets],
+      ['outlets', outlets],
+    ] as const) {
       makeDraggable(n, {
         start: () => {
           this.dragNode = this.mouseOverNode;

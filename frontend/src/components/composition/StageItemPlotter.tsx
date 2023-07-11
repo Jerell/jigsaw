@@ -8,7 +8,6 @@ import * as d3 from 'd3';
 import { dragMoveG } from './dragMoveG';
 import { makeDraggable } from './makeDraggable';
 import { displayState } from './displayState';
-import { ValueOf } from 'next/dist/shared/lib/constants';
 
 export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   T[]
@@ -143,8 +142,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   }
 
   private drawNodeHandles(
-    nodes: d3.Selection<SVGGElement, T, SVGGElement, unknown>,
-    selected: number
+    nodes: d3.Selection<SVGGElement, T, SVGGElement, unknown>
   ) {
     const configs: {
       [type: string]: {
@@ -195,7 +193,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     const nodes = this.createNodes(g, selected);
 
     this.drawNodeBase(nodes);
-    this.drawNodeHandles(nodes, selected);
+    this.drawNodeHandles(nodes);
 
     return nodes;
   }

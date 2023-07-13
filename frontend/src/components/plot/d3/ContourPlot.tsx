@@ -31,13 +31,15 @@ export default function ContourPlot({
     const grid = new Grid({ width, height }, 50);
     grid.drawLines(base);
 
+    svg.select('g.plot').remove();
+    const plot = svg.append('g').attr('class', 'plot');
     const pointPlotter = new ContourDensityPlotter(
       width,
       height,
       (d: ArrayElement<ScatterData>) => d.x,
       (d: ArrayElement<ScatterData>) => d.y
     );
-    pointPlotter.plot(svg, data);
+    pointPlotter.plot(plot, data);
   }
 
   return (

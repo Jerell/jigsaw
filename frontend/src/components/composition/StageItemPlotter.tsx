@@ -1,5 +1,5 @@
 'use client';
-import { d3svg } from '@/components/plot/d3';
+import { d3selection, d3svg } from '@/components/plot/d3';
 import { PointPlotter } from '../plot/d3/points';
 import { StageItem } from './StageItem';
 import clsxm from '@/lib/clsxm';
@@ -220,22 +220,56 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     return nodes;
   }
 
-  plot(svg: d3svg, data: T[], selected: number) {
-    svg.selectAll('g.nodes').remove();
+  private createLinks(
+    d3EnterSelection: d3.Selection<
+      d3.EnterElement,
+      {
+        source: [number, number];
+        target: [number, number];
+      },
+      SVGGElement,
+      unknown
+    >
+  ) {
+    // const link = d3.linkHorizontal().source((d: T) => {
+    //   source: [d.coords.x, d.coords.y];
+    // });
+    return d3EnterSelection
+      .append('path')
+      .attr('class', styles.link)
+      .attr('d', (d) => d3.line()(Object.values(d)));
+    //     const dest =
+    //       getItemCoordsByComponent(d.component.outlets[0], this.datapoints) ??
+    //       d.coords;
+    //     return d3.line()([
+    //       [this.scales.x(d.coords.x), this.scales.y(d.coords.y)],
+    //       [this.scales.x(dest.x), this.scales.y(dest.y)],
+    //     ]);
+    //   });
+  }
 
-    const g = svg
+  plot(g: d3selection, data: T[], selected: number) {
+    g.selectAll('g.nodes').remove();
+
+    const gNodes = g
       .append('g')
       .attr('class', 'nodes')
       .selectAll('circle')
       .data(data)
       .enter();
 
-    const nodes = this.createNodes(g, selected);
+    const gLines = g
+      .append('g')
+      .attr('class', 'links')
+      .selectAll('circle')
+      .data(getItemLines(data, this.scales))
+      .enter();
 
+    const nodes = this.createNodes(gNodes, selected);
     this.drawNodeBase(nodes);
     this.drawNodeHandles(nodes);
 
-    return nodes;
+    const links = this.createLinks(gLines);
   }
 }
 
@@ -244,3 +278,40 @@ const getItemByComponent = (c: ModelComponent, items: StageItem[]) =>
 
 const getItemCoordsByComponent = (c: ModelComponent, items: StageItem[]) =>
   getItemByComponent(c, items)?.coords;
+
+const getOutletLineEnds = (component: ModelComponent) => {
+  return component.outlets.reduce((acc, o) => {
+    acc.push({ source: component, target: o });
+    return acc;
+  }, [] as { source: ModelComponent; target: ModelComponent }[]);
+};
+
+const lineEndsToCoords = (
+  items: StageItem[],
+  sd: { source: ModelComponent; target: ModelComponent },
+  scales: {
+    x: d3.ScaleContinuousNumeric<number, number, never>;
+    y: d3.ScaleContinuousNumeric<number, number, never>;
+  }
+) =>
+  Object.entries(sd).reduce((acc, [k, v]) => {
+    const coords = getItemCoordsByComponent(v, items);
+    if (!coords) return acc;
+    acc[k] = [scales.x(coords.x), scales.y(coords.y)];
+    return acc;
+  }, {} as { source: [number, number]; target: [number, number] });
+
+const getItemLines = (
+  items: StageItem[],
+  scales: {
+    x: d3.ScaleContinuousNumeric<number, number, never>;
+    y: d3.ScaleContinuousNumeric<number, number, never>;
+  }
+) =>
+  items
+    .map((item) =>
+      getOutletLineEnds(item.component).map((le) =>
+        lineEndsToCoords(items, le, scales)
+      )
+    )
+    .flat();

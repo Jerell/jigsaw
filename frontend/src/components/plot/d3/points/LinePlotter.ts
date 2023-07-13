@@ -4,7 +4,7 @@ import { PointPlotter } from '.';
 import { ScatterData } from '../datatypes';
 import { ScaleLinear } from 'd3';
 import * as d3 from 'd3';
-import { d3svg } from '..';
+import { d3selection, d3svg } from '..';
 
 export default class LinePlotter extends PointPlotter<ScatterData> {
   constructor(
@@ -15,23 +15,22 @@ export default class LinePlotter extends PointPlotter<ScatterData> {
   }
 
   plot(
-    svg: d3svg,
+    g: d3selection,
     data: ScatterData,
     scales: {
       x: ScaleLinear<number, number, never>;
       y: ScaleLinear<number, number, never>;
     }
   ): void {
-    svg.selectAll('g.data.points').remove();
-    svg.selectAll('g.data.line').remove();
+    g.selectAll('g.data.points').remove();
+    g.selectAll('g.data.line').remove();
     const line = d3
       .line<{ x: number; y: number }>()
       .x((d) => scales.x(d.x))
       .y((d) => scales.y(d.y))
       .curve(d3.curveMonotoneX);
 
-    svg
-      .append('g')
+    g.append('g')
       .attr('class', 'data line')
       .datum(data)
       .append('path')
@@ -41,8 +40,7 @@ export default class LinePlotter extends PointPlotter<ScatterData> {
       .attr('d', line);
 
     if (this.dots) {
-      svg
-        .append('g')
+      g.append('g')
         .attr('class', 'data points')
         .selectAll('circle')
         .data(data)

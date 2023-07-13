@@ -41,3 +41,16 @@
   stroke: #14bdeb;
   fill: #14bdeb;
 }
+
+.link {
+  animation: dash 30s linear infinite;
+  stroke-dasharray: 95 5;
+  stroke: #d4a373;
+  stroke-width: 2;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1000;
+  }
+}

@@ -30,8 +30,10 @@ export default function LinePlot({
     const grid = new Grid({ width, height }, 50);
     grid.drawLines(base);
 
+    svg.select('g.plot').remove();
+    const plot = svg.append('g').attr('class', 'plot');
     const pointPlotter = new LinePlotter(() => '#d4a373', dots);
-    pointPlotter.plot(svg, data, { x, y });
+    pointPlotter.plot(plot, data, { x, y });
   }
 
   return (

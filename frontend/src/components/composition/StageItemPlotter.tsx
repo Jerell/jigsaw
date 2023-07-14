@@ -146,11 +146,23 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
 
   private createNodes(
     d3EnterSelection: d3.Selection<d3.EnterElement, T, SVGGElement, unknown>,
-    selected: number
+    selected: number,
+    drawLinks: () => d3.Selection<
+      SVGPathElement,
+      {
+        source: [number, number];
+        target: [number, number];
+      },
+      SVGGElement,
+      unknown
+    >
   ) {
     const that = this;
     return makeDraggable(d3EnterSelection.append('g'), {
-      move: dragMoveG,
+      move: (g, xy) => {
+        dragMoveG(g, xy);
+        drawLinks();
+      },
       moveElement: true,
     })
       .append('g')
@@ -192,7 +204,16 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   }
 
   private drawNodeHandles(
-    nodes: d3.Selection<SVGGElement, T, SVGGElement, unknown>
+    nodes: d3.Selection<SVGGElement, T, SVGGElement, unknown>,
+    drawLinks: () => d3.Selection<
+      SVGPathElement,
+      {
+        source: [number, number];
+        target: [number, number];
+      },
+      SVGGElement,
+      unknown
+    >
   ) {
     const makeHandle = (c: keyof typeof this.handleConfig) =>
       nodes
@@ -226,6 +247,9 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
             outlets: () => this.dragNode?.attach('outlets', this.mouseOverNode),
           };
           action[side]();
+          drawLinks();
+          inlets.raise();
+          outlets.raise();
         },
         moveElement: false,
       });
@@ -250,7 +274,6 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       .attr('class', styles.link)
       .attr('d', (d) => {
         const coords = Object.assign({}, d);
-        console.log(coords);
         coords.source[0] += this.handleConfig.outlet.offset;
         coords.target[0] += this.handleConfig.inlet.offset;
         return d3.line()(Object.values(coords));
@@ -260,12 +283,17 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   plot(g: d3selection, data: T[], selected: number) {
     g.selectAll('g.nodes').remove();
 
-    const gLines = g
-      .append('g')
-      .attr('class', 'links')
-      .selectAll('circle')
-      .data(getItemLines(data, this.scales))
-      .enter();
+    const drawLinks = () => {
+      g.selectAll('g.links').remove();
+      const gLines = g
+        .append('g')
+        .attr('class', 'links')
+        .selectAll('circle')
+        .data(getItemLines(data, this.scales))
+        .enter();
+      return this.createLinks(gLines);
+    };
+    const links = drawLinks();
 
     const gNodes = g
       .append('g')
@@ -274,11 +302,9 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       .data(data)
       .enter();
 
-    const nodes = this.createNodes(gNodes, selected);
+    const nodes = this.createNodes(gNodes, selected, drawLinks);
     this.drawNodeBase(nodes);
-    this.drawNodeHandles(nodes);
-
-    const links = this.createLinks(gLines);
+    this.drawNodeHandles(nodes, drawLinks);
   }
 }
 
@@ -310,8 +336,12 @@ const lineEndsToCoords = (
 ) =>
   Object.entries(sd).reduce((acc, [k, v]) => {
     const coords = getItemCoordsByComponent(v, items);
+    const displacement = getItemDisplacementByComponent(v, items);
     if (!coords) return acc;
-    acc[k] = [scales.x(coords.x), scales.y(coords.y)];
+    acc[k] = [
+      scales.x(coords.x) + displacement.x,
+      scales.y(coords.y) + displacement.y,
+    ];
     return acc;
   }, {} as { source: [number, number]; target: [number, number] });
 

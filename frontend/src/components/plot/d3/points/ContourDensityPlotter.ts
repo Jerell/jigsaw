@@ -2,9 +2,8 @@
 import { ArrayElement } from '@/lib/arrayElement';
 import { PointPlotter } from '.';
 import { ScatterData } from '../datatypes';
-import { ScaleLinear } from 'd3';
 import * as d3 from 'd3';
-import { d3svg } from '..';
+import { d3selection, d3svg } from '..';
 
 export default class ContourDensityPlotter extends PointPlotter<ScatterData> {
   constructor(
@@ -20,15 +19,8 @@ export default class ContourDensityPlotter extends PointPlotter<ScatterData> {
     super();
   }
 
-  plot(
-    svg: d3svg,
-    data: ScatterData,
-    scales: {
-      x: ScaleLinear<number, number, never>;
-      y: ScaleLinear<number, number, never>;
-    }
-  ): void {
-    svg.selectAll('g.data.contours').remove();
+  plot(g: d3selection, data: ScatterData): void {
+    g.selectAll('g.data.contours').remove();
 
     const contours = d3
       .contourDensity()
@@ -36,8 +28,7 @@ export default class ContourDensityPlotter extends PointPlotter<ScatterData> {
       .bandwidth(20)
       .thresholds(20)(data.map((d) => [this.xAccessor(d), this.yAccessor(d)]));
 
-    svg
-      .append('g')
+    g.append('g')
       .attr('class', 'data contours')
       .attr('fill', 'none')
       .attr('stroke', '#ccd5ae')

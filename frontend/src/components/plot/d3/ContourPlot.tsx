@@ -24,28 +24,22 @@ export default function ContourPlot({
     const { width, height } = getSvgWidthHeight(svg);
 
     const scaleGenerator = new ScaleGenerator2D({ width, height, margin });
-    const { x, y } = scaleGenerator.scale(data);
 
     svg.select('g.base').remove();
     const base = svg.append('g').attr('class', 'base');
 
-    const gridlines = {
-      horizontal: base.append('g').attr('class', 'horizontal'),
-      vertical: base.append('g').attr('class', 'vertical'),
-    };
-
     const grid = new Grid({ width, height }, 50);
+    grid.drawLines(base);
 
-    grid.vertical(gridlines.vertical);
-    grid.horizontal(gridlines.horizontal);
-
+    svg.select('g.plot').remove();
+    const plot = svg.append('g').attr('class', 'plot');
     const pointPlotter = new ContourDensityPlotter(
       width,
       height,
       (d: ArrayElement<ScatterData>) => d.x,
       (d: ArrayElement<ScatterData>) => d.y
     );
-    pointPlotter.plot(svg, data, { x, y });
+    pointPlotter.plot(plot, data);
   }
 
   return (

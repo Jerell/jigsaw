@@ -1,4 +1,4 @@
-import Bathymetry from '@/app/compose/Bathymetry';
+import Bathymetry from '@/app/(noscroll)/compose/Bathymetry';
 
 describe('ExtensibleTable.cy.tsx', () => {
   beforeEach(() => {

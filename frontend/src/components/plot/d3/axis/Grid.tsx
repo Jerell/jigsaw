@@ -12,7 +12,7 @@ export class Grid {
       typeof spacing === 'number' ? { x: spacing, y: spacing } : spacing;
   }
 
-  vertical(g: d3selection) {
+  private vertical(g: d3selection) {
     const xLines = d3.range(
       this.spacing.x,
       Number(this.dimensions.width),
@@ -31,7 +31,7 @@ export class Grid {
       .attr('y2', Number(this.dimensions.height));
   }
 
-  horizontal(g: d3selection) {
+  private horizontal(g: d3selection) {
     const yLines = d3.range(
       this.spacing.y,
       Number(this.dimensions.height),
@@ -48,5 +48,11 @@ export class Grid {
       .attr('y1', (d) => d)
       .attr('x2', Number(this.dimensions.width))
       .attr('y2', (d) => d);
+  }
+
+  drawLines(g: d3selection) {
+    this.vertical(g.append('g').attr('class', 'vertical'));
+    this.horizontal(g.append('g').attr('class', 'horizontal'));
+    return g;
   }
 }

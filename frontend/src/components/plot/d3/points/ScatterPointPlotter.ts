@@ -1,7 +1,7 @@
 'use client';
 
 import { ScaleLinear } from 'd3';
-import { d3svg } from '..';
+import { d3selection, d3svg } from '..';
 import { ScatterData } from '../datatypes';
 import { ArrayElement } from '@/lib/arrayElement';
 import { PointPlotter } from '.';
@@ -14,7 +14,7 @@ export default class ScatterPointPlotter extends PointPlotter<ScatterData> {
   }
 
   plot(
-    svg: d3svg,
+    g: d3selection,
     data: ScatterData,
     scales: {
       x: ScaleLinear<number, number, never>;
@@ -22,9 +22,8 @@ export default class ScatterPointPlotter extends PointPlotter<ScatterData> {
     }
   ): void {
     const { x, y } = scales;
-    svg.selectAll('g.data.points').remove();
-    svg
-      .append('g')
+    g.selectAll('g.data.points').remove();
+    g.append('g')
       .attr('class', 'data points')
       .selectAll('circle')
       .data(data)

@@ -35,6 +35,14 @@ module.exports = {
           beige: '#e9edc9',
           tea: '#ccd5ae',
         },
+        highlight: {
+          purple: '#422040',
+          orange: '#E57A44',
+          flax: '#E3D985',
+          aero: '#14BDEB',
+          rose: '#B0A1BA',
+          lime: '#43C948',
+        },
       },
       keyframes: {
         flicker: {

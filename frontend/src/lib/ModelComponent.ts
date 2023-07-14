@@ -1,11 +1,17 @@
 export default class ModelComponent {
+  public inlets: ModelComponent[] = [];
+  public outlets: ModelComponent[] = [];
   constructor(public type: ModelComponentType, public name: string) {}
+
+  attach(side: 'inlets' | 'outlets', item: ModelComponent | null) {
+    item && item !== this && this[side].push(item);
+  }
 }
 
 export enum ModelComponentType {
-  Pipe,
-  Source,
-  Sink,
+  Pipe = 'pipe',
+  Source = 'source',
+  Sink = 'sink',
 }
 
 export class Pipe extends ModelComponent {

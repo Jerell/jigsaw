@@ -27,18 +27,13 @@ export default function LinePlot({
     svg.select('g.base').remove();
     const base = svg.append('g').attr('class', 'base');
 
-    const gridlines = {
-      horizontal: base.append('g').attr('class', 'horizontal'),
-      vertical: base.append('g').attr('class', 'vertical'),
-    };
-
     const grid = new Grid({ width, height }, 50);
+    grid.drawLines(base);
 
-    grid.vertical(gridlines.vertical);
-    grid.horizontal(gridlines.horizontal);
-
+    svg.select('g.plot').remove();
+    const plot = svg.append('g').attr('class', 'plot');
     const pointPlotter = new LinePlotter(() => '#d4a373', dots);
-    pointPlotter.plot(svg, data, { x, y });
+    pointPlotter.plot(plot, data, { x, y });
   }
 
   return (

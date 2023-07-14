@@ -1,0 +1,56 @@
+.node {
+  stroke-width: 2;
+  cursor: pointer;
+  fill: #fefae0;
+  stroke: #ccd5ae;
+  opacity: 0.75;
+}
+.node:hover {
+  fill: #e9edc9;
+}
+
+.node:focus {
+  outline: none;
+  stroke-width: 4;
+  stroke: #e57a44;
+}
+
+.pipe {
+  fill: #e7c8a0;
+  stroke: #d4a373;
+}
+
+.selected {
+  stroke: #0e1c36;
+  opacity: 1;
+}
+
+.active,
+.active:focus {
+  fill: #faedcd;
+  stroke: #b0a1ba;
+}
+
+.handle:focus {
+  outline: none;
+  stroke-width: 4;
+  stroke: #14bdeb;
+}
+
+.handle:hover {
+  stroke: #14bdeb;
+  fill: #14bdeb;
+}
+
+.link {
+  animation: dash 30s linear infinite;
+  stroke-dasharray: 95 5;
+  stroke: #d4a373;
+  stroke-width: 2;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1000;
+  }
+}

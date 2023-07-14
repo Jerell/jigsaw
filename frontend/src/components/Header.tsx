@@ -12,8 +12,8 @@ export default function Header() {
     <header className='flex flex-col items-center p-1 w-full' id='header'>
       <p className='text-xs self-start'>
         © {new Date().getFullYear()}{' '}
-        <UnderlineLink href='https://jerell.me' openNewTab>
-          Jerell James
+        <UnderlineLink href='https://paceccs.com/' openNewTab>
+          Pace CCS
         </UnderlineLink>
       </p>
 

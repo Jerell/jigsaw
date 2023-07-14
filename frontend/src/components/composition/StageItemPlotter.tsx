@@ -218,10 +218,8 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
         },
         move: () => {
           // draw preview line,
-          console.log('dragging', this.dragNode);
         },
 
-        // end: () => this.dragNode?.attach(side, this.mouseOverNode),
         end: () => {
           const action = {
             inlets: () => this.mouseOverNode?.attach('outlets', this.dragNode),

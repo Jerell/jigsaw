@@ -149,7 +149,11 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
     selected: number
   ) {
     const that = this;
-    return makeDraggable(d3EnterSelection.append('g'), { move: dragMoveG })
+    return makeDraggable(d3EnterSelection.append('g'), {
+      move: dragMoveG,
+      moveElement: true,
+    })
+      .append('g')
       .attr('tabindex', 0)
       .attr('class', (d, i) =>
         clsxm(
@@ -212,7 +216,11 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
           this.dragNode = this.mouseOverNode;
           console.log(this.dragNode);
         },
-        // move: draw preview line,
+        move: () => {
+          // draw preview line,
+          console.log('dragging', this.dragNode);
+        },
+
         // end: () => this.dragNode?.attach(side, this.mouseOverNode),
         end: () => {
           const action = {
@@ -221,6 +229,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
           };
           action[side]();
         },
+        moveElement: false,
       });
     }
 
@@ -280,6 +289,11 @@ const getItemByComponent = (c: ModelComponent, items: StageItem[]) =>
 
 const getItemCoordsByComponent = (c: ModelComponent, items: StageItem[]) =>
   getItemByComponent(c, items)?.coords;
+
+const getItemDisplacementByComponent = (
+  c: ModelComponent,
+  items: StageItem[]
+) => getItemByComponent(c, items)?.displacement ?? { x: 0, y: 0 };
 
 const getOutletLineEnds = (component: ModelComponent) => {
   return component.outlets.reduce((acc, o) => {

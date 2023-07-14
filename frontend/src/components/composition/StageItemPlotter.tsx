@@ -24,6 +24,19 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   private dragNode: T | null = null;
   private mouseOverNode: T | null = null;
 
+  private handleConfig: {
+    [type: string]: {
+      offset: number;
+    };
+  } = {
+    inlet: {
+      offset: -22,
+    },
+    outlet: {
+      offset: 22,
+    },
+  };
+
   constructor(
     private readonly scales: {
       x: d3.ScaleContinuousNumeric<number, number, never>;
@@ -177,25 +190,12 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
   private drawNodeHandles(
     nodes: d3.Selection<SVGGElement, T, SVGGElement, unknown>
   ) {
-    const configs: {
-      [type: string]: {
-        offset: number;
-      };
-    } = {
-      inlet: {
-        offset: -22,
-      },
-      outlet: {
-        offset: 22,
-      },
-    };
-
-    const makeHandle = (c: keyof typeof configs) =>
+    const makeHandle = (c: keyof typeof this.handleConfig) =>
       nodes
         .append('circle')
         .attr('tabindex', 0)
         .attr('r', 5)
-        .attr('cx', (d) => this.setPosition.x(d) + configs[c].offset)
+        .attr('cx', (d) => this.setPosition.x(d) + this.handleConfig[c].offset)
         .attr('cy', this.setPosition.y)
         .attr('name', c)
         .attr('class', styles.handle);
@@ -213,7 +213,14 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
           console.log(this.dragNode);
         },
         // move: draw preview line,
-        end: () => this.dragNode?.attach(side, this.mouseOverNode),
+        // end: () => this.dragNode?.attach(side, this.mouseOverNode),
+        end: () => {
+          const action = {
+            inlets: () => this.mouseOverNode?.attach('outlets', this.dragNode),
+            outlets: () => this.dragNode?.attach('outlets', this.mouseOverNode),
+          };
+          action[side]();
+        },
       });
     }
 
@@ -231,38 +238,33 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       unknown
     >
   ) {
-    // const link = d3.linkHorizontal().source((d: T) => {
-    //   source: [d.coords.x, d.coords.y];
-    // });
     return d3EnterSelection
       .append('path')
       .attr('class', styles.link)
-      .attr('d', (d) => d3.line()(Object.values(d)));
-    //     const dest =
-    //       getItemCoordsByComponent(d.component.outlets[0], this.datapoints) ??
-    //       d.coords;
-    //     return d3.line()([
-    //       [this.scales.x(d.coords.x), this.scales.y(d.coords.y)],
-    //       [this.scales.x(dest.x), this.scales.y(dest.y)],
-    //     ]);
-    //   });
+      .attr('d', (d) => {
+        const coords = Object.assign({}, d);
+        console.log(coords);
+        coords.source[0] += this.handleConfig.outlet.offset;
+        coords.target[0] += this.handleConfig.inlet.offset;
+        return d3.line()(Object.values(coords));
+      });
   }
 
   plot(g: d3selection, data: T[], selected: number) {
     g.selectAll('g.nodes').remove();
-
-    const gNodes = g
-      .append('g')
-      .attr('class', 'nodes')
-      .selectAll('circle')
-      .data(data)
-      .enter();
 
     const gLines = g
       .append('g')
       .attr('class', 'links')
       .selectAll('circle')
       .data(getItemLines(data, this.scales))
+      .enter();
+
+    const gNodes = g
+      .append('g')
+      .attr('class', 'nodes')
+      .selectAll('circle')
+      .data(data)
       .enter();
 
     const nodes = this.createNodes(gNodes, selected);
@@ -310,8 +312,8 @@ const getItemLines = (
 ) =>
   items
     .map((item) =>
-      getOutletLineEnds(item.component).map((le) =>
-        lineEndsToCoords(items, le, scales)
-      )
+      getOutletLineEnds(item.component)
+        .map((le) => lineEndsToCoords(items, le, scales))
+        .filter((c) => c.target)
     )
     .flat();

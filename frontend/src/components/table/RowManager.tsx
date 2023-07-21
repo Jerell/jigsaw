@@ -168,7 +168,12 @@ export class RowManager<T extends Record<string, any>> {
     return this.converter.text(data);
   }
 
-  parse(text: string) {
+  parse(text: string): T[] {
     return this.converter.parse(text);
+  }
+
+  overwrite(text: string) {
+    const data = this.parse(text);
+    this.setter && this.setter(data);
   }
 }

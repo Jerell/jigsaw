@@ -1,5 +1,11 @@
 'use client';
-import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from 'react';
 import { RowManager } from './RowManager';
 import Button from '../buttons/Button';
 import { FaCopy } from 'react-icons/fa';
@@ -10,12 +16,18 @@ export default function AutoTable<T extends Record<string, ReactNode>>({
   caption,
   rowHeaderKey,
   children,
-  rowManager = new RowManager(data[0] ? Object.keys(data[0]) : []),
+  setter,
+  rowManager = new RowManager(
+    data[0] ? Object.keys(data[0]) : [],
+    rowHeaderKey,
+    setter
+  ),
 }: {
   data: T[];
   caption: string;
   rowHeaderKey?: string;
   children?: ReactNode;
+  setter?: (arr: T[] | ((prev: T[]) => T[])) => void;
   rowManager?: RowManager<T>;
 }) {
   const [editable, setEditable] = useState(false);
@@ -26,6 +38,7 @@ export default function AutoTable<T extends Record<string, ReactNode>>({
         text={rowManager.text(data)}
         caption={caption}
         setEditable={setEditable}
+        overwrite={(text) => rowManager.overwrite(text)}
       />
     );
   }
@@ -52,7 +65,7 @@ function ChangeEditState({
   enable,
 }: {
   caption: string;
-  setEditable: Dispatch<SetStateAction<boolean>>;
+  setEditable: (b: boolean) => void;
   enable: boolean;
 }) {
   return (
@@ -75,16 +88,25 @@ function TextTable({
   text,
   caption,
   setEditable,
+  overwrite,
 }: {
   text: string;
   caption: string;
   setEditable: Dispatch<SetStateAction<boolean>>;
+  overwrite: (text: string) => void;
 }) {
+  const [value, setValue] = useState<string>(text);
+
+  const overwriteAndSetEditable = (b: boolean) => {
+    overwrite(value);
+    setEditable(b);
+  };
+
   return (
     <>
       <ChangeEditState
         caption={caption}
-        setEditable={setEditable}
+        setEditable={overwriteAndSetEditable}
         enable={false}
       />
       <div className='relative'>
@@ -92,12 +114,19 @@ function TextTable({
           className='w-fit p-0.5 absolute top-0.5 right-0.5'
           variant='ghost'
           size='sm'
-          onClick={async () => await navigator.clipboard.writeText(text)}
+          onClick={async () => await navigator.clipboard.writeText(value)}
           title={['copy', caption].filter((e) => !!e).join(': ')}
         >
           <FaCopy />
         </Button>
-        <textarea defaultValue={text} rows={5} className='w-full' />
+        <textarea
+          defaultValue={text}
+          rows={5}
+          className='w-full text-sm'
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setValue(e.currentTarget.value)
+          }
+        />
       </div>
     </>
   );

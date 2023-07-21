@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.2.4",
     "autoprefixer": "10.4.14",
     "clsx": "^1.2.1",
+    "csv": "^6.3.1",
     "d3": "^7.8.5",
     "eslint": "8.39.0",
     "eslint-config-next": "13.4.1",

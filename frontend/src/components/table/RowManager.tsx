@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
 import Button from '../buttons/Button';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
+import { stringify } from 'csv/sync';
 
 export class RowManager<T extends Record<string, any>> {
   public keys: string[];
@@ -160,5 +161,11 @@ export class RowManager<T extends Record<string, any>> {
         )}
       </div>
     );
+  }
+
+  text(data: T[]) {
+    console.table(data);
+    const delimiter = '\t';
+    return `${this.keys.join(delimiter)}\n${stringify(data, { delimiter })}`;
   }
 }

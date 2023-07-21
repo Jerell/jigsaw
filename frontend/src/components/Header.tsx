@@ -5,6 +5,7 @@ const links = [
   { href: '/compose/', label: 'compose' },
   { href: '/broken/', label: 'broken' },
   { href: '/results/', label: 'results' },
+  { href: '/test/', label: 'test' },
 ];
 
 export default function Header() {

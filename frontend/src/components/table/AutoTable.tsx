@@ -16,18 +16,18 @@ export default function AutoTable<T extends Record<string, ReactNode>>({
   children?: ReactNode;
   rowManager?: RowManager<T>;
 }) {
-  const convertToText = () => {
+  const convertToTextAndCopy = () => {
     const t = rowManager.text(data);
-    console.log(t);
     const copyData = async () => {
       await navigator.clipboard.writeText(t);
     };
     copyData();
+    rowManager.parse(t);
     return t;
   };
 
   return (
-    <Table {...{ caption, convertToText }}>
+    <Table {...{ caption, convertToText: convertToTextAndCopy }}>
       {rowManager.head()}
       {rowManager.body(data, rowHeaderKey)}
       {children}

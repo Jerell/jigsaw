@@ -2,7 +2,8 @@ import { ReactNode } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
 import Button from '../buttons/Button';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
-import { stringify } from 'csv/sync';
+import { parse, stringify } from 'csv/sync';
+import Converter from './Converter';
 
 export class RowManager<T extends Record<string, any>> {
   public keys: string[];
@@ -13,7 +14,8 @@ export class RowManager<T extends Record<string, any>> {
     private readonly setter?: (arr: T[] | ((prev: T[]) => T[])) => void,
     private modifiable = false,
     public getReorderState = () => false,
-    private switchReorderState = () => {}
+    private switchReorderState = () => {},
+    private readonly converter = new Converter(keys, rowHeaderKey, '\t')
   ) {
     if (rowHeaderKey) {
       keys.unshift(rowHeaderKey);
@@ -164,8 +166,10 @@ export class RowManager<T extends Record<string, any>> {
   }
 
   text(data: T[]) {
-    console.table(data);
-    const delimiter = '\t';
-    return `${this.keys.join(delimiter)}\n${stringify(data, { delimiter })}`;
+    return this.converter.text(data);
+  }
+
+  parse(text: string) {
+    return this.converter.parse(text);
   }
 }

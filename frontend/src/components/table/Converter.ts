@@ -11,18 +11,24 @@ export default class Converter<T extends Record<string, any>> {
     if (rowHeaderKey) {
       keys.unshift(rowHeaderKey);
     }
-    this.keys = [...keys.filter((k) => k !== rowHeaderKey)];
+    this.keys = [...keys.filter((k) => k !== rowHeaderKey)].filter((k) => k);
   }
 
   text(data: T[]) {
-    const delimiter = '\t';
-    return `${this.keys.join(delimiter)}\n${stringify(data, { delimiter })}`;
+    return `${this.keys.join(this.delimiter)}\n${stringify(
+      data.map((d) => {
+        delete d[''];
+        return d;
+      }),
+      {
+        delimiter: this.delimiter,
+      }
+    )}`;
   }
 
   parse(text: string) {
-    const delimiter = '\t';
     const data = parse(text, {
-      delimiter,
+      delimiter: this.delimiter,
       columns: true,
       skip_empty_lines: true,
     });

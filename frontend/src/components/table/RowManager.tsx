@@ -14,7 +14,7 @@ export class RowManager<T extends Record<string, any>> {
     private modifiable = false,
     public getReorderState = () => false,
     private switchReorderState = () => {},
-    private readonly converter = new Converter(keys, rowHeaderKey, '\t')
+    private readonly converter = new Converter(keys, rowHeaderKey)
   ) {
     if (rowHeaderKey) {
       keys.unshift(rowHeaderKey);

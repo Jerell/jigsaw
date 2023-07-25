@@ -6,6 +6,7 @@ import {
 } from '@/app/(noscroll)/compose/CompositionContext';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 import { StageItem } from './StageItem';
+import ModelComponent from '@/lib/ModelComponent';
 
 export type IStageContext = {
   items: StageItem[];
@@ -13,6 +14,7 @@ export type IStageContext = {
   select: { byComponent: (c: StageItem) => void } & ISelect;
   selection: number;
   activated: StageItem | null;
+  add: (mc: ModelComponent) => void;
 };
 
 const defaultContextObject: IStageContext = {
@@ -26,12 +28,18 @@ const defaultContextObject: IStageContext = {
   },
   selection: 0,
   activated: null,
+  add: () => {},
 };
 
 export const StageContext = createContext(defaultContextObject);
 
 export default function StageProvider({ children }: { children: ReactNode }) {
-  const { components, select, selection } = useContext(CompositionContext);
+  const {
+    components,
+    select,
+    selection,
+    add: compAdd,
+  } = useContext(CompositionContext);
   const [items, setItems] = useState<StageItem[]>(
     components.map(
       (c, i) =>
@@ -45,6 +53,16 @@ export default function StageProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(() => {
     const refreshItems = () => setItems([...items]);
+    const add = (mc: ModelComponent) => {
+      compAdd(mc);
+      setItems([
+        ...items,
+        new StageItem(mc, {
+          x: (items.length + 1) * 10,
+          y: (6 + Math.round(2 * Math.random())) * 10,
+        }),
+      ]);
+    };
 
     return {
       items,
@@ -57,8 +75,9 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       },
       selection,
       activated: activeItem,
+      add,
     };
-  }, [activeItem, components, items, select, selection]);
+  }, [activeItem, compAdd, components, items, select, selection]);
 
   return (
     <StageContext.Provider value={value}>{children}</StageContext.Provider>

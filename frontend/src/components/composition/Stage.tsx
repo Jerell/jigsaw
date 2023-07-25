@@ -33,7 +33,7 @@ export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
 
   return (
     <Plot
-      data={[]}
+      data={[items]}
       draw={draw}
       dimensions={{ width: '100%', height: '100%' }}
       {...rest}

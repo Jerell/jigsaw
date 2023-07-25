@@ -14,6 +14,7 @@ export type ICompositionContext = {
   selection: number;
   select: ISelect;
   replace: (mc: ModelComponent) => void;
+  add: (mc: ModelComponent) => void;
 };
 
 const defaultContextObject: ICompositionContext = {
@@ -25,6 +26,7 @@ const defaultContextObject: ICompositionContext = {
     byIndex: (i: number) => {},
   },
   replace: (mc: ModelComponent) => {},
+  add: (mc: ModelComponent) => {},
 };
 
 export const CompositionContext = createContext(defaultContextObject);
@@ -59,6 +61,7 @@ export default function CompositionProvider({
       selection,
       select,
       replace: replaceAtState(setComponents, selection),
+      add: replaceAtState(setComponents, components.length),
     };
   }, [components, selection]);
 

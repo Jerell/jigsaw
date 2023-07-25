@@ -6,7 +6,7 @@ import {
 } from '@/app/(noscroll)/compose/CompositionContext';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 import { StageItem } from './StageItem';
-import ModelComponent from '@/lib/ModelComponent';
+import ModelComponent, { ModelComponentType } from '@/lib/ModelComponent';
 
 export type IStageContext = {
   items: StageItem[];
@@ -45,7 +45,11 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       (c, i) =>
         new StageItem(c, {
           x: (i + 1) * 10,
-          y: (6 + Math.round(2 * Math.random())) * 10,
+          y:
+            10 *
+            (6 +
+              Number(c.type === ModelComponentType.Source) -
+              Number(c.type === ModelComponentType.Sink)),
         })
     )
   );
@@ -59,7 +63,11 @@ export default function StageProvider({ children }: { children: ReactNode }) {
         ...items,
         new StageItem(mc, {
           x: Math.min(items.length + 1, 7) * 10,
-          y: (6 + Math.round(2 * Math.random())) * 10,
+          y:
+            10 *
+            (6 +
+              Number(mc.type === ModelComponentType.Source) -
+              Number(mc.type === ModelComponentType.Sink)),
         }),
       ]);
     };

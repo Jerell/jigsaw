@@ -1,5 +1,53 @@
 import CylinderScene from '@/components/plot/three/cylinder/CylinderScene';
-import { exampleTable } from '../(noscroll)/compose/page';
+import Table from '@/components/table';
+
+const exampleTable = (
+  <Table
+    caption="A summary of the UK's most famous punk bands"
+    convertToText={function (): string {
+      throw new Error('Function not implemented.');
+    }}
+  >
+    <thead>
+      <tr>
+        <th scope='col'>Band</th>
+        <th scope='col'>Year formed</th>
+        <th scope='col'>No. of Albums</th>
+        <th scope='col'>Most famous song</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope='row'>Buzzcocks</th>
+        <td>1976</td>
+        <td>9</td>
+        <td>Ever fallen in love (with someone you shouldn't've)</td>
+      </tr>
+      <tr>
+        <th scope='row'>The Clash</th>
+        <td>1976</td>
+        <td>6</td>
+        <td>London Calling</td>
+      </tr>
+
+      <tr>
+        <th scope='row'>The Stranglers</th>
+        <td>1974</td>
+        <td>17</td>
+        <td>No More Heroes</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope='row' colSpan={2}>
+          Total albums
+        </th>
+        <td>77</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </Table>
+);
 
 export default function Home() {
   return (

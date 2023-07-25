@@ -72,24 +72,12 @@ export function PipePanel({ pipe }: { pipe: Pipe }) {
     <div className='flex flex-col gap-2'>
       <Bathymetry />
 
-      {/* <div className='col-span-2 text-center'>
-        <h4>Angle distribution</h4>
-        <p className='text-xs'>
-          this probably makes more sense as a radar chart
-        </p>
-        <div className='h-32'>
-          <LinePlot
-            data={[
-              { x: 1, y: 1 },
-              { x: 2, y: 2 },
-              { x: 3, y: 1 },
-            ]}
-            dots={false}
-          />
-        </div>
-      </div> */}
-
-      <Table caption={`${pipe.name} shape`}>
+      <Table
+        caption={`${pipe.name} shape`}
+        convertToText={function (): string {
+          throw new Error('Function not implemented.');
+        }}
+      >
         <thead>
           <tr>
             <th scope='col'>Property</th>

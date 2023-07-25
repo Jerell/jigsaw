@@ -1,7 +1,6 @@
 'use client';
 import ModelComponent, { Pipe, Sink, Source } from '@/lib/ModelComponent';
 import replaceAtState from '@/lib/replaceAtState';
-import { useLocalStorage } from '@/lib/useLocalStorage';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
 export type ISelect = {
@@ -37,15 +36,12 @@ export default function CompositionProvider({
 }: {
   children: ReactNode;
 }) {
-  const [components, setComponents] = useLocalStorage<ModelComponent[]>(
-    'components',
-    [
-      new Source('source'),
-      new Pipe('section-0', 1.0, 1.0),
-      new Pipe('section-1', 1.0, 1.0),
-      new Sink('sink'),
-    ]
-  );
+  const [components, setComponents] = useState<ModelComponent[]>([
+    new Source('source'),
+    new Pipe('section-0', 1.0, 1.0),
+    new Pipe('section-1', 1.0, 1.0),
+    new Sink('sink'),
+  ]);
   const [selection, setSelection] = useState<number>(0);
 
   const value = useMemo(() => {
@@ -67,7 +63,7 @@ export default function CompositionProvider({
       replace: replaceAtState(setComponents, selection),
       add: replaceAtState(setComponents, components.length),
     };
-  }, [components, selection, setComponents]);
+  }, [components, selection]);
 
   return (
     <CompositionContext.Provider value={value}>

@@ -2,12 +2,7 @@ import CylinderScene from '@/components/plot/three/cylinder/CylinderScene';
 import Table from '@/components/table';
 
 const exampleTable = (
-  <Table
-    caption="A summary of the UK's most famous punk bands"
-    convertToText={function (): string {
-      throw new Error('Function not implemented.');
-    }}
-  >
+  <Table caption="A summary of the UK's most famous punk bands">
     <thead>
       <tr>
         <th scope='col'>Band</th>

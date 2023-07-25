@@ -3,12 +3,7 @@ import Table from '@/components/table';
 export default function NodePanel() {
   return (
     <div className='flex flex-col items-center'>
-      <Table
-        caption={`Fluid properties`}
-        convertToText={function (): string {
-          throw new Error('Function not implemented.');
-        }}
-      >
+      <Table caption={`Fluid properties`}>
         <thead>
           <tr>
             <th scope='col'>Property</th>

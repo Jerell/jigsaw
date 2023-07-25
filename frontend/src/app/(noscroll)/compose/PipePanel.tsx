@@ -72,12 +72,7 @@ export function PipePanel({ pipe }: { pipe: Pipe }) {
     <div className='flex flex-col gap-2'>
       <Bathymetry />
 
-      <Table
-        caption={`${pipe.name} shape`}
-        convertToText={function (): string {
-          throw new Error('Function not implemented.');
-        }}
-      >
+      <Table caption={`${pipe.name} shape`}>
         <thead>
           <tr>
             <th scope='col'>Property</th>

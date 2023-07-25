@@ -7,11 +7,9 @@ import Button from '../buttons/Button';
 export default function Table({
   children,
   caption,
-  convertToText,
 }: {
   children: ReactNode;
   caption?: string;
-  convertToText: () => string;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
 

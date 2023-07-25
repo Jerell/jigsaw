@@ -4,7 +4,14 @@ import {
   CompositionContext,
   ISelect,
 } from '@/app/(noscroll)/compose/CompositionContext';
-import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { StageItem } from './StageItem';
 import ModelComponent, { ModelComponentType } from '@/lib/ModelComponent';
 
@@ -40,36 +47,28 @@ export default function StageProvider({ children }: { children: ReactNode }) {
     selection,
     add: compAdd,
   } = useContext(CompositionContext);
-  const [items, setItems] = useState<StageItem[]>(
-    components.map(
-      (c, i) =>
-        new StageItem(c, {
-          x: (i + 1) * 10,
-          y:
-            10 *
-            (6 +
-              Number(c.type === ModelComponentType.Source) -
-              Number(c.type === ModelComponentType.Sink)),
-        })
-    )
+
+  const newStageItem = useCallback(
+    (c: ModelComponent, i = components.length) =>
+      new StageItem(c, {
+        x: (i + 1) * 10,
+        y:
+          10 *
+          (6 +
+            Number(c.type === ModelComponentType.Source) -
+            Number(c.type === ModelComponentType.Sink)),
+      }),
+    [components.length]
   );
+
+  const [items, setItems] = useState<StageItem[]>(components.map(newStageItem));
   const [activeItem, setActiveItem] = useState<StageItem | null>(null);
 
   const value = useMemo(() => {
     const refreshItems = () => setItems([...items]);
     const add = (mc: ModelComponent) => {
       compAdd(mc);
-      setItems([
-        ...items,
-        new StageItem(mc, {
-          x: Math.min(items.length + 1, 7) * 10,
-          y:
-            10 *
-            (6 +
-              Number(mc.type === ModelComponentType.Source) -
-              Number(mc.type === ModelComponentType.Sink)),
-        }),
-      ]);
+      setItems([...items, newStageItem(mc)]);
     };
 
     return {
@@ -85,7 +84,7 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       activated: activeItem,
       add,
     };
-  }, [activeItem, compAdd, components, items, select, selection]);
+  }, [activeItem, compAdd, components, items, newStageItem, select, selection]);
 
   return (
     <StageContext.Provider value={value}>{children}</StageContext.Provider>

@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { MdPlaylistAdd, MdPlaylistRemove } from 'react-icons/md';
 import Button from '../buttons/Button';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
+import Converter from './Converter';
 
 export class RowManager<T extends Record<string, any>> {
   public keys: string[];
@@ -12,7 +13,8 @@ export class RowManager<T extends Record<string, any>> {
     private readonly setter?: (arr: T[] | ((prev: T[]) => T[])) => void,
     private modifiable = false,
     public getReorderState = () => false,
-    private switchReorderState = () => {}
+    private switchReorderState = () => {},
+    private readonly converter = new Converter(keys, rowHeaderKey)
   ) {
     if (rowHeaderKey) {
       keys.unshift(rowHeaderKey);
@@ -160,5 +162,18 @@ export class RowManager<T extends Record<string, any>> {
         )}
       </div>
     );
+  }
+
+  text(data: T[]) {
+    return this.converter.text(data);
+  }
+
+  parse(text: string): T[] {
+    return this.converter.parse(text);
+  }
+
+  overwrite(text: string) {
+    const data = this.parse(text);
+    this.setter && this.setter(data);
   }
 }

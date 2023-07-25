@@ -51,7 +51,7 @@ export default function StageProvider({ children }: { children: ReactNode }) {
   const newStageItem = useCallback(
     (c: ModelComponent, i = components.length) =>
       new StageItem(c, {
-        x: (i + 1) * 10,
+        x: Math.min(i + 1, 7) * 10,
         y:
           10 *
           (6 +

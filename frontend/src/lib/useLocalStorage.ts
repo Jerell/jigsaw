@@ -29,5 +29,8 @@ export function useLocalStorage<T>(
     }
   };
 
-  return [storedValue, setValue];
+  const getValue = (key: string) =>
+    storedValue && hydrate(window.localStorage.getItem(key)!);
+
+  return [getValue(storageKey), setValue];
 }

@@ -249,7 +249,6 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
             outlets: () => this.dragNode?.attach('outlets', this.mouseOverNode),
           };
           action[side]();
-          this.refreshComponents();
           drawLinks();
           inlets.raise();
           outlets.raise();

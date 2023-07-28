@@ -53,11 +53,12 @@ export default function CompositionProvider({
     'components',
     [],
     (jsonstring: string) => {
-      const parsed = JSON.parse(jsonstring) as (
-        | ToParsedJSON<Pipe>
-        | ToParsedJSON<Source>
-        | ToParsedJSON<Sink>
-      )[];
+      const parsed =
+        (JSON.parse(jsonstring) as (
+          | ToParsedJSON<Pipe>
+          | ToParsedJSON<Source>
+          | ToParsedJSON<Sink>
+        )[]) ?? [];
 
       return parsed.map(constructFromJson);
     }

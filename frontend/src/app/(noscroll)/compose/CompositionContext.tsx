@@ -1,7 +1,14 @@
 'use client';
-import ModelComponent, { Pipe, Sink, Source } from '@/lib/ModelComponent';
+import ModelComponent, {
+  Pipe,
+  Sink,
+  Source,
+  constructFromJson,
+} from '@/lib/ModelComponent';
 import replaceAtState from '@/lib/replaceAtState';
-import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
+import { ToParsedJSON } from '@/lib/ToParsedJSON';
+import { useLocalStorage } from '@/lib/useLocalStorage';
+import { ReactNode, createContext, useMemo, useState } from 'react';
 
 export type ISelect = {
   prev: () => void;
@@ -11,14 +18,17 @@ export type ISelect = {
 
 export type ICompositionContext = {
   components: ModelComponent[];
+  refreshComponents: () => void;
   selection: number;
   select: ISelect;
   replace: (mc: ModelComponent) => void;
   add: (mc: ModelComponent) => void;
+  getByID: (id: ModelComponent['ID']) => ModelComponent | undefined;
 };
 
 const defaultContextObject: ICompositionContext = {
   components: [],
+  refreshComponents: () => {},
   selection: 0,
   select: {
     prev: () => {},
@@ -27,6 +37,9 @@ const defaultContextObject: ICompositionContext = {
   },
   replace: (mc: ModelComponent) => {},
   add: (mc: ModelComponent) => {},
+  getByID: function (id: ModelComponent['ID']): ModelComponent {
+    throw new Error('Function not implemented.');
+  },
 };
 
 export const CompositionContext = createContext(defaultContextObject);
@@ -36,15 +49,23 @@ export default function CompositionProvider({
 }: {
   children: ReactNode;
 }) {
-  const [components, setComponents] = useState<ModelComponent[]>([
-    new Source('source'),
-    new Pipe('section-0', 1.0, 1.0),
-    new Pipe('section-1', 1.0, 1.0),
-    new Sink('sink'),
-  ]);
+  const [components, setComponents] = useLocalStorage<ModelComponent[]>(
+    'components',
+    [],
+    (jsonstring: string) => {
+      const parsed = JSON.parse(jsonstring) as (
+        | ToParsedJSON<Pipe>
+        | ToParsedJSON<Source>
+        | ToParsedJSON<Sink>
+      )[];
+
+      return parsed.map(constructFromJson);
+    }
+  );
   const [selection, setSelection] = useState<number>(0);
 
   const value = useMemo(() => {
+    const refreshComponents = () => setComponents([...components]);
     const select = {
       prev: () => setSelection(Math.max(0, selection - 1)),
       next: () => setSelection(Math.max(0, selection + 1)),
@@ -58,12 +79,15 @@ export default function CompositionProvider({
 
     return {
       components,
+      refreshComponents,
       selection,
       select,
       replace: replaceAtState(setComponents, selection),
       add: replaceAtState(setComponents, components.length),
+      getByID: (id: ModelComponent['ID']) =>
+        components.find((c) => c.ID === id),
     };
-  }, [components, selection]);
+  }, [components, selection, setComponents]);
 
   return (
     <CompositionContext.Provider value={value}>

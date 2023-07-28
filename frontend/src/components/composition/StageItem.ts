@@ -32,7 +32,7 @@ export class StageItem {
 
   attach(side: 'inlets' | 'outlets', item: StageItem | null) {
     if (!item) return;
-    if (!this.component[side].includes(item.component)) {
+    if (!this.component[side].includes(item.component.ID)) {
       this.component.attach(side, item.component);
     }
     console.log(this.component, side, this.component[side]);

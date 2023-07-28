@@ -27,7 +27,7 @@ export default function ComponentPanel() {
           prev
         </Button>
 
-        <h3 className='m-0 grow'>{components[selection].name}</h3>
+        <h3 className='m-0 grow'>{components[selection]?.name}</h3>
 
         <Button
           variant='ghost'
@@ -41,11 +41,13 @@ export default function ComponentPanel() {
         </Button>
       </div>
 
-      <SpecificInfo
-        component={components[selection]}
-        {...{ replace }}
-        key={selection}
-      />
+      {components[selection] && (
+        <SpecificInfo
+          component={components[selection]}
+          {...{ replace }}
+          key={selection}
+        />
+      )}
     </section>
   );
 }

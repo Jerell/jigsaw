@@ -7,8 +7,7 @@ import { CompositionContext } from './CompositionContext';
 import { useContext } from 'react';
 
 export function PipePanel({ pipe }: { pipe: Pipe }) {
-  const { components, select, selection, replace } =
-    useContext(CompositionContext);
+  const { components, replace, getByID } = useContext(CompositionContext);
 
   const rename = (name: string) => replace(pipe.rename(name));
   const changeDiameter = (d: number) => replace(pipe.setDiameter(d));
@@ -52,14 +51,14 @@ export function PipePanel({ pipe }: { pipe: Pipe }) {
 
     connections: folder({
       inlet: {
-        value: pipe.inlets[0]?.name ?? 'choose an inlet',
+        value: getByID(pipe.inlets[0])?.name ?? 'choose an inlet',
         options: components.map((c) => c.name).filter((n) => n != pipe.name),
         onChange: (...args) => {
           pipe.inlets[0] = args[0];
         },
       },
       outlet: {
-        value: pipe.outlets[0]?.name ?? 'choose an outlet',
+        value: getByID(pipe.outlets[0])?.name ?? 'choose an outlet',
         options: components.map((c) => c.name).filter((n) => n != pipe.name),
         onChange: (c) => {
           pipe.outlets[0] = c;

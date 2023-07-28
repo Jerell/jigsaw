@@ -331,11 +331,6 @@ const getOutletLineEnds = (
     if (target) {
       acc.push({ source: component, target });
     }
-    // if (!target) {
-    //   throw new Error(
-    //     `invalid outlet for ${component.name} ${component.ID}: ${o}`
-    //   );
-    // }
     return acc;
   }, [] as { source: ModelComponent; target: ModelComponent }[]);
 };

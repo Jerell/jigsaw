@@ -8,7 +8,8 @@ import { StageContext } from './StageContext';
 import StageItemPlotter from './StageItemPlotter';
 
 export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
-  const { items, select, selection } = useContext(StageContext);
+  const { items, select, selection, getByID, refreshComponents } =
+    useContext(StageContext);
 
   async function draw(svg: d3svg) {
     const { width, height } = getSvgWidthHeight(svg);
@@ -27,7 +28,12 @@ export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
 
     svg.select('g.plot').remove();
     const plot = svg.append('g').attr('class', 'plot');
-    const itemPlotter = new StageItemPlotter({ x, y }, select.byComponent);
+    const itemPlotter = new StageItemPlotter(
+      { x, y },
+      select.byComponent,
+      getByID,
+      refreshComponents
+    );
     itemPlotter.plot(plot, items, selection);
   }
 

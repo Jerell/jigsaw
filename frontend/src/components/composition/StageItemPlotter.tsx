@@ -43,6 +43,8 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       y: d3.ScaleContinuousNumeric<number, number, never>;
     },
     private readonly nodeSelect: (d: T) => void,
+    private getByID: (id: ModelComponent['ID']) => ModelComponent | undefined,
+    private refreshComponents: () => void,
     private readonly coordAccessors: Record<
       keyof typeof scales,
       (d?: T) => number
@@ -247,6 +249,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
             outlets: () => this.dragNode?.attach('outlets', this.mouseOverNode),
           };
           action[side]();
+          this.refreshComponents();
           drawLinks();
           inlets.raise();
           outlets.raise();
@@ -289,7 +292,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
         .append('g')
         .attr('class', 'links')
         .selectAll('circle')
-        .data(getItemLines(data, this.scales))
+        .data(getItemLines(data, this.scales, this.getByID))
         .enter();
       return this.createLinks(gLines);
     };
@@ -319,9 +322,20 @@ const getItemDisplacementByComponent = (
   items: StageItem[]
 ) => getItemByComponent(c, items)?.displacement ?? { x: 0, y: 0 };
 
-const getOutletLineEnds = (component: ModelComponent) => {
+const getOutletLineEnds = (
+  component: ModelComponent,
+  getByID: (id: ModelComponent['ID']) => ModelComponent | undefined
+) => {
   return component.outlets.reduce((acc, o) => {
-    acc.push({ source: component, target: o });
+    const target = getByID(o);
+    if (target) {
+      acc.push({ source: component, target });
+    }
+    // if (!target) {
+    //   throw new Error(
+    //     `invalid outlet for ${component.name} ${component.ID}: ${o}`
+    //   );
+    // }
     return acc;
   }, [] as { source: ModelComponent; target: ModelComponent }[]);
 };
@@ -350,11 +364,12 @@ const getItemLines = (
   scales: {
     x: d3.ScaleContinuousNumeric<number, number, never>;
     y: d3.ScaleContinuousNumeric<number, number, never>;
-  }
+  },
+  getByID: (id: ModelComponent['ID']) => ModelComponent | undefined
 ) =>
   items
     .map((item) =>
-      getOutletLineEnds(item.component)
+      getOutletLineEnds(item.component, getByID)
         .map((le) => lineEndsToCoords(items, le, scales))
         .filter((c) => c.target)
     )

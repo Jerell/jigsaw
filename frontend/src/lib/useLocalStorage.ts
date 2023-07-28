@@ -7,7 +7,8 @@ function returnInitialState<T>(storageKey: string, fallback: T) {
 
 export function useLocalStorage<T>(
   storageKey: string,
-  initialState: T
+  initialState: T,
+  hydrate: (jsonstring: string) => T = JSON.parse
 ): [T, (value: T | ((prevState: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState(
     returnInitialState(storageKey, initialState)

@@ -1,4 +1,3 @@
-'use client';
 export function removeFromArrayByValue<T>(arr: T[], value: T) {
   arr.includes(value) &&
     arr.splice(

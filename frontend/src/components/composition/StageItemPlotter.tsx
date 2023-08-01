@@ -1,5 +1,5 @@
 'use client';
-import { d3selection, d3svg } from '@/components/plot/d3';
+import { d3selection } from '@/components/plot/d3';
 import { PointPlotter } from '../plot/d3/points';
 import { StageItem } from './StageItem';
 import clsxm from '@/lib/clsxm';
@@ -290,7 +290,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
       const gLines = g
         .append('g')
         .attr('class', 'links')
-        .selectAll('circle')
+        .selectAll('path')
         .data(getItemLines(data, this.scales, this.getByID))
         .enter();
 
@@ -312,7 +312,7 @@ export default class StageItemPlotter<T extends StageItem> extends PointPlotter<
 }
 
 const getItemByComponent = (c: ModelComponent, items: StageItem[]) =>
-  items.find((i) => i.component === c);
+  items.find((i) => i.component.ID === c.ID);
 
 const getItemCoordsByComponent = (c: ModelComponent, items: StageItem[]) =>
   getItemByComponent(c, items)?.coords;
@@ -325,15 +325,14 @@ const getItemDisplacementByComponent = (
 const getOutletLineEnds = (
   component: ModelComponent,
   getByID: (id: ModelComponent['ID']) => ModelComponent | undefined
-) => {
-  return component.outlets.reduce((acc, o) => {
+) =>
+  component.outlets.reduce((acc, o) => {
     const target = getByID(o);
     if (target) {
       acc.push({ source: component, target });
     }
     return acc;
   }, [] as { source: ModelComponent; target: ModelComponent }[]);
-};
 
 const lineEndsToCoords = (
   items: StageItem[],

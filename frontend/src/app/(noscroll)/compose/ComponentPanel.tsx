@@ -46,11 +46,7 @@ export default function ComponentPanel() {
       </div>
 
       {components[selection] && (
-        <SpecificInfo
-          component={components[selection]}
-          {...{ replace }}
-          key={selection}
-        />
+        <SpecificInfo component={components[selection]} key={selection} />
       )}
 
       <div className='flex flex-col gap-2 mt-2'>
@@ -68,13 +64,7 @@ export default function ComponentPanel() {
   );
 }
 
-function SpecificInfo({
-  component,
-  replace,
-}: {
-  component: ModelComponent;
-  replace: (mc: ModelComponent) => void;
-}) {
+function SpecificInfo({ component }: { component: ModelComponent }) {
   switch (component.type) {
     case ModelComponentType.Pipe:
       return <PipePanel pipe={component as Pipe} key={component.name} />;

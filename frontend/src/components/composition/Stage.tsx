@@ -6,12 +6,13 @@ import ScaleGenerator2D from '@/components/plot/d3/scale';
 import { Grid } from '../plot/d3/axis/Grid';
 import { StageContext } from './StageContext';
 import StageItemPlotter from './StageItemPlotter';
+import { StageItem } from './StageItem';
 
 export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
   const { items, select, selection, getByID, refreshComponents } =
     useContext(StageContext);
 
-  async function draw(svg: d3svg) {
+  async function draw(svg: d3svg, data: StageItem[]) {
     const { width, height } = getSvgWidthHeight(svg);
     const margin = { top: 0, right: 0, bottom: 0, left: 0 };
     const scaleGenerator = new ScaleGenerator2D({ width, height, margin });
@@ -34,12 +35,12 @@ export default function Stage({ ...rest }: ComponentPropsWithRef<'svg'>) {
       getByID,
       refreshComponents
     );
-    itemPlotter.plot(plot, items, selection);
+    itemPlotter.plot(plot, data, selection);
   }
 
   return (
     <Plot
-      data={[items]}
+      data={[...items]}
       draw={draw}
       dimensions={{ width: '100%', height: '100%' }}
       {...rest}

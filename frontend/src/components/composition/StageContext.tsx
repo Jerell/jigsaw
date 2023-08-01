@@ -85,7 +85,7 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       refreshComponents,
       select: {
         byComponent: (d: StageItem) => {
-          select.byIndex(components.findIndex((c) => c === d.component));
+          select.byIndex(components.findIndex((c) => c.ID === d.component.ID));
         },
         ...select,
       },

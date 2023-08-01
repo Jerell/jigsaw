@@ -70,7 +70,7 @@ export default function CompositionProvider({
   const [selection, setSelection] = useState<number>(0);
 
   const value = useMemo(() => {
-    const refreshComponents = () => setComponents((prev) => [...prev]);
+    const refreshComponents = () => setComponents([...components]);
 
     const boundedIndex = (i: number) =>
       Math.min(Math.max(0, i), components.length - 1);

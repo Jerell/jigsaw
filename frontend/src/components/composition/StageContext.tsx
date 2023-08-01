@@ -14,6 +14,7 @@ import {
 } from 'react';
 import { StageItem } from './StageItem';
 import ModelComponent, { ModelComponentType } from '@/lib/ModelComponent';
+import { removeFromArrayByValue } from '@/lib/removeFromArrayByValue';
 
 export type IStageContext = {
   items: StageItem[];
@@ -24,6 +25,7 @@ export type IStageContext = {
   activated: StageItem | null;
   add: (mc: ModelComponent) => void;
   getByID: (id: ModelComponent['ID']) => ModelComponent | undefined;
+  removeByID: (id: ModelComponent['ID']) => void;
 };
 
 const defaultContextObject: IStageContext = {
@@ -42,6 +44,9 @@ const defaultContextObject: IStageContext = {
   getByID: function (id: string): ModelComponent | undefined {
     throw new Error('Function not implemented.');
   },
+  removeByID: function (id: string): void {
+    throw new Error('Function not implemented.');
+  },
 };
 
 export const StageContext = createContext(defaultContextObject);
@@ -54,6 +59,7 @@ export default function StageProvider({ children }: { children: ReactNode }) {
     selection,
     add: compAdd,
     getByID,
+    removeByID: compRemoveByID,
   } = useContext(CompositionContext);
 
   const newStageItem = useCallback(
@@ -73,10 +79,19 @@ export default function StageProvider({ children }: { children: ReactNode }) {
   const [activeItem, setActiveItem] = useState<StageItem | null>(null);
 
   const value = useMemo(() => {
-    const refreshItems = () => setItems([...items]);
+    const refreshItems = () => setItems(components.map(newStageItem));
     const add = (mc: ModelComponent) => {
       compAdd(mc);
-      setItems([...items, newStageItem(mc)]);
+      setItems((prev) => [...prev, newStageItem(mc)]);
+    };
+
+    const removeByID = (id: ModelComponent['ID']) => {
+      compRemoveByID(id);
+      setItems((prev) => {
+        const s = prev.find((item) => item.component.ID === id);
+        if (!s) return prev;
+        return removeFromArrayByValue(prev, s);
+      });
     };
 
     return {
@@ -93,10 +108,12 @@ export default function StageProvider({ children }: { children: ReactNode }) {
       activated: activeItem,
       add,
       getByID,
+      removeByID,
     };
   }, [
     activeItem,
     compAdd,
+    compRemoveByID,
     components,
     getByID,
     items,

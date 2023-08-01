@@ -9,6 +9,7 @@ import replaceAtState from '@/lib/replaceAtState';
 import { ToParsedJSON } from '@/lib/ToParsedJSON';
 import { useLocalStorage } from '@/lib/useLocalStorage';
 import { ReactNode, createContext, useMemo, useState } from 'react';
+import { removeFromArrayByValue } from '../../../lib/removeFromArrayByValue';
 
 export type ISelect = {
   prev: () => void;
@@ -24,6 +25,7 @@ export type ICompositionContext = {
   replace: (mc: ModelComponent) => void;
   add: (mc: ModelComponent) => void;
   getByID: (id: ModelComponent['ID']) => ModelComponent | undefined;
+  removeByID: (id: ModelComponent['ID']) => void;
 };
 
 const defaultContextObject: ICompositionContext = {
@@ -40,10 +42,12 @@ const defaultContextObject: ICompositionContext = {
   getByID: function (id: ModelComponent['ID']): ModelComponent {
     throw new Error('Function not implemented.');
   },
+  removeByID: function (id: string): void {
+    throw new Error('Function not implemented.');
+  },
 };
 
 export const CompositionContext = createContext(defaultContextObject);
-
 export default function CompositionProvider({
   children,
 }: {
@@ -66,16 +70,30 @@ export default function CompositionProvider({
   const [selection, setSelection] = useState<number>(0);
 
   const value = useMemo(() => {
-    const refreshComponents = () => setComponents([...components]);
+    const refreshComponents = () => setComponents((prev) => [...prev]);
+
+    const boundedIndex = (i: number) =>
+      Math.min(Math.max(0, i), components.length - 1);
+
     const select = {
-      prev: () => setSelection(Math.max(0, selection - 1)),
-      next: () => setSelection(Math.max(0, selection + 1)),
+      prev: () => setSelection(boundedIndex(selection - 1)),
+      next: () => setSelection(boundedIndex(selection + 1)),
       byIndex: (i: number) => {
         if (i >= components.length || i < 0) {
           return;
         }
-        setSelection(i);
+        setSelection(boundedIndex(i));
       },
+    };
+
+    const removeConnectionsTo = (id: ModelComponent['ID']) => {
+      setComponents((prev) =>
+        [...prev].map((c) => {
+          removeFromArrayByValue(c.inlets, id);
+          removeFromArrayByValue(c.outlets, id);
+          return c;
+        })
+      );
     };
 
     return {
@@ -87,6 +105,20 @@ export default function CompositionProvider({
       add: replaceAtState(setComponents, components.length),
       getByID: (id: ModelComponent['ID']) =>
         components.find((c) => c.ID === id),
+      removeByID: (id: ModelComponent['ID']) => {
+        const c = components.find((c) => c.ID === id);
+        if (!c) return;
+        removeConnectionsTo(c.ID);
+        setComponents((prev) => {
+          const elems = [...prev];
+          elems.splice(
+            elems.findIndex((elem) => elem.ID === id),
+            1
+          );
+          return elems;
+        });
+        select.byIndex(0);
+      },
     };
   }, [components, selection, setComponents]);
 

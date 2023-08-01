@@ -7,14 +7,18 @@ import { CompositionContext } from './CompositionContext';
 import ModelComponent, { ModelComponentType, Pipe } from '@/lib/ModelComponent';
 import { PipePanel } from './PipePanel';
 import NodePanel from './NodePanel';
+import { MdOutlineRemoveCircle } from 'react-icons/md';
+import { StageContext } from '@/components/composition/StageContext';
 
 export default function ComponentPanel() {
   const { components, select, selection, replace } =
     useContext(CompositionContext);
 
+  const { removeByID } = useContext(StageContext);
+
   return (
     <section>
-      <h2>Component</h2>
+      <h2>Component: {components[selection]?.type}</h2>
       <div className='flex flex-row gap-2 justify-evenly mb-1'>
         <Button
           variant='ghost'
@@ -48,6 +52,18 @@ export default function ComponentPanel() {
           key={selection}
         />
       )}
+
+      <div className='flex flex-col gap-2 mt-2'>
+        <Button
+          variant='ghost'
+          leftIcon={MdOutlineRemoveCircle}
+          onClick={() => {
+            components[selection] && removeByID(components[selection].ID);
+          }}
+        >
+          Remove
+        </Button>
+      </div>
     </section>
   );
 }

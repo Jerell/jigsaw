@@ -169,6 +169,7 @@ export default function CompositionProvider({
     components,
     getPipeBathymetry,
     selection,
+    setBathymetries,
     setComponents,
     setPipeBathymetry,
   ]);

@@ -46,12 +46,10 @@ export default function Plot<T>({
   };
 
   useEffect(() => {
+    window.removeEventListener('resize', plot, false);
+    window.addEventListener('resize', plot, false);
     plot();
   }, [data]);
-
-  useEffect(() => {
-    window.addEventListener('resize', plot, false);
-  }, []);
 
   return <svg ref={svgRef} width={width} height={height} {...rest} />;
 }

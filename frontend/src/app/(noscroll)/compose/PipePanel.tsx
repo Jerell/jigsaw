@@ -69,7 +69,7 @@ export function PipePanel({ pipe }: { pipe: Pipe }) {
 
   return (
     <div className='flex flex-col gap-2'>
-      <Bathymetry />
+      <Bathymetry ID={pipe.ID} />
 
       <Table caption={`${pipe.name} shape`}>
         <thead>

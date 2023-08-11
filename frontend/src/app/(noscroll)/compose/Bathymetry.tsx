@@ -2,10 +2,21 @@
 import LinePlot from '@/components/plot/d3/LinePlot';
 import { ExtensibleTable } from '@/components/table/ExtensibleTable';
 import { RowManager } from '@/components/table/RowManager';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { CompositionContext } from './CompositionContext';
+import { Pipe } from '@/lib/ModelComponent';
 
-export default function Bathymetry() {
-  const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
+export default function Bathymetry({ ID }: { ID: Pipe['ID'] }) {
+  const { getPipeBathymetry, setPipeBathymetry } =
+    useContext(CompositionContext);
+  const [coords, setCoords] = useState<{ x: number; y: number }[]>(
+    getPipeBathymetry(ID)
+  );
+
+  useEffect(() => {
+    setPipeBathymetry(ID)(coords);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coords]);
 
   const [reorderState, setReorderState] = useState(false);
   const getReorderState = () => reorderState;

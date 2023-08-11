@@ -131,7 +131,11 @@ export default function CompositionProvider({
     };
 
     const removeStoredBathymetry = (id: ModelComponent['ID']) => {
-      window.localStorage.removeItem(id);
+      setBathymetries((prev) => {
+        const p = { ...prev };
+        delete p[id];
+        return p;
+      });
     };
 
     return {

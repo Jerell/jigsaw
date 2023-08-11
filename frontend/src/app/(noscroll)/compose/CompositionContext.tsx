@@ -8,8 +8,15 @@ import ModelComponent, {
 import replaceAtState from '@/lib/replaceAtState';
 import { ToParsedJSON } from '@/lib/ToParsedJSON';
 import { useLocalStorage } from '@/lib/useLocalStorage';
-import { ReactNode, createContext, useMemo, useState } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { removeFromArrayByValue } from '../../../lib/removeFromArrayByValue';
+import replaceStateProperty from '@/lib/replaceStateProperty';
 
 export type ISelect = {
   prev: () => void;
@@ -26,6 +33,10 @@ export type ICompositionContext = {
   add: (mc: ModelComponent) => void;
   getByID: (id: ModelComponent['ID']) => ModelComponent | undefined;
   removeByID: (id: ModelComponent['ID']) => void;
+  setPipeBathymetry: (
+    pipeID: Pipe['ID']
+  ) => (item: { x: number; y: number }[]) => void;
+  getPipeBathymetry: (pipeID: Pipe['ID']) => { x: number; y: number }[];
 };
 
 const defaultContextObject: ICompositionContext = {
@@ -43,6 +54,14 @@ const defaultContextObject: ICompositionContext = {
     throw new Error('Function not implemented.');
   },
   removeByID: function (id: string): void {
+    throw new Error('Function not implemented.');
+  },
+  setPipeBathymetry: function (
+    pipeID: string
+  ): (items: { x: number; y: number }[]) => void {
+    throw new Error('Function not implemented.');
+  },
+  getPipeBathymetry: function (pipeID: string): { x: number; y: number }[] {
     throw new Error('Function not implemented.');
   },
 };
@@ -67,6 +86,21 @@ export default function CompositionProvider({
       return parsed.map(constructFromJson);
     }
   );
+
+  const [bathymetries, setBathymetries] = useLocalStorage<
+    Record<Pipe['ID'], { x: number; y: number }[]>
+  >('bathymetries', {});
+
+  const setPipeBathymetry = useCallback(
+    (pipeID: Pipe['ID']) => replaceStateProperty(setBathymetries, pipeID),
+    [setBathymetries]
+  );
+
+  const getPipeBathymetry = useCallback(
+    (pipeID: Pipe['ID']) => bathymetries[pipeID] || [],
+    [bathymetries]
+  );
+
   const [selection, setSelection] = useState<number>(0);
 
   const value = useMemo(() => {
@@ -96,6 +130,14 @@ export default function CompositionProvider({
       );
     };
 
+    const removeStoredBathymetry = (id: ModelComponent['ID']) => {
+      setBathymetries((prev) => {
+        const p = { ...prev };
+        delete p[id];
+        return p;
+      });
+    };
+
     return {
       components,
       refreshComponents,
@@ -109,6 +151,7 @@ export default function CompositionProvider({
         const c = components.find((c) => c.ID === id);
         if (!c) return;
         removeConnectionsTo(c.ID);
+        removeStoredBathymetry(c.ID);
         setComponents((prev) => {
           const elems = [...prev];
           elems.splice(
@@ -119,8 +162,17 @@ export default function CompositionProvider({
         });
         select.byIndex(0);
       },
+      setPipeBathymetry,
+      getPipeBathymetry,
     };
-  }, [components, selection, setComponents]);
+  }, [
+    components,
+    getPipeBathymetry,
+    selection,
+    setBathymetries,
+    setComponents,
+    setPipeBathymetry,
+  ]);
 
   return (
     <CompositionContext.Provider value={value}>

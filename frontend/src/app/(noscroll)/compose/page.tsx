@@ -1,6 +1,7 @@
 import ComponentPanel from './ComponentPanel';
 import ComponentPicker from './ComponentPicker';
 import Stage from '@/components/composition/Stage';
+import Submission from './Submission';
 
 export default function Compose() {
   return (
@@ -14,6 +15,8 @@ export default function Compose() {
       <div className='flex flex-col grow'>
         <h2>Network</h2>
         <Stage />
+        <h2>Run</h2>
+        <Submission />
       </div>
     </div>
   );

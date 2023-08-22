@@ -37,6 +37,7 @@ export type ICompositionContext = {
     pipeID: Pipe['ID']
   ) => (item: { x: number; y: number }[]) => void;
   getPipeBathymetry: (pipeID: Pipe['ID']) => { x: number; y: number }[];
+  sendCompositionData: () => void;
 };
 
 const defaultContextObject: ICompositionContext = {
@@ -62,6 +63,9 @@ const defaultContextObject: ICompositionContext = {
     throw new Error('Function not implemented.');
   },
   getPipeBathymetry: function (pipeID: string): { x: number; y: number }[] {
+    throw new Error('Function not implemented.');
+  },
+  sendCompositionData: function (): void {
     throw new Error('Function not implemented.');
   },
 };
@@ -138,6 +142,17 @@ export default function CompositionProvider({
       });
     };
 
+    const sendCompositionData = async () => {
+      const body = { components, bathymetries };
+      console.log(body);
+
+      await fetch('/api/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    };
+
     return {
       components,
       refreshComponents,
@@ -164,7 +179,9 @@ export default function CompositionProvider({
       },
       setPipeBathymetry,
       getPipeBathymetry,
+      sendCompositionData,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     components,
     getPipeBathymetry,

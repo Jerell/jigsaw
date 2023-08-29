@@ -1,7 +1,7 @@
-include("../src/JigsawEngine.jl")
-using Main: JigsawEngine
+include("../src/Engine.jl")
+using Main: Engine
 using Test
 
-@testset "JigsawEngine.jl" begin
+@testset "Engine.jl" begin
     # Write your tests here.
 end

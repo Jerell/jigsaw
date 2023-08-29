@@ -1,10 +1,10 @@
 include("Server.jl")
 using .Server
-
-println(":)")
+include("Engine.jl")
+using .Engine
 
 function greet(name::AbstractString)
-    return "hello, $name"
+    return "o, $name"
 end
 
-Server.start(greet)
+Server.start(Engine.process_pipe_request)

@@ -14,14 +14,23 @@ function start(process_message::Function)
 
         result = process_message(message)
         println("result: $result")
+        response = result
         # Send reply back to client
-        ZMQ.send(socket, result)
+        if isopen(socket)
+            println("\nresponse:")
+            println(response)
+            ZMQ.send(socket, response)
+            println("")
+        else
+            println("socket was closed")
+            println(socket)
+            println(context)
+        end
     end
 
     println("stopping")
     ZMQ.close(socket)
     ZMQ.close(context)
 end
-
 
 end

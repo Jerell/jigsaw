@@ -1,13 +1,15 @@
-name = "JigsawEngine"
+name = "Engine"
 uuid = "4259c883-f997-431d-a151-5d930b14edc1"
 authors = ["Jerell James <jerell1998@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
 [deps]
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
 ZMQ = "c2297ded-f4af-51ae-bb23-16f91089e4e1"
 
 [compat]
-julia = "1.8"
+julia = "1.9"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

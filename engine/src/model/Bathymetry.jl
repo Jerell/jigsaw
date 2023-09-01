@@ -16,7 +16,7 @@ function lengthbetween(a::Point, b::Point)
 end
 
 function lengths(points::Vector{Point})
-    map((a, b) -> lengthbetween(a, b), points, points[2:end])
+    map(lengthbetween, points, points[2:end])
 end
 
 export XY

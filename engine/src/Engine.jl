@@ -2,16 +2,14 @@ module Engine
 using JSON3
 using StructTypes
 
+include("model/Bathymetry.jl")
+using Bathymetry
+
 struct Component
     ID::String
     name::String
     outlets::Array{String}
     type::String
-end
-
-struct XYPoint
-    x::Float16
-    y::Float16
 end
 
 struct ReqBody
@@ -32,5 +30,7 @@ function process_pipe_request(reqbody::String)
 
     return "end"
 end
+
+export XY
 
 end

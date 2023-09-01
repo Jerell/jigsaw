@@ -3,5 +3,5 @@ using Main: Engine
 using Test
 
 @testset "Engine.jl" begin
-    # Write your tests here.
+    @test 1 + 1 == 2
 end

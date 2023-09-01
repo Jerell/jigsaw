@@ -1,19 +1,33 @@
 module Engine
 using JSON3
+using StructTypes
 
-function parse_json(json_string::String)
-    parsed = JSON3.read(json_string)
-    JSON3.pretty(parsed)
-    println("")
-    return parsed
+struct Component
+    ID::String
+    name::String
+    outlets::Array{String}
+    type::String
 end
 
-function process_pipe_request(reqbody::String)
-    bathymetries = parse_json(reqbody)["bathymetries"]
+struct XYPoint
+    x::Float16
+    y::Float16
+end
 
-    for (pipeid, coords) in bathymetries
-        print("$pipeid ")
-        println(coords)
+struct ReqBody
+    components::Array{Component}
+    bathymetries::Dict{String,Array{XYPoint}}
+end
+
+StructTypes.StructType(::Type{ReqBody}) = StructTypes.Struct()
+
+function process_pipe_request(reqbody::String)
+    body = JSON3.read(reqbody, ReqBody; parsequoted=true)
+    JSON3.pretty(body)
+
+    println("")
+    for (pipeid, coords) in body.bathymetries
+        println("$pipeid $coords")
     end
 
     return "end"

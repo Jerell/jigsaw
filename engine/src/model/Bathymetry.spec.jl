@@ -1,5 +1,4 @@
 include("Bathymetry.jl")
-using .Bathymetry
 
 using Test
 

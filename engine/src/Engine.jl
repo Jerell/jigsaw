@@ -2,20 +2,10 @@ module Engine
 using JSON3
 using StructTypes
 
-include("model/Bathymetry.jl")
-using Bathymetry
-
-struct Component
-    ID::String
-    name::String
-    outlets::Array{String}
-    type::String
-end
-
-struct ReqBody
-    components::Array{Component}
-    bathymetries::Dict{String,Array{XYPoint}}
-end
+include("model/Model.jl")
+using .Model
+include("model/Request.jl")
+using .Request
 
 StructTypes.StructType(::Type{ReqBody}) = StructTypes.Struct()
 
@@ -30,7 +20,5 @@ function process_pipe_request(reqbody::String)
 
     return "end"
 end
-
-export XY
 
 end

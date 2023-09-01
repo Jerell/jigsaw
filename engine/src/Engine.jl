@@ -7,7 +7,6 @@ using .Model
 include("model/Request.jl")
 using .Request
 
-StructTypes.StructType(::Type{ReqBody}) = StructTypes.Struct()
 
 function process_pipe_request(reqbody::String)
     body = JSON3.read(reqbody, ReqBody; parsequoted=true)

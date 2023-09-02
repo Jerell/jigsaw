@@ -4,7 +4,10 @@ authors = ["Jerell James <jerell1998@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
 [deps]
+Ai4EComponentLib = "9901752a-13b3-47c7-8fb4-ce17182539d9"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
 StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
 ZMQ = "c2297ded-f4af-51ae-bb23-16f91089e4e1"
 

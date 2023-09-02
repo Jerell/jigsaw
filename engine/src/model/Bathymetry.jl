@@ -22,3 +22,7 @@ end
 function zinzout(points::Bathymetry)
     map((xy1, xy2) -> (xy1.y, xy2.y), points, points[2:end])
 end
+
+function lengthsandheights(points::Bathymetry)
+    collect(zip(lengths(points), zinzout(points)))
+end

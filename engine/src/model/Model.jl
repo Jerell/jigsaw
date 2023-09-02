@@ -16,5 +16,6 @@ export ReqBody
 export Bathymetry
 export lengths
 export zinzout
+export lengthsandheights
 
 end

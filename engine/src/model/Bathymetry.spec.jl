@@ -43,3 +43,18 @@ end
     @test z[1] == (1.0, 5.0)
     @test z[2] == (5.0, 5.0)
 end
+
+@testset "lengthsandheights" begin
+    a = XY(1.0, 1.0)
+    b = XY(4.0, 5.0)
+    c = XY(5.0, 5.0)
+    d = XY(5.0, 5.0)
+
+    lz = lengthsandheights([a, b, c, d])
+
+    (l, (zin, zout)) = lz[1]
+
+    @test l == 5
+    @test zin == 1.0
+    @test zout == 5.0
+end

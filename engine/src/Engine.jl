@@ -4,9 +4,6 @@ using StructTypes
 
 include("model/Model.jl")
 using .Model
-include("model/Request.jl")
-using .Request
-
 
 function process_pipe_request(reqbody::String)
     body = JSON3.read(reqbody, ReqBody; parsequoted=true)
@@ -15,6 +12,7 @@ function process_pipe_request(reqbody::String)
     println("")
     for (pipeid, coords) in body.bathymetries
         println("$pipeid $coords")
+        println(lengths(coords))
     end
 
     return "end"

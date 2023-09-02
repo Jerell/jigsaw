@@ -1,8 +1,8 @@
 module Engine
 using JSON3
-using Ai4EComponentLib
-using Ai4EComponentLib.IncompressiblePipe
-using DifferentialEquations, ModelingToolkit
+# using Ai4EComponentLib
+# using Ai4EComponentLib.IncompressiblePipe
+# using DifferentialEquations, ModelingToolkit
 
 include("model/Model.jl")
 using .Model
@@ -12,45 +12,48 @@ function process_pipe_request(reqbody::String)
     JSON3.pretty(body)
     println("")
 
-    for component in body.components
-        println(string(component.name, " ", component.type))
+    components = setupparams(body)
+    println(components)
 
-    end
+    # for component in body.components
+    #     println(string(component.name, " ", component.type))
 
-    D = 0.15
-    @named staticsource = Source_P(D=D)
-    @named staticsink = Sink_P(p=200000)
+    # end
 
-    for (pipeid, coords) in body.bathymetries
-        println("$pipeid $coords")
-        c = body.components[findfirst(x -> x.ID == pipeid, body.components)]
+    # D = 0.15
+    # @named staticsource = Source_P(D=D)
+    # @named staticsink = Sink_P(p=200000)
 
-        z = zinzout(coords)
+    # for (pipeid, coords) in body.bathymetries
+    #     println("$pipeid $coords")
+    #     c = body.components[findfirst(x -> x.ID == pipeid, body.components)]
 
-        pipes = map(enumerate(lengths(coords))) do (i, l)
-            SimplePipe(
-                L=l, D=D, f=0.023,
-                name=Symbol(string(c.name, "-", i)),
-                zin=z[i][1],
-                zout=z[i][2]
-            )
-        end
+    #     z = zinzout(coords)
 
-        eqs = [
-            connect(staticsource.port, pipes[1].in),
-            map((a, b) -> connect(a.out, b.in), pipes, pipes[2:end])...,
-            connect(pipes[end].out, staticsink.port)
-        ]
+    #     pipes = map(enumerate(lengths(coords))) do (i, l)
+    #         SimplePipe(
+    #             L=l, D=D, f=0.023,
+    #             name=Symbol(string(c.name, "-", i)),
+    #             zin=z[i][1],
+    #             zout=z[i][2]
+    #         )
+    #     end
 
-        @named model = compose(ODESystem(eqs, t, name=:funs), [staticsource, staticsink, pipes...])
+    #     eqs = [
+    #         connect(staticsource.port, pipes[1].in),
+    #         map((a, b) -> connect(a.out, b.in), pipes, pipes[2:end])...,
+    #         connect(pipes[end].out, staticsink.port)
+    #     ]
 
-        sys = structural_simplify(model)
+    #     @named model = compose(ODESystem(eqs, t, name=:funs), [staticsource, staticsink, pipes...])
 
-        prob = ODEProblem(sys, [], (0.0, 0.0))
+    #     sys = structural_simplify(model)
 
-        println(sys)
-        println(prob)
-    end
+    #     prob = ODEProblem(sys, [], (0.0, 0.0))
+
+    #     println(sys)
+    #     println(prob)
+    # end
 
     return "end"
 end

@@ -25,8 +25,15 @@ function process_pipe_request(reqbody::String)
         println("$pipeid $coords")
         c = body.components[findfirst(x -> x.ID == pipeid, body.components)]
 
+        z = zinzout(coords)
+
         pipes = map(enumerate(lengths(coords))) do (i, l)
-            SimplePipe(L=l, D=D, f=0.023, name=Symbol(string(c.name, "-", i)))
+            SimplePipe(
+                L=l, D=D, f=0.023,
+                name=Symbol(string(c.name, "-", i)),
+                zin=z[i][1],
+                zout=z[i][2]
+            )
         end
 
         eqs = [

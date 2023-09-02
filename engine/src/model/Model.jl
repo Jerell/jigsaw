@@ -15,5 +15,6 @@ StructTypes.StructType(::Type{ReqBody}) = StructTypes.Struct()
 export ReqBody
 export Bathymetry
 export lengths
+export zinzout
 
 end

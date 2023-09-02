@@ -12,8 +12,8 @@ function process_pipe_request(reqbody::String)
     JSON3.pretty(body)
     println("")
 
-    components = setupparams(body)
-    println(components)
+    componentparams = setupparams(body)
+    println(componentparams)
 
     # for component in body.components
     #     println(string(component.name, " ", component.type))

@@ -24,5 +24,5 @@ function zinzout(points::Bathymetry)
 end
 
 function lengthsandheights(points::Bathymetry)
-    collect(zip(lengths(points), zinzout(points)))
+    zip(lengths(points), zinzout(points))
 end

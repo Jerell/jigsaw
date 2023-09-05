@@ -50,7 +50,7 @@ end
     c = XY(5.0, 5.0)
     d = XY(5.0, 5.0)
 
-    lz = lengthsandheights([a, b, c, d])
+    lz = collect(lengthsandheights([a, b, c, d]))
 
     (l, (zin, zout)) = lz[1]
 

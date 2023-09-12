@@ -1,5 +1,5 @@
 import { convertAndGetValue, withUnit } from '@oliasoft-open-source/units';
-import { PhysicalQuantity } from './PhysicalQuantity';
+import { ArbitraryQuantity, PhysicalQuantity } from './PhysicalQuantity';
 
 export class Temperature extends PhysicalQuantity {
   valueWithUnit: string;
@@ -15,8 +15,4 @@ export class Temperature extends PhysicalQuantity {
     this.validateUnit(unit);
     return convertAndGetValue(this.valueWithUnit, unit);
   }
-
-  // convert(unit: string) {
-  //   return new Temperature(this.as(unit), unit);
-  // }
 }

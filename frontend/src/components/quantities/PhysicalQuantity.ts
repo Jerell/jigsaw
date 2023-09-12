@@ -20,7 +20,10 @@ export abstract class PhysicalQuantity {
   constructor(public readonly kind: string) {}
 
   abstract as(unit: string): number;
-  // abstract convert(unit: string): PhysicalQuantity;
+
+  public convert(unit: string) {
+    return withUnit(this.as(unit), unit);
+  }
 }
 
 export class ArbitraryQuantity extends PhysicalQuantity {
@@ -35,8 +38,4 @@ export class ArbitraryQuantity extends PhysicalQuantity {
     // ignores requested unit
     return cleanNum(split(this.valueWithUnit)[0]);
   }
-
-  // convert(unit: string): PhysicalQuantity {
-  //   return this;
-  // }
 }

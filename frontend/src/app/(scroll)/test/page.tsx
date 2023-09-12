@@ -48,8 +48,8 @@ export default function Page() {
 
       <div className='flex flex-col items-center border-b'>
         <Display unitOverride='F'>{new Temperature(20, 'C')}</Display>
-        <Display unitGroupTag='Wemperature'>{new Temperature(20, 'C')}</Display>
-        <Display unitGroupTag='Wemperature'>{new Temperature(30, 'C')}</Display>
+        <Display unitGroup='Wemperature'>{new Temperature(20, 'C')}</Display>
+        <Display unitGroup='Wemperature'>{new Temperature(30, 'C')}</Display>
       </div>
 
       <div className='flex flex-col items-center border-b'>

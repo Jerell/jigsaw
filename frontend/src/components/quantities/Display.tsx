@@ -8,10 +8,10 @@ import { UnitContext } from './UnitContextProvider';
 export default function Display({
   children,
   unitOverride,
-  unitGroupTag,
+  unitGroup,
 }: DisplayProps) {
   const unitState = useContext(UnitContext);
-  const unitKey = unitGroupTag || (children.constructor as PQ);
+  const unitKey = unitGroup || (children.constructor as PQ);
 
   let [value, unit] = unitOverride
     ? [children.as(unitOverride).toString(), unitOverride]
@@ -33,5 +33,5 @@ export default function Display({
 type DisplayProps = {
   children: PhysicalQuantity;
   unitOverride?: string;
-  unitGroupTag?: string;
+  unitGroup?: string;
 };

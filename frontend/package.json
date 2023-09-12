@@ -10,6 +10,7 @@
     "pretty": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\""
   },
   "dependencies": {
+    "@oliasoft-open-source/units": "^3.10.0",
     "@react-three/fiber": "^8.13.0",
     "@types/jest": "^29.5.1",
     "@types/node": "20.0.0",
@@ -22,10 +23,10 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.4.1",
     "leva": "^0.9.34",
-    "next": "13.4.1",
+    "next": "^13.4.19",
     "postcss": "8.4.23",
     "prettier": "^2.8.8",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "tailwind-merge": "^1.12.0",

@@ -62,7 +62,7 @@ export default function Input({
           placeholder={placeholder}
           defaultValue={defaultValue}
         />
-        <p>{unitLabel(unit)}</p>
+        <p className='w-16'>{unitLabel(unit) || unit}</p>
       </div>
     </label>
   );

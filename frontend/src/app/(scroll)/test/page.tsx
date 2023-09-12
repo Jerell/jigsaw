@@ -3,6 +3,7 @@
 import Button from '@/components/buttons/Button';
 import Display from '@/components/quantities/Display';
 import Input from '@/components/quantities/Input';
+import { ArbitraryQuantity } from '@/components/quantities/PhysicalQuantity';
 import { Temperature } from '@/components/quantities/Temperature';
 import { UnitContext } from '@/components/quantities/UnitContextProvider';
 import { useContext } from 'react';
@@ -30,6 +31,30 @@ export default function Page() {
           varKey='t3'
           onUpdate={console.log}
           unitOverride='F'
+        />
+        <Input
+          label='Arbitrary Q1'
+          varKey='q1'
+          onUpdate={console.log}
+          unitGroup={ArbitraryQuantity}
+        />
+        <Input
+          label='Major Impurity 1'
+          varKey='i1'
+          onUpdate={console.log}
+          unitGroup={'majorImpurity'}
+        />
+        <Input
+          label='Major Impurity 2'
+          varKey='i2'
+          onUpdate={console.log}
+          unitGroup={'majorImpurity'}
+        />
+        <Input
+          label='Minor Impurity'
+          varKey='i3'
+          onUpdate={console.log}
+          unitGroup={'minorImpurity'}
         />
       </div>
 

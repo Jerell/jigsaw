@@ -2,23 +2,21 @@
 
 import Button from '@/components/buttons/Button';
 import Display from '@/components/quantities/Display';
-import { ArbitraryQuantity } from '@/components/quantities/PhysicalQuantity';
 import { Temperature } from '@/components/quantities/Temperature';
 import { UnitContext } from '@/components/quantities/UnitContextProvider';
-import { withUnit } from '@oliasoft-open-source/units';
 import { useContext } from 'react';
 
 export default function Page() {
   const unitState = useContext(UnitContext);
 
   return (
-    <>
+    <div className='flex flex-col gap-4'>
       <div className='flex flex-row gap-2 justify-center'>
-        {unitState.get(Temperature)?.list.map((t) => (
+        {unitState.get('Wemperature')?.list.map((t) => (
           <Button
             key={t}
             onClick={() => {
-              unitState.get(Temperature)?.set(t);
+              unitState.get('Wemperature')?.set(t);
             }}
           >
             {t}
@@ -26,15 +24,28 @@ export default function Page() {
         ))}
       </div>
 
-      <Display>{new Temperature(10, 'C')}</Display>
-      <Display>{new Temperature(20, 'C')}</Display>
-      <Display valueWithUnit={new Temperature(20, 'C').valueWithUnit} />
-      {/* <Display
-        valueWithUnit={new Temperature(20, 'C').convert('K').valueWithUnit}
-      /> */}
+      <div className='flex flex-col items-center border-b'>
+        <Display unitOverride='F'>{new Temperature(20, 'C')}</Display>
+        <Display unitGroupTag='Wemperature'>{new Temperature(20, 'C')}</Display>
+        <Display unitGroupTag='Wemperature'>{new Temperature(30, 'C')}</Display>
+      </div>
 
-      {/* <Display valueWithUnit={withUnit(1, 'ppb')} />
-      <Display>{new ArbitraryQuantity(1, 'ppm')}</Display> */}
-    </>
+      <div className='flex flex-col items-center border-b'>
+        <div className='flex flex-row gap-2 justify-center'>
+          {unitState.get(Temperature)?.list.map((t) => (
+            <Button
+              key={t}
+              onClick={() => {
+                unitState.get(Temperature)?.set(t);
+              }}
+            >
+              {t}
+            </Button>
+          ))}
+        </div>
+        <Display>{new Temperature(10, 'C')}</Display>
+        <Display>{new Temperature(20, 'C')}</Display>
+      </div>
+    </div>
   );
 }

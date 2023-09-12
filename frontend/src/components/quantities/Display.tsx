@@ -2,20 +2,31 @@
 
 import { label, split } from '@oliasoft-open-source/units';
 import { PQ, PhysicalQuantity } from './PhysicalQuantity';
-import { RequireAtLeastOne } from '@/lib/requireAtLeastOne';
 import { useContext } from 'react';
 import { UnitContext } from './UnitContextProvider';
 
-export default function Display({ valueWithUnit, children }: DisplayProps) {
+export default function Display({
+  children,
+  unitOverride,
+  unitGroupTag,
+}: DisplayProps) {
   const unitState = useContext(UnitContext);
-  let [value, unit] = split(
-    children?.valueWithUnit || (valueWithUnit as string)
-  );
+  const unitKey = unitGroupTag || (children.constructor as PQ);
 
-  if (children && unitState.get(children.constructor as PQ)) {
-    const { unit: u } = unitState.get(children.constructor as PQ)!;
+  // const getValueAndUnit = (u?: string) => unitOverride
+  // ? [children.as(unitOverride).toString(), unitOverride]
+  // : [...split(children.valueWithUnit)];
+
+  let [value, unit] = unitOverride
+    ? [children.as(unitOverride).toString(), unitOverride]
+    : [...split(children.valueWithUnit)];
+
+  if (!unitOverride && children && unitState.get(unitKey)) {
+    const { unit: u } = unitState.get(unitKey)!;
     unit = u;
+    // console.log(u, unitKey);
     value = children.as(unit).toString();
+    // return 1;
   }
 
   return (
@@ -25,10 +36,8 @@ export default function Display({ valueWithUnit, children }: DisplayProps) {
   );
 }
 
-type DisplayProps = RequireAtLeastOne<
-  {
-    valueWithUnit: string;
-    children?: PhysicalQuantity;
-  },
-  'valueWithUnit' | 'children'
->;
+type DisplayProps = {
+  children: PhysicalQuantity;
+  unitOverride?: string;
+  unitGroupTag?: string;
+};

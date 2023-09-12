@@ -3,7 +3,6 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -26,11 +25,12 @@ const unitstate = (
   list,
 });
 
-type UnitMap<T> = Map<PQ, T>;
+type UnitMap<T> = Map<PQ | string, T>;
 type UnitStateMap = UnitMap<IUnitState>;
 
 const initialUnitState: UnitMap<string> = new Map();
 initialUnitState.set(Temperature, 'F');
+initialUnitState.set('Wemperature', 'K');
 
 const defaultContextObject: UnitStateMap = new Map();
 
@@ -43,7 +43,7 @@ export default function UnitContextProvider({
 }) {
   const [unitMap, setUnitMap] = useState<UnitMap<string>>(initialUnitState);
 
-  const setUnit = (kind: PQ, unit: string) => {
+  const setUnit = (kind: PQ | string, unit: string) => {
     setUnitMap((prev) => {
       const p = new Map(prev);
       p.set(kind, unit);
@@ -58,6 +58,14 @@ export default function UnitContextProvider({
       unitstate(
         unitMap.get(Temperature)!,
         (u: string) => setUnit(Temperature, u),
+        getUnitsForQuantity('temperature')
+      )
+    );
+    PQUnits.set(
+      'Wemperature',
+      unitstate(
+        unitMap.get('Wemperature')!,
+        (u: string) => setUnit('Wemperature', u),
         getUnitsForQuantity('temperature')
       )
     );

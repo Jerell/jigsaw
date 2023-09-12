@@ -39,16 +39,15 @@
     "@testing-library/cypress": "^9.0.0",
     "@types/d3": "^7.4.0",
     "@types/three": "^0.152.0",
+    "bun-types": "latest",
     "cypress": "^12.11.0",
     "hotscript": "^1.0.13",
-    "typescript": "^5.0.4",
-    "bun-types": "latest"
+    "typescript": "^5.0.4"
   },
   "prettier": {
     "bracketSpacing": true,
     "singleQuote": true,
     "jsxSingleQuote": true,
     "endOfLine": "lf"
-  },
-  "type": "module"
+  }
 }

@@ -4,6 +4,7 @@ import { Leva } from 'leva';
 import { ReactNode } from 'react';
 import CompositionProvider from './(noscroll)/compose/CompositionContext';
 import StageProvider from '@/components/composition/StageContext';
+import UnitContextProvider from '@/components/quantities/UnitContextProvider';
 
 export default function RootContextWrapper({
   children,
@@ -11,11 +12,11 @@ export default function RootContextWrapper({
   children: ReactNode;
 }) {
   return (
-    <>
+    <UnitContextProvider>
       <Leva theme={theme} flat />
       <CompositionProvider>
         <StageProvider>{children}</StageProvider>
       </CompositionProvider>
-    </>
+    </UnitContextProvider>
   );
 }

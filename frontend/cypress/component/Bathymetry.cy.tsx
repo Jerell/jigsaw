@@ -2,7 +2,7 @@ import Bathymetry from '@/app/(noscroll)/compose/Bathymetry';
 
 describe('ExtensibleTable.cy.tsx', () => {
   beforeEach(() => {
-    cy.mount(<Bathymetry />);
+    cy.mount(<Bathymetry ID='' />);
   });
 
   it('adds rows', () => {

@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { PQ } from './PhysicalQuantity';
+import { ArbitraryQuantity, PQ } from './PhysicalQuantity';
 import { Temperature } from './Temperature';
 import { getUnitsForQuantity } from '@oliasoft-open-source/units';
 
@@ -31,6 +31,9 @@ type UnitStateMap = UnitMap<IUnitState>;
 const initialUnitState: UnitMap<string> = new Map();
 initialUnitState.set(Temperature, 'F');
 initialUnitState.set('Wemperature', 'K');
+initialUnitState.set(ArbitraryQuantity, '-');
+initialUnitState.set('majorImpurity', 'ppm');
+initialUnitState.set('minorImpurity', 'ppb');
 
 const defaultContextObject: UnitStateMap = new Map();
 
@@ -62,11 +65,35 @@ export default function UnitContextProvider({
       )
     );
     PQUnits.set(
+      ArbitraryQuantity,
+      unitstate(
+        unitMap.get(ArbitraryQuantity)!,
+        (u: string) => setUnit(ArbitraryQuantity, u),
+        ['-']
+      )
+    );
+    PQUnits.set(
       'Wemperature',
       unitstate(
         unitMap.get('Wemperature')!,
         (u: string) => setUnit('Wemperature', u),
         getUnitsForQuantity('temperature')
+      )
+    );
+    PQUnits.set(
+      'majorImpurity',
+      unitstate(
+        unitMap.get('majorImpurity')!,
+        (u: string) => setUnit('majorImpurity', u),
+        ['ppm', 'ppb']
+      )
+    );
+    PQUnits.set(
+      'minorImpurity',
+      unitstate(
+        unitMap.get('minorImpurity')!,
+        (u: string) => setUnit('minorImpurity', u),
+        ['ppb', 'ppm']
       )
     );
 

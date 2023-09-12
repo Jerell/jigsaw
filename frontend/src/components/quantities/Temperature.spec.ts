@@ -7,6 +7,5 @@ test('conversion', () => {
   expect(t.as('C')).toBe(10);
   expect(t.as('K')).toBe(283.15);
 
-  const k = t.convert('K');
-  expect(k).toBe('283.15|K');
+  expect(t.convert('K')).toBe('283.15|K');
 });

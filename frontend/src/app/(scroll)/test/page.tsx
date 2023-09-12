@@ -2,6 +2,7 @@
 
 import Button from '@/components/buttons/Button';
 import Display from '@/components/quantities/Display';
+import Input from '@/components/quantities/Input';
 import { Temperature } from '@/components/quantities/Temperature';
 import { UnitContext } from '@/components/quantities/UnitContextProvider';
 import { useContext } from 'react';
@@ -11,6 +12,27 @@ export default function Page() {
 
   return (
     <div className='flex flex-col gap-4'>
+      <div className='flex flex-col items-end'>
+        <Input
+          label='global unit T1'
+          varKey='t1'
+          unitGroup={Temperature}
+          onUpdate={console.log}
+        />
+        <Input
+          label='global unit T2'
+          varKey='t2'
+          unitGroup={Temperature}
+          onUpdate={console.log}
+        />
+        <Input
+          label='override unit T3'
+          varKey='t3'
+          onUpdate={console.log}
+          unitOverride='F'
+        />
+      </div>
+
       <div className='flex flex-row gap-2 justify-center'>
         {unitState.get('Wemperature')?.list.map((t) => (
           <Button

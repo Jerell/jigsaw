@@ -1,5 +1,5 @@
 import { convertAndGetValue, withUnit } from '@oliasoft-open-source/units';
-import { ArbitraryQuantity, PhysicalQuantity } from './PhysicalQuantity';
+import { PhysicalQuantity } from './PhysicalQuantity';
 
 export class Temperature extends PhysicalQuantity {
   valueWithUnit: string;

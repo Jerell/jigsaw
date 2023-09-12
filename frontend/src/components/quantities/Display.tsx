@@ -13,10 +13,6 @@ export default function Display({
   const unitState = useContext(UnitContext);
   const unitKey = unitGroupTag || (children.constructor as PQ);
 
-  // const getValueAndUnit = (u?: string) => unitOverride
-  // ? [children.as(unitOverride).toString(), unitOverride]
-  // : [...split(children.valueWithUnit)];
-
   let [value, unit] = unitOverride
     ? [children.as(unitOverride).toString(), unitOverride]
     : [...split(children.valueWithUnit)];
@@ -24,9 +20,7 @@ export default function Display({
   if (!unitOverride && children && unitState.get(unitKey)) {
     const { unit: u } = unitState.get(unitKey)!;
     unit = u;
-    // console.log(u, unitKey);
     value = children.as(unit).toString();
-    // return 1;
   }
 
   return (

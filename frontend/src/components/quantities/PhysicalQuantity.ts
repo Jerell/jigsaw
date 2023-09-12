@@ -22,6 +22,7 @@ export abstract class PhysicalQuantity {
   abstract as(unit: string): number;
 
   public convert(unit: string) {
+    this.validateUnit(unit);
     return withUnit(this.as(unit), unit);
   }
 }

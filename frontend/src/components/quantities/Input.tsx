@@ -10,7 +10,7 @@ import {
 } from '@oliasoft-open-source/units';
 import { RequireAtLeastOne } from '@/lib/requireAtLeastOne';
 
-type unitChoice = RequireAtLeastOne<
+export type unitChoice = RequireAtLeastOne<
   {
     unitOverride?: string;
     unitGroup?: PQ | string;
@@ -20,15 +20,15 @@ type unitChoice = RequireAtLeastOne<
 
 export default function Input({
   label,
-  varKey,
+  variableKey,
   unitGroup,
   onUpdate,
   placeholder,
-  defaultValue,
+  defaultValue = '',
   unitOverride,
 }: {
   label: string;
-  varKey: string;
+  variableKey: string;
   onUpdate: (t: string) => void;
   placeholder?: string;
   defaultValue?: string;
@@ -37,7 +37,7 @@ export default function Input({
   const u = unitState.get(unitGroup || '');
   const unit = unitOverride || u?.unit || '';
 
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
     setValue((prev) => withUnit(getValue(prev), unit));
@@ -45,7 +45,8 @@ export default function Input({
 
   useEffect(() => {
     onUpdate(value);
-  }, [onUpdate, value]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   return (
     <label className='flex flex-row gap-2'>
@@ -54,11 +55,10 @@ export default function Input({
         <input
           className='w-full'
           autoComplete='off'
-          name={varKey}
-          onChange={(e: FormEvent<HTMLInputElement>) => {
-            console.log(varKey);
-            setValue(withUnit(e.currentTarget.value, unit));
-          }}
+          name={variableKey}
+          onChange={(e: FormEvent<HTMLInputElement>) =>
+            setValue(withUnit(e.currentTarget.value, unit))
+          }
           placeholder={placeholder}
           defaultValue={defaultValue}
         />

@@ -3,6 +3,7 @@
 import Button from '@/components/buttons/Button';
 import Display from '@/components/quantities/Display';
 import Input from '@/components/quantities/Input';
+import Inputs from '@/components/quantities/Inputs';
 import { ArbitraryQuantity } from '@/components/quantities/PhysicalQuantity';
 import { Temperature } from '@/components/quantities/Temperature';
 import { UnitContext } from '@/components/quantities/UnitContextProvider';
@@ -14,48 +15,16 @@ export default function Page() {
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex flex-col items-end'>
-        <Input
-          label='global unit T1'
-          varKey='t1'
-          unitGroup={Temperature}
-          onUpdate={console.log}
-        />
-        <Input
-          label='global unit T2'
-          varKey='t2'
-          unitGroup={Temperature}
-          onUpdate={console.log}
-        />
-        <Input
-          label='override unit T3'
-          varKey='t3'
-          onUpdate={console.log}
-          unitOverride='F'
-        />
-        <Input
-          label='Arbitrary Q1'
-          varKey='q1'
-          onUpdate={console.log}
-          unitGroup={ArbitraryQuantity}
-        />
-        <Input
-          label='Major Impurity 1'
-          varKey='i1'
-          onUpdate={console.log}
-          unitGroup={'majorImpurity'}
-        />
-        <Input
-          label='Major Impurity 2'
-          varKey='i2'
-          onUpdate={console.log}
-          unitGroup={'majorImpurity'}
-        />
-        <Input
-          label='Minor Impurity'
-          varKey='i3'
-          onUpdate={console.log}
-          unitGroup={'minorImpurity'}
-        />
+        <Inputs confirm={console.log}>
+          {{
+            test: {
+              label: 'test input',
+              unitGroup: Temperature,
+              placeholder: 'placeholder',
+              defaultValue: '10',
+            },
+          }}
+        </Inputs>
       </div>
 
       <div className='flex flex-row gap-2 justify-center'>
@@ -75,6 +44,41 @@ export default function Page() {
         <Display unitOverride='F'>{new Temperature(20, 'C')}</Display>
         <Display unitGroup='Wemperature'>{new Temperature(20, 'C')}</Display>
         <Display unitGroup='Wemperature'>{new Temperature(30, 'C')}</Display>
+      </div>
+
+      <div className='flex flex-col items-end mt-4'>
+        <Inputs confirm={console.log}>
+          {{
+            t1: {
+              label: 'global unit T1',
+              unitGroup: Temperature,
+            },
+            t2: {
+              label: 'global unit T2',
+              unitGroup: Temperature,
+            },
+            t3: {
+              label: 'override unit T3',
+              unitOverride: 'F',
+            },
+            q1: {
+              label: 'Arbitrary Q1',
+              unitGroup: ArbitraryQuantity,
+            },
+            i1: {
+              label: 'Major Impurity 1',
+              unitGroup: 'majorImpurity',
+            },
+            i2: {
+              label: 'Major Impurity 2',
+              unitGroup: 'majorImpurity',
+            },
+            i3: {
+              label: 'Minor Impurity',
+              unitGroup: 'minorImpurity',
+            },
+          }}
+        </Inputs>
       </div>
 
       <div className='flex flex-col items-center border-b'>

@@ -32,7 +32,7 @@ function setupcomponents(rb::ReqBody)
 
         @match c.type begin
             "source" => (c.ID, (c.type, [Source_P(D=D; name=Symbol(c.name))], c.outlets))
-            "sink" => (c.ID, (c.type, [Sink_P(p=200000; name=Symbol(c.name))], c.outlets))
+            "sink" => (c.ID, (c.type, [Sink_P(p=100000; name=Symbol(c.name))], c.outlets))
             "pipe" => (
                 c.ID,
                 (

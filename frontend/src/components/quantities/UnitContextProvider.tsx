@@ -10,6 +10,8 @@ import { ArbitraryQuantity, PQ } from './PhysicalQuantity';
 import { Temperature } from './Temperature';
 import { getUnitsForQuantity } from '@oliasoft-open-source/units';
 import { Length } from './Length';
+import { Pressure } from './Pressure';
+import { MassFlowrate } from './MassFlowrate';
 
 interface IUnitState {
   unit: string;
@@ -37,6 +39,8 @@ initialUnitState.set('majorImpurity', 'ppm');
 initialUnitState.set('minorImpurity', 'ppb');
 initialUnitState.set(Length, 'm');
 initialUnitState.set('roughness', 'mm');
+initialUnitState.set(Pressure, 'bar');
+initialUnitState.set(MassFlowrate, 'kg/s');
 
 const defaultContextObject: UnitStateMap = new Map();
 
@@ -113,6 +117,22 @@ export default function UnitContextProvider({
         unitMap.get('roughness')!,
         (u: string) => setUnit('roughness', u),
         ['mm']
+      )
+    );
+    PQUnits.set(
+      Pressure,
+      unitstate(
+        unitMap.get(Pressure)!,
+        (u: string) => setUnit(Pressure, u),
+        getUnitsForQuantity('pressure')
+      )
+    );
+    PQUnits.set(
+      MassFlowrate,
+      unitstate(
+        unitMap.get(MassFlowrate)!,
+        (u: string) => setUnit(MassFlowrate, u),
+        getUnitsForQuantity('massFlowRate')
       )
     );
 

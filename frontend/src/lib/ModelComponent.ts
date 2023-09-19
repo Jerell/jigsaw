@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ToParsedJSON } from './ToParsedJSON';
+import { Pressure } from '@/components/quantities/Pressure';
 
 export default class ModelComponent {
   public inlets: ModelComponent['ID'][] = [];
@@ -35,21 +36,31 @@ export class Pipe extends ModelComponent {
   }
 
   rename(name: string): Pipe {
-    return new Pipe(name, this.diameter, this.roughness);
+    return new Pipe(name, this.diameter, this.roughness, this.ID);
   }
 
   setDiameter(d: number): Pipe {
-    return new Pipe(this.name, d, this.roughness);
+    return new Pipe(this.name, d, this.roughness, this.ID);
   }
 
   setRoughness(r: number): Pipe {
-    return new Pipe(this.name, this.diameter, r);
+    return new Pipe(this.name, this.diameter, r, this.ID);
   }
 }
 
 export class Source extends ModelComponent {
-  constructor(name: string, ID: string = uuidv4()) {
+  constructor(
+    name: string,
+    ID: string = uuidv4(),
+    public readonly pressure = new Pressure(1, 'bar')
+  ) {
     super(ModelComponentType.Source, name, ID);
+
+    this.pressure = new Pressure(1, 'bar');
+  }
+
+  setPressure(p: Pressure) {
+    return new Source(this.name, this.ID, p);
   }
 }
 

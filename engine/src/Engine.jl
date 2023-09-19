@@ -31,7 +31,9 @@ function process_pipe_request(reqbody::String)
     qin = sol[firstpipesegment.in.q]
     println("qin $qin")
 
-    return "end"
+    println(sol)
+
+    return JSON3.write(Dict("retcode" => sol.retcode, "t" => sol.t, "u" => sol.u))
 end
 
 end

@@ -11,7 +11,10 @@ export default class ModelComponent {
   ) {}
 
   attach(side: 'inlets' | 'outlets', item: ModelComponent | null) {
-    item && item !== this && this[side].push(item.ID);
+    item &&
+      item !== this &&
+      !this[side].includes(item.ID) &&
+      this[side].push(item.ID);
   }
 }
 

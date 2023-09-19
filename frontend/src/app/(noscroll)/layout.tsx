@@ -11,7 +11,7 @@ const charis = Charis_SIL({
 });
 
 export const metadata = {
-  title: 'jigsaw',
+  title: 'CCSTwin',
   description: 'practice',
 };
 

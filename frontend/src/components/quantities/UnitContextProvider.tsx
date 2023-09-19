@@ -9,6 +9,7 @@ import {
 import { ArbitraryQuantity, PQ } from './PhysicalQuantity';
 import { Temperature } from './Temperature';
 import { getUnitsForQuantity } from '@oliasoft-open-source/units';
+import { Length } from './Length';
 
 interface IUnitState {
   unit: string;
@@ -34,6 +35,8 @@ initialUnitState.set('Wemperature', 'K');
 initialUnitState.set(ArbitraryQuantity, '-');
 initialUnitState.set('majorImpurity', 'ppm');
 initialUnitState.set('minorImpurity', 'ppb');
+initialUnitState.set(Length, 'm');
+initialUnitState.set('roughness', 'mm');
 
 const defaultContextObject: UnitStateMap = new Map();
 
@@ -94,6 +97,22 @@ export default function UnitContextProvider({
         unitMap.get('minorImpurity')!,
         (u: string) => setUnit('minorImpurity', u),
         ['ppb', 'ppm']
+      )
+    );
+    PQUnits.set(
+      Length,
+      unitstate(
+        unitMap.get(Length)!,
+        (u: string) => setUnit(Length, u),
+        getUnitsForQuantity('length')
+      )
+    );
+    PQUnits.set(
+      'roughness',
+      unitstate(
+        unitMap.get('roughness')!,
+        (u: string) => setUnit('roughness', u),
+        ['mm']
       )
     );
 

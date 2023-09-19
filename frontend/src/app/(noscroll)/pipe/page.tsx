@@ -59,10 +59,10 @@ export default function PipePage() {
                   label: 'Pressure',
                   unitGroup: Pressure,
                 },
-                temperature: {
-                  label: 'Temperature',
-                  unitGroup: Temperature,
-                },
+                // temperature: {
+                //   label: 'Temperature',
+                //   unitGroup: Temperature,
+                // },
               }}
             </Inputs>
           </div>
@@ -74,7 +74,7 @@ export default function PipePage() {
 
         <div className='flex flex-row justify-center'>
           <div className='flex flex-col items-end w-fit'>
-            <Inputs update={setPipeFields}>
+            <Inputs update={(f) => setPipeFields((p) => ({ ...p, ...f }))}>
               {{
                 diameter: {
                   label: 'Diameter',
@@ -88,10 +88,14 @@ export default function PipePage() {
                   label: 'U Value',
                   unitGroup: ArbitraryQuantity,
                 },
-                massFlowrate: {
-                  label: 'Mass Flowrate',
-                  unitGroup: MassFlowrate,
+                temperature: {
+                  label: 'Temperature',
+                  unitGroup: Temperature,
                 },
+                // massFlowrate: {
+                //   label: 'Mass Flowrate',
+                //   unitGroup: MassFlowrate,
+                // },
               }}
             </Inputs>
           </div>
@@ -111,10 +115,10 @@ export default function PipePage() {
                   label: 'Pressure',
                   unitGroup: Pressure,
                 },
-                temperature: {
-                  label: 'Temperature',
-                  unitGroup: Temperature,
-                },
+                // temperature: {
+                //   label: 'Temperature',
+                //   unitGroup: Temperature,
+                // },
               }}
             </Inputs>
           </div>

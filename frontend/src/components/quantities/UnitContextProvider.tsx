@@ -32,7 +32,7 @@ type UnitMap<T> = Map<PQ | string, T>;
 type UnitStateMap = UnitMap<IUnitState>;
 
 const initialUnitState: UnitMap<string> = new Map();
-initialUnitState.set(Temperature, 'F');
+initialUnitState.set(Temperature, 'C');
 initialUnitState.set('Wemperature', 'K');
 initialUnitState.set(ArbitraryQuantity, '-');
 initialUnitState.set('majorImpurity', 'ppm');

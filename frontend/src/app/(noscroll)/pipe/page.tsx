@@ -7,10 +7,12 @@ import { Temperature } from '@/components/quantities/Temperature';
 import { Pipe, Sink, Source } from '@/lib/ModelComponent';
 import { useEffect, useState } from 'react';
 import Bathymetry from '../compose/Bathymetry';
+import { Pressure } from '@/components/quantities/Pressure';
+import { MassFlowrate } from '@/components/quantities/MassFlowrate';
 
 export default function PipePage() {
   const [source, setSource] = useState(new Source('inlet'));
-  const [pipe, setPipe] = useState(new Pipe('pipe', 1.0, 1.0));
+  const [pipe, setPipe] = useState(new Pipe('pipe', 1.0, 1.0, 'p1'));
   const [sink, setSink] = useState(new Sink('sink'));
 
   useEffect(() => {
@@ -24,6 +26,23 @@ export default function PipePage() {
     <div className='flex flex-col sm:flex-row gap-2 w-full h-full'>
       <div className='flex flex-col w-full gap-2'>
         <h2>Source</h2>
+
+        <div className='flex flex-row justify-center'>
+          <div className='flex flex-col items-end w-fit'>
+            <Inputs update={console.log}>
+              {{
+                pressure: {
+                  label: 'Pressure',
+                  unitGroup: Pressure,
+                },
+                temperature: {
+                  label: 'Temperature',
+                  unitGroup: Temperature,
+                },
+              }}
+            </Inputs>
+          </div>
+        </div>
       </div>
 
       <div className='flex flex-col w-full gap-2'>
@@ -45,6 +64,10 @@ export default function PipePage() {
                   label: 'U Value',
                   unitGroup: ArbitraryQuantity,
                 },
+                massFlowrate: {
+                  label: 'Mass Flowrate',
+                  unitGroup: MassFlowrate,
+                },
               }}
             </Inputs>
           </div>
@@ -55,6 +78,23 @@ export default function PipePage() {
 
       <div className='flex flex-col w-full gap-2'>
         <h2>Sink</h2>
+
+        <div className='flex flex-row justify-center'>
+          <div className='flex flex-col items-end w-fit'>
+            <Inputs update={console.log}>
+              {{
+                pressure: {
+                  label: 'Pressure',
+                  unitGroup: Pressure,
+                },
+                temperature: {
+                  label: 'Temperature',
+                  unitGroup: Temperature,
+                },
+              }}
+            </Inputs>
+          </div>
+        </div>
       </div>
     </div>
   );

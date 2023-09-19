@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import Inputs from '@/components/quantities/Inputs';
@@ -9,11 +10,17 @@ import { useEffect, useState } from 'react';
 import Bathymetry from '../compose/Bathymetry';
 import { Pressure } from '@/components/quantities/Pressure';
 import { MassFlowrate } from '@/components/quantities/MassFlowrate';
+import { split } from '@oliasoft-open-source/units';
 
 export default function PipePage() {
   const [source, setSource] = useState(new Source('inlet'));
+  const [sourceFields, setSourceFields] = useState<{ [vk: string]: string }>();
+
   const [pipe, setPipe] = useState(new Pipe('pipe', 1.0, 1.0, 'p1'));
+  const [pipeFields, setPipeFields] = useState<{ [vk: string]: string }>();
+
   const [sink, setSink] = useState(new Sink('sink'));
+  const [sinkFields, setSinkFields] = useState<{ [vk: string]: string }>();
 
   useEffect(() => {
     source.attach('outlets', pipe);
@@ -22,6 +29,23 @@ export default function PipePage() {
     console.log(source, pipe, sink);
   }, [source, pipe, sink]);
 
+  const changeDiameter = (d: number) => setPipe(pipe.setDiameter(d));
+  const changeRoughness = (d: number) => setPipe(pipe.setRoughness(d));
+
+  useEffect(() => {
+    if (!pipeFields?.diameter) return;
+    const d = new Length(...(split(pipeFields.diameter) as [number, string]));
+
+    changeDiameter(d.as('m'));
+  }, [pipeFields?.diameter]);
+
+  useEffect(() => {
+    if (!pipeFields?.roughness) return;
+    const r = new Length(...(split(pipeFields.roughness) as [number, string]));
+
+    changeRoughness(r.as('m'));
+  }, [pipeFields?.roughness]);
+
   return (
     <div className='flex flex-col sm:flex-row gap-2 w-full h-full'>
       <div className='flex flex-col w-full gap-2'>
@@ -29,7 +53,7 @@ export default function PipePage() {
 
         <div className='flex flex-row justify-center'>
           <div className='flex flex-col items-end w-fit'>
-            <Inputs update={console.log}>
+            <Inputs update={setSourceFields}>
               {{
                 pressure: {
                   label: 'Pressure',
@@ -50,7 +74,7 @@ export default function PipePage() {
 
         <div className='flex flex-row justify-center'>
           <div className='flex flex-col items-end w-fit'>
-            <Inputs update={console.log}>
+            <Inputs update={setPipeFields}>
               {{
                 diameter: {
                   label: 'Diameter',
@@ -81,7 +105,7 @@ export default function PipePage() {
 
         <div className='flex flex-row justify-center'>
           <div className='flex flex-col items-end w-fit'>
-            <Inputs update={console.log}>
+            <Inputs update={setSinkFields}>
               {{
                 pressure: {
                   label: 'Pressure',

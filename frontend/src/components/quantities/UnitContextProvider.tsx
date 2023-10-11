@@ -9,6 +9,9 @@ import {
 import { ArbitraryQuantity, PQ } from './PhysicalQuantity';
 import { Temperature } from './Temperature';
 import { getUnitsForQuantity } from '@oliasoft-open-source/units';
+import { Length } from './Length';
+import { Pressure } from './Pressure';
+import { MassFlowrate } from './MassFlowrate';
 
 interface IUnitState {
   unit: string;
@@ -29,11 +32,15 @@ type UnitMap<T> = Map<PQ | string, T>;
 type UnitStateMap = UnitMap<IUnitState>;
 
 const initialUnitState: UnitMap<string> = new Map();
-initialUnitState.set(Temperature, 'F');
+initialUnitState.set(Temperature, 'C');
 initialUnitState.set('Wemperature', 'K');
 initialUnitState.set(ArbitraryQuantity, '-');
 initialUnitState.set('majorImpurity', 'ppm');
 initialUnitState.set('minorImpurity', 'ppb');
+initialUnitState.set(Length, 'm');
+initialUnitState.set('roughness', 'mm');
+initialUnitState.set(Pressure, 'bar');
+initialUnitState.set(MassFlowrate, 'kg/s');
 
 const defaultContextObject: UnitStateMap = new Map();
 
@@ -94,6 +101,38 @@ export default function UnitContextProvider({
         unitMap.get('minorImpurity')!,
         (u: string) => setUnit('minorImpurity', u),
         ['ppb', 'ppm']
+      )
+    );
+    PQUnits.set(
+      Length,
+      unitstate(
+        unitMap.get(Length)!,
+        (u: string) => setUnit(Length, u),
+        getUnitsForQuantity('length')
+      )
+    );
+    PQUnits.set(
+      'roughness',
+      unitstate(
+        unitMap.get('roughness')!,
+        (u: string) => setUnit('roughness', u),
+        ['mm']
+      )
+    );
+    PQUnits.set(
+      Pressure,
+      unitstate(
+        unitMap.get(Pressure)!,
+        (u: string) => setUnit(Pressure, u),
+        getUnitsForQuantity('pressure')
+      )
+    );
+    PQUnits.set(
+      MassFlowrate,
+      unitstate(
+        unitMap.get(MassFlowrate)!,
+        (u: string) => setUnit(MassFlowrate, u),
+        getUnitsForQuantity('massFlowRate')
       )
     );
 

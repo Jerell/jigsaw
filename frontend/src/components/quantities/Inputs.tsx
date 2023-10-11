@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input, { unitChoice } from './Input';
 import replaceStateProperty from '@/lib/replaceStateProperty';
 import { RequireAtLeastOne } from '@/lib/requireAtLeastOne';

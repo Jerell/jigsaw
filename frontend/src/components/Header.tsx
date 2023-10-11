@@ -2,10 +2,11 @@ import UnderlineLink from './links/UnderlineLink';
 import UnstyledLink from './links/UnstyledLink';
 
 const links = [
-  { href: '/compose/', label: 'compose' },
-  { href: '/broken/', label: 'broken' },
-  { href: '/results/', label: 'results' },
-  { href: '/test/', label: 'test' },
+  // { href: '/compose/', label: 'compose' },
+  // { href: '/broken/', label: 'broken' },
+  // { href: '/results/', label: 'results' },
+  // { href: '/test/', label: 'test' },
+  { href: '/pipe/', label: 'pipe' },
 ];
 
 export default function Header() {
@@ -20,7 +21,7 @@ export default function Header() {
 
       <div className='flex-flex-col text-center 2xl:max-w-2xl w-full'>
         <UnstyledLink href='/'>
-          <h1 className='text-xl'>jigsaw</h1>
+          <h1 className='text-xl'>CCSTwin</h1>
         </UnstyledLink>
       </div>
 
